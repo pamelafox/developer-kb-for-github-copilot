@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Origin Passport Support Runbook</title>
+<style>
+  @page { size:Letter; margin:0.64in 0.7in 0.7in; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:#273033; font:10.2pt/1.4 Georgia, "Times New Roman", serif; }
+  header { padding:14px 17px; background:#263f46; color:#fff; border-bottom:5px solid #b58a3c; }
+  .series { font:700 9pt Helvetica, sans-serif; letter-spacing:1.2px; text-transform:uppercase; color:#e3c27d; }
+  h1 { font:700 24pt/1.08 Georgia, serif; margin:9px 0 5px; }
+  .subtitle { font:10pt Helvetica, sans-serif; color:#edf1ef; }
+  .meta { margin:14px 0 18px; font:9pt/1.4 Helvetica, sans-serif; color:#5d6567; }
+  h2 { color:#263f46; font:700 15pt Georgia, serif; margin:19px 0 7px; }
+  h3 { color:#5b3328; font:700 11pt Helvetica, sans-serif; margin:13px 0 5px; }
+  p { margin:0 0 8px; }
+  ul, ol { margin:5px 0 10px 21px; padding:0; }
+  li { margin-bottom:4px; }
+  table { width:100%; border-collapse:collapse; margin:9px 0 15px; font:8.6pt/1.28 Helvetica, sans-serif; }
+  th { color:#fff; background:#45634f; text-align:left; padding:6px 7px; }
+  td { padding:6px 7px; border-bottom:1px solid #cfcbc1; vertical-align:top; }
+  tr { break-inside:avoid; }
+  code { color:#5b3328; font:8.7pt Menlo, monospace; }
+  .stop { padding:10px 12px; margin:10px 0; background:#fff3ef; border-left:5px solid #a34335; }
+  .tip { padding:10px 12px; margin:10px 0; background:#eef3ef; border-left:5px solid #45634f; }
+  footer { margin-top:22px; padding-top:8px; border-top:1px solid #cfcbc1; color:#687174; font:8pt Helvetica, sans-serif; }
+</style>
+</head>
+<body>
+<header>
+  <div class="series">Cocoarynth Wholesale Operations</div>
+  <h1>Origin Passport Support Runbook</h1>
+  <div class="subtitle">Verification, replacement, import triage, and escalation</div>
+</header>
+<div class="meta"><strong>Runbook:</strong> OPS-OP-012 &nbsp;·&nbsp; <strong>Version:</strong> 1.3 &nbsp;·&nbsp; <strong>Updated:</strong> 2026-05-18 &nbsp;·&nbsp; <strong>Audience:</strong> Wholesale Operations and Support</div>
+
+<h2>1. Use this runbook when</h2>
+<ul>
+  <li>an operations specialist is preparing an Origin Passport for shipment;</li>
+  <li>a retailer reports that an Origin Passport cannot be imported;</li>
+  <li>a recipient says passport content does not match the shipment; or</li>
+  <li>an issued passport must be replaced after an approved correction.</li>
+</ul>
+<div class="stop"><strong>Stop and escalate immediately</strong> if a file contains supplier pricing, producer personal contact information, internal quality notes, employee comments, credentials, or other information outside the approved wholesale schema. Do not resend the file.</div>
+
+<h2>2. Pre-delivery verification</h2>
+<ol>
+  <li>Open the finished batch and confirm the product name and batch number against the shipment record.</li>
+  <li>Confirm that origin, producer or cooperative, harvest year, cacao percentage, certification status, production date, and shipment date have been approved.</li>
+  <li>Generate the passport through the approved workflow for the shipment.</li>
+  <li>Record the Origin Passport ID in the shipment handoff.</li>
+  <li>Check the recipient's current integration instructions for the required file type, column names, date representation, and transfer channel.</li>
+  <li>Inspect the generated file before transfer. Confirm that prohibited fields are absent.</li>
+</ol>
+<p>Do not infer a recipient's required format from an earlier shipment or from the fact that a file opens locally. Use the current partner requirements supplied with the pilot or account handoff.</p>
+
+<h2>3. Import failure triage</h2>
+<table>
+<thead><tr><th>Check</th><th>What to verify</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>File identity</td><td>Passport ID, product, batch, and shipment match the recipient's report.</td><td>Correct a handoff mismatch before deeper troubleshooting.</td></tr>
+<tr><td>File type</td><td>Actual serialized format matches the partner requirement, not only the filename extension.</td><td>Regenerate using an approved supported format. Never fix a mismatch by renaming the extension.</td></tr>
+<tr><td>Media type</td><td>Download or transfer metadata identifies the expected content type.</td><td>Capture the observed value for Engineering.</td></tr>
+<tr><td>Headers</td><td>Header names, spelling, order, and count match the partner contract.</td><td>Record differences; do not manually redesign the shared schema.</td></tr>
+<tr><td>Rows and columns</td><td>Expected row count is present and each record parses to the expected number of fields.</td><td>Look for unescaped commas, quotes, or line breaks.</td></tr>
+<tr><td>Dates</td><td>Date values follow the required representation and are real calendar dates.</td><td>Correct governed source data if wrong; do not conceal a source error with an ad hoc file edit.</td></tr>
+<tr><td>Encoding</td><td>The file uses the required character encoding and producer names render correctly.</td><td>Capture parser errors and the affected field.</td></tr>
+</tbody>
+</table>
+
+<h2>4. Information to collect</h2>
+<p>Before escalating an import failure, collect:</p>
+<ul>
+  <li>retailer, shipment, product, and batch identifiers;</li>
+  <li>Origin Passport ID and generation time;</li>
+  <li>requested file type and schema reference;</li>
+  <li>downloaded filename and observed media type;</li>
+  <li>the retailer's exact error message and failure time;</li>
+  <li>whether the file opens in a format-aware parser; and</li>
+  <li>the header row and field count, excluding any prohibited information.</li>
+</ul>
+<div class="tip"><strong>Preserve evidence:</strong> Keep the originally issued artifact in the restricted support case. Do not overwrite it with a locally edited copy.</div>
+
+<h2>5. Replacing an incorrect passport</h2>
+<ol>
+  <li>Confirm the correction has been approved in the governed source record.</li>
+  <li>Generate a new Origin Passport; do not edit the issued snapshot in place.</li>
+  <li>Verify the replacement using the pre-delivery checklist.</li>
+  <li>Record which passport the new issuance supersedes.</li>
+  <li>Send the replacement through the approved channel and clearly identify it as the current version.</li>
+  <li>Retain the original according to policy and close the support case with both identifiers.</li>
+</ol>
+
+<h2>6. Escalation routes</h2>
+<table>
+<thead><tr><th>Condition</th><th>Escalate to</th><th>Priority</th></tr></thead>
+<tbody>
+<tr><td>Possible confidential or personal data disclosure</td><td>Data Governance incident channel</td><td>Immediate</td></tr>
+<tr><td>Wrong approved origin, certification, or production fact</td><td>Responsible data owner and Quality or Sourcing</td><td>High</td></tr>
+<tr><td>Unsupported required format, serialization defect, header defect, or incorrect content type</td><td>Trace Engineering with collected evidence</td><td>High when shipment-blocking</td></tr>
+<tr><td>Partner importer unavailable or credentials rejected</td><td>Retailer integration contact and Wholesale Operations</td><td>Per shipment impact</td></tr>
+<tr><td>Unclear partner requirement</td><td>Account owner and Retail Systems Integration</td><td>Before regeneration</td></tr>
+</tbody>
+</table>
+
+<h2>7. Do not</h2>
+<ul>
+  <li>rename one file type to another and assume the content was converted;</li>
+  <li>manually add prohibited or unapproved fields;</li>
+  <li>overwrite a previously issued immutable passport;</li>
+  <li>send screenshots as substitutes for machine-readable files; or</li>
+  <li>promise support for a format or schema before Engineering confirms it.</li>
+</ul>
+
+<footer>Cocoarynth Wholesale Operations · Internal runbook · Fictional workshop document · Source reference: https://docs.cocoarynth.example/runbooks/ops-op-012</footer>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mapayça Markets Traceability Pilot Requirements</title>
+<style>
+  @page { size: Letter; margin: 0.65in 0.72in 0.7in; }
+  * { box-sizing: border-box; }
+  body { margin:0; color:#30231e; font:10.5pt/1.42 Georgia, "Times New Roman", serif; }
+  header { border-bottom:3px solid #b58a3c; padding-bottom:14px; margin-bottom:18px; }
+  .brand { color:#5b3328; font:700 10pt/1.1 Helvetica, sans-serif; letter-spacing:1.4px; text-transform:uppercase; }
+  h1 { color:#5b3328; font:700 25pt/1.08 Georgia, serif; margin:16px 0 7px; }
+  .subtitle { color:#41644a; font:700 11pt/1.3 Helvetica, sans-serif; }
+  .meta { display:grid; grid-template-columns:1fr 1fr; gap:7px 24px; margin:16px 0 20px; padding:12px 14px; background:#f7f1e6; border-left:4px solid #b58a3c; font:9.5pt/1.35 Helvetica, sans-serif; }
+  h2 { color:#5b3328; font:700 15pt/1.2 Georgia, serif; margin:20px 0 8px; break-after:avoid; }
+  h3 { color:#41644a; font:700 11pt/1.25 Helvetica, sans-serif; margin:15px 0 5px; break-after:avoid; }
+  p { margin:0 0 9px; }
+  ul, ol { margin:6px 0 10px 21px; padding:0; }
+  li { margin:0 0 4px; }
+  table { width:100%; border-collapse:collapse; margin:9px 0 15px; font:8.6pt/1.28 Helvetica, sans-serif; break-inside:auto; }
+  th { color:white; background:var(--cocoa); text-align:left; padding:6px 7px; }
+  td { border-bottom:1px solid #d8c9ad; padding:6px 7px; vertical-align:top; }
+  tr { break-inside:avoid; }
+  code { font:8.8pt Menlo, monospace; color:#5b3328; }
+  .csv-example { margin:8px 0 12px; padding:10px; border:1px solid #d8c9ad; background:#f7f1e6; font:5.2pt/1.45 Menlo, monospace; white-space:pre; }
+  .callout { margin:12px 0; padding:11px 13px; border:1px solid #d8c9ad; border-left:5px solid #41644a; background:#fbfaf6; break-inside:avoid; }
+  .reject { border-left-color:#9a3f32; background:#fff7f4; font-weight:bold; }
+  footer { margin-top:24px; padding-top:8px; border-top:1px solid #d8c9ad; color:#6f625b; font:8pt Helvetica, sans-serif; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Mapayça Markets · Retail Systems &amp; Responsible Sourcing</div>
+  <h1>Traceability Pilot Requirements</h1>
+  <div class="subtitle">Cocoarynth Origin Passport import · Ecuador Esmeraldas 72%</div>
+</header>
+
+<section class="meta">
+  <div><strong>Document ID:</strong> MM-TR-PILOT-01</div>
+  <div><strong>Status:</strong> Approved for pilot</div>
+  <div><strong>Version:</strong> 1.0</div>
+  <div><strong>Effective date:</strong> 2026-10-01</div>
+  <div><strong>Owner:</strong> Retail Systems Integration</div>
+  <div><strong>Review contact:</strong> Pilot Integration Lead</div>
+</section>
+
+<h2>1. Purpose and scope</h2>
+<p>Mapayça Markets is testing product-level sourcing records for a limited specialty-grocery program. Cocoarynth will supply the Ecuador Esmeraldas 72% chocolate bar to the stores named in the pilot order. Each shipment must be accompanied by an Origin Passport export that Mapayça's inventory system can import without manual conversion.</p>
+<p>The initial pilot supports one finished production batch per file. A file may therefore contain one header row and one data row. Multi-batch or bulk export is outside the pilot scope and is not an acceptance requirement.</p>
+
+<h2>2. Required delivery format</h2>
+<div class="callout reject">The Mapayça inventory importer accepts CSV files only. JSON uploads are rejected and do not satisfy the pilot requirement. Changing a filename from <code>.json</code> to <code>.csv</code> does not constitute a valid CSV export.</div>
+<ul>
+  <li>Character encoding must be UTF-8.</li>
+  <li>The filename must end in <code>.csv</code>.</li>
+  <li>The media type supplied during download or transfer must be <code>text/csv</code>.</li>
+  <li>The first record must contain the stable column headers listed below, in the listed order.</li>
+  <li>The second record must contain one complete Origin Passport data row for the exported batch.</li>
+  <li>Fields containing a comma, double quote, carriage return, or line break must use standard CSV quoting. Embedded double quotes must be escaped by doubling them.</li>
+  <li>Empty optional values must be represented as empty fields; columns must not be removed.</li>
+</ul>
+
+<h2>3. Required schema</h2>
+<table>
+<thead><tr><th>Column header</th><th>Meaning</th><th>Format</th></tr></thead>
+<tbody>
+<tr><td><code>origin_passport_id</code></td><td>Unique identifier for the issued Origin Passport.</td><td>Non-empty text</td></tr>
+<tr><td><code>product_name</code></td><td>Customer-facing product name.</td><td>For this pilot: Ecuador Esmeraldas 72%</td></tr>
+<tr><td><code>batch_number</code></td><td>Cocoarynth finished production batch identifier.</td><td>Non-empty text</td></tr>
+<tr><td><code>country</code></td><td>Country where the cacao was grown.</td><td>Country name</td></tr>
+<tr><td><code>growing_region</code></td><td>Named cacao-growing region.</td><td>Text</td></tr>
+<tr><td><code>producer_name</code></td><td>Producer or cooperative associated with the origin lot.</td><td>Text</td></tr>
+<tr><td><code>harvest_year</code></td><td>Year in which the cacao was harvested.</td><td>Four-digit year</td></tr>
+<tr><td><code>cacao_percentage</code></td><td>Cacao content of the finished product.</td><td>Whole number, without the percent sign</td></tr>
+<tr><td><code>certification_status</code></td><td>Approved certification statement for the origin lot.</td><td>Text</td></tr>
+<tr><td><code>production_date</code></td><td>Date the finished batch completed production.</td><td>ISO <code>YYYY-MM-DD</code></td></tr>
+<tr><td><code>shipment_date</code></td><td>Date the batch shipment left Cocoarynth.</td><td>ISO <code>YYYY-MM-DD</code></td></tr>
+</tbody>
+</table>
+
+<h3>3.1 Example CSV</h3>
+<p>The following example is illustrative. Production files must contain values from the approved batch and shipment records.</p>
+<pre class="csv-example">origin_passport_id,product_name,batch_number,country,growing_region,producer_name,harvest_year,cacao_percentage,certification_status,production_date,shipment_date
+OP-EC-2026-0042,Ecuador Esmeraldas 72%,CE-260914-E72,Ecuador,Esmeraldas,"Cooperativa Río Verde, Esmeraldas",2025,72,Organic,2026-09-14,2026-09-18</pre>
+
+<h2>4. Data handling restrictions</h2>
+<p>The pilot file must be limited to the schema above. It must not contain negotiated cacao or supplier pricing, producer personal contact details, employee details, internal quality notes, employee comments, or credentials and system identifiers. Additional fields require written approval from Mapayça Retail Systems and Cocoarynth's data owner before transmission.</p>
+
+<h2>5. Submission and validation</h2>
+<ol>
+  <li>Create one CSV export for the production batch associated with the shipment.</li>
+  <li>Confirm that the header row exactly matches the required schema, including spelling and order.</li>
+  <li>Confirm that the product and batch identifiers match the shipment paperwork.</li>
+  <li>Validate both date fields against the ISO <code>YYYY-MM-DD</code> pattern.</li>
+  <li>Open the file with a CSV-aware parser and confirm that it produces exactly eleven columns.</li>
+  <li>Transfer the file through the pilot channel identified in the shipment handoff.</li>
+</ol>
+
+<h2>6. Pilot acceptance criteria</h2>
+<p>A shipment passes traceability import acceptance when the delivered file:</p>
+<ul>
+  <li>is valid UTF-8 CSV and imports without manual conversion;</li>
+  <li>contains the exact header row and one data row;</li>
+  <li>identifies the Ecuador Esmeraldas 72% product and its production batch;</li>
+  <li>contains complete origin, producer, harvest, cacao percentage, certification, production date, and shipment date values;</li>
+  <li>uses ISO dates in both date columns; and</li>
+  <li>contains none of the prohibited confidential or personal information.</li>
+</ul>
+<div class="callout"><strong>Clarification:</strong> Bulk export is not required for this pilot. A correctly formatted one-row CSV file for each exported batch is acceptable.</div>
+
+<h2>7. Change control</h2>
+<p>Column names and validation rules remain stable for the duration of the pilot. Proposed changes must be reviewed before a shipment file is produced. This document defines Mapayça's import contract; it does not describe or certify the current implementation of Cocoarynth Trace.</p>
+
+<footer>Mapayça Markets · Traceability Pilot · Controlled fictional workshop document · Source reference: https://docs.cocoarynth.example/mapayca/pilot-requirements-v1</footer>
+</body>
+</html>

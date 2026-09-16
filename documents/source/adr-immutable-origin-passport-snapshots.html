@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ADR: Immutable Origin Passport Snapshots</title>
+<style>
+  @page { size:Letter; margin:0.68in 0.75in 0.72in; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:#292725; font:10.5pt/1.46 Georgia, "Times New Roman", serif; }
+  header { border-top:8px solid #243d4a; border-bottom:2px solid #bd8d3d; padding:17px 0 15px; }
+  .series { color:#5d6b70; font:700 9pt Helvetica, sans-serif; letter-spacing:1.2px; text-transform:uppercase; }
+  h1 { color:#243d4a; font:700 25pt/1.08 Georgia, serif; margin:10px 0 5px; }
+  .status { color:#40634b; font:700 10.5pt Helvetica, sans-serif; }
+  .meta { width:100%; margin:16px 0 18px; border-collapse:collapse; font:9.2pt Helvetica, sans-serif; }
+  .meta td { padding:5px 8px; border-bottom:1px solid #d6d2c9; }
+  .meta td:first-child { width:28%; color:#5b3328; font-weight:bold; }
+  h2 { color:#243d4a; font:700 15pt Georgia, serif; margin:19px 0 7px; }
+  h3 { color:#5b3328; font:700 11pt Helvetica, sans-serif; margin:13px 0 5px; }
+  p { margin:0 0 9px; }
+  ul, ol { margin:5px 0 10px 21px; padding:0; }
+  li { margin-bottom:4px; }
+  .decision { margin:12px 0; padding:12px 14px; background:#eef3f1; border-left:5px solid #40634b; font-size:11pt; }
+  .note { padding:10px 12px; background:#f7f1e6; border:1px solid #dbcba9; }
+  code { color:#5b3328; font:9pt Menlo, monospace; }
+  footer { margin-top:23px; border-top:1px solid #d6d2c9; padding-top:8px; color:#6d6964; font:8pt Helvetica, sans-serif; }
+</style>
+</head>
+<body>
+<header>
+  <div class="series">Cocoarynth Engineering · Architecture Decision Record</div>
+  <h1>ADR-007: Immutable Origin Passport Snapshots</h1>
+  <div class="status">Status: Accepted</div>
+</header>
+<table class="meta">
+<tr><td>Decision date</td><td>2026-02-12</td></tr>
+<tr><td>Decision owners</td><td>Trace Platform, Sourcing Operations, Quality</td></tr>
+<tr><td>Scope</td><td>Issued Origin Passports for wholesale shipments</td></tr>
+<tr><td>Supersedes</td><td>No prior decision</td></tr>
+<tr><td>Review trigger</td><td>Material change to traceability or retention obligations</td></tr>
+</table>
+
+<h2>Context</h2>
+<p>An Origin Passport is an externally shareable statement about a finished chocolate batch. It connects the shipped product to the approved origin, harvest, production, certification, and shipment facts available when the shipment is released.</p>
+<p>Operational records can change after shipment. Quality may correct a date, sourcing may amend a producer name, or a certification record may be replaced. If an already issued passport silently reflected those later edits, Cocoarynth and a wholesale recipient could see different facts under the same passport identifier. Support staff would also be unable to reconstruct what the recipient originally received.</p>
+<p>The design therefore needs to preserve the meaning of an issued passport while still allowing corrections to be communicated.</p>
+
+<h2>Decision</h2>
+<div class="decision"><strong>An issued Origin Passport is an immutable snapshot of approved batch facts at the time of generation.</strong> Later changes to internal records do not alter or overwrite a previously issued passport.</div>
+<p>Each generated passport receives its own identifier and generation timestamp. The snapshot stores the shareable values used for that issuance rather than resolving every field dynamically when an older passport is viewed or downloaded.</p>
+<p>When a correction must be shared, an authorized user generates a new passport version. The new version receives a new identifier and references the passport it replaces. The older version remains retained for audit and support purposes and is marked as superseded rather than deleted.</p>
+
+<h2>Decision rules</h2>
+<ul>
+  <li>Only approved, externally shareable fields may enter a passport snapshot.</li>
+  <li>Generation must capture all included values in one logical operation so the snapshot is internally consistent.</li>
+  <li>Previously generated content must not be rebuilt from current mutable records under the same passport identifier.</li>
+  <li>Corrections produce a new version; they do not edit the issued artifact in place.</li>
+  <li>Systems presenting a superseded passport should identify the replacement when one exists.</li>
+  <li>Retention follows the wholesale traceability retention schedule.</li>
+</ul>
+
+<h2>Consequences</h2>
+<h3>Benefits</h3>
+<ul>
+  <li>Cocoarynth can show exactly which facts accompanied a shipment.</li>
+  <li>Retailers can rely on a passport identifier to refer to stable content.</li>
+  <li>Support and audit teams can compare an original issuance with a corrected version.</li>
+  <li>Later internal edits cannot silently rewrite historical external records.</li>
+</ul>
+<h3>Costs and tradeoffs</h3>
+<ul>
+  <li>Snapshot values require additional storage and retention controls.</li>
+  <li>Correction workflows must make supersession clear to operations and recipients.</li>
+  <li>Consumers must not assume that the oldest passport is the current approved version.</li>
+  <li>Access controls must cover both current and superseded snapshots.</li>
+</ul>
+
+<h2>Alternatives considered</h2>
+<h3>Render directly from current batch records</h3>
+<p>Rejected because identical passport identifiers could yield different content over time. This weakens auditability and makes retailer support conversations ambiguous.</p>
+<h3>Update the existing snapshot in place</h3>
+<p>Rejected because the recipient's downloaded copy would diverge from Cocoarynth's record without a visible version boundary.</p>
+<h3>Freeze all underlying operational records after shipment</h3>
+<p>Rejected because legitimate corrections must remain possible, and operational record governance is broader than passport issuance.</p>
+
+<h2>Format neutrality</h2>
+<div class="note">This decision governs snapshot identity, versioning, and historical stability. It does not prescribe JSON, CSV, or any other permanent transport format. Multiple serializations may represent the same immutable passport snapshot as long as they preserve the approved values and identifier.</div>
+
+<h2>Operational implications</h2>
+<ol>
+  <li>Verify the source batch and shipment before generating a passport.</li>
+  <li>If an issued value is wrong, correct the governed source record through its normal workflow.</li>
+  <li>Generate a replacement passport and record the supersession link.</li>
+  <li>Provide the replacement to affected recipients through the approved channel.</li>
+  <li>Do not delete or rewrite the original issuance solely because it was superseded.</li>
+</ol>
+
+<footer>Cocoarynth Engineering · Accepted architecture record · Fictional workshop document · Source reference: https://docs.cocoarynth.example/architecture/adr-007</footer>
+</body>
+</html>

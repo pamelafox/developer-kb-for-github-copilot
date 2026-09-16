@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wholesale Traceability Data-Sharing Policy</title>
+<style>
+  @page { size:Letter; margin:0.65in 0.72in 0.7in; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:#30231e; font:10.3pt/1.42 Georgia, "Times New Roman", serif; }
+  header { padding-bottom:15px; border-bottom:4px double #aa7c35; }
+  .owner { color:#41644a; font:700 9pt Helvetica, sans-serif; letter-spacing:1.3px; text-transform:uppercase; }
+  h1 { color:#5b3328; font:700 25pt/1.08 Georgia, serif; margin:11px 0 6px; }
+  .subtitle { color:#6b5f56; font:10.5pt Helvetica, sans-serif; }
+  .meta { margin:15px 0 18px; padding:11px 14px; background:#f7f1e6; border-left:5px solid #aa7c35; font:9.2pt/1.45 Helvetica, sans-serif; }
+  h2 { color:#5b3328; font:700 15pt Georgia, serif; margin:19px 0 7px; }
+  h3 { color:#41644a; font:700 11pt Helvetica, sans-serif; margin:13px 0 5px; }
+  p { margin:0 0 9px; }
+  ul, ol { margin:5px 0 10px 21px; padding:0; }
+  li { margin-bottom:4px; }
+  table { width:100%; border-collapse:collapse; margin:9px 0 15px; font:8.5pt/1.27 Helvetica, sans-serif; }
+  th { color:#fff; background:#5b3328; text-align:left; padding:6px 7px; }
+  td { padding:6px 7px; border-bottom:1px solid #d8c9ad; vertical-align:top; }
+  tr { break-inside:avoid; }
+  .permit { color:#31583d; font-weight:bold; }
+  .deny { color:#8b342d; font-weight:bold; }
+  .approve { color:#795b23; font-weight:bold; }
+  .rule { padding:11px 13px; margin:11px 0; background:#edf3ee; border-left:5px solid #41644a; }
+  footer { margin-top:22px; padding-top:8px; border-top:1px solid #d8c9ad; color:#6f625b; font:8pt Helvetica, sans-serif; }
+</style>
+</head>
+<body>
+<header>
+  <div class="owner">Cocoarynth · Data Governance &amp; Responsible Sourcing</div>
+  <h1>Wholesale Traceability Data-Sharing Policy</h1>
+  <div class="subtitle">Rules for externally shared Origin Passport and shipment traceability data</div>
+</header>
+<div class="meta"><strong>Policy ID:</strong> DG-TR-004 &nbsp;·&nbsp; <strong>Version:</strong> 2.1 &nbsp;·&nbsp; <strong>Effective:</strong> 2026-03-01<br><strong>Owner:</strong> Data Governance Council &nbsp;·&nbsp; <strong>Applies to:</strong> Sourcing, Production, Quality, Wholesale Operations, Engineering, Support</div>
+
+<h2>1. Purpose</h2>
+<p>This policy defines which Cocoarynth traceability information may be shared with wholesale partners, which information must remain internal, and which information requires separate approval. It supports transparent sourcing without exposing personal, commercially sensitive, or internal deliberative data.</p>
+
+<h2>2. Scope</h2>
+<p>The policy applies to Origin Passports, retailer integration files, shipment attachments, support responses, and other structured or unstructured disclosures of cacao-origin and production information to wholesale recipients. It applies regardless of transport format.</p>
+<div class="rule"><strong>Minimum necessary rule:</strong> Share only fields needed for the approved wholesale purpose. A field being eligible for sharing does not require its inclusion in every export.</div>
+
+<h2>3. Data classifications</h2>
+<h3>A. Approved traceability fields</h3>
+<p>The following fields may be shared for an approved traceability purpose when their values have passed the relevant operational review.</p>
+<table>
+<thead><tr><th>Field category</th><th>Examples</th><th>Conditions</th></tr></thead>
+<tbody>
+<tr><td class="permit">Passport identity</td><td>Origin Passport ID, replacement or version reference</td><td>Use approved external identifiers.</td></tr>
+<tr><td class="permit">Product and batch</td><td>Product name, finished batch number, cacao percentage</td><td>Must match shipment and product records.</td></tr>
+<tr><td class="permit">Cacao origin</td><td>Country, growing region, producer or cooperative name, harvest year</td><td>Use the approved sourcing record and agreed producer naming.</td></tr>
+<tr><td class="permit">Certification</td><td>Certification status applicable to the origin lot</td><td>Share only current approved wording; do not imply certification beyond its scope.</td></tr>
+<tr><td class="permit">Production and shipment</td><td>Production date, shipment date</td><td>Share dates needed to connect the finished batch to its delivery.</td></tr>
+</tbody>
+</table>
+
+<h3>B. Internal-only fields</h3>
+<p>The following information must not be included in wholesale traceability exports or routine retailer support responses.</p>
+<table>
+<thead><tr><th>Field category</th><th>Examples</th><th>Reason</th></tr></thead>
+<tbody>
+<tr><td class="deny">Commercial terms</td><td>Negotiated cacao prices, supplier rates, payment terms, margins</td><td>Commercially confidential.</td></tr>
+<tr><td class="deny">Internal quality material</td><td>Quality notes, tasting deliberations, non-public defect assessments</td><td>Internal operational analysis.</td></tr>
+<tr><td class="deny">Employee collaboration</td><td>Employee comments, reviewer notes, internal messages</td><td>Not part of the approved traceability record.</td></tr>
+<tr><td class="deny">Security and system data</td><td>Credentials, access tokens, private record keys, debugging output</td><td>Security-sensitive and unnecessary for the recipient.</td></tr>
+</tbody>
+</table>
+
+<h3>C. Separate approval required</h3>
+<p>The following information may be disclosed only when Data Governance and the responsible business owner approve a documented purpose and channel.</p>
+<table>
+<thead><tr><th>Field category</th><th>Examples</th><th>Approval considerations</th></tr></thead>
+<tbody>
+<tr><td class="approve">Personal contact information</td><td>Producer phone number, personal email, home or precise personal address</td><td>Consent, purpose, minimization, recipient, retention.</td></tr>
+<tr><td class="approve">Non-public commercial information</td><td>Contract volumes, special terms, forward commitments</td><td>Contract restrictions and commercial owner approval.</td></tr>
+<tr><td class="approve">Precise location data</td><td>Farm coordinates or household-level location</td><td>Producer safety, consent, and necessity.</td></tr>
+<tr><td class="approve">Supporting documents</td><td>Certificates containing extra names or identifiers</td><td>Redaction and permitted-use review.</td></tr>
+</tbody>
+</table>
+
+<h2>4. Origin Passport baseline</h2>
+<p>A standard wholesale Origin Passport may contain the passport ID, product name, batch number, country, growing region, producer or cooperative name, harvest year, cacao percentage, certification status, production date, and shipment date. This baseline is compatible with the approved traceability classification above.</p>
+<p>Supplier pricing, producer contact details, internal quality notes, and employee comments are not part of the baseline and must remain excluded.</p>
+
+<h2>5. Responsibilities</h2>
+<ul>
+  <li><strong>Data owners</strong> approve purposes and field classifications.</li>
+  <li><strong>Sourcing and Quality</strong> approve the relevant origin and certification facts.</li>
+  <li><strong>Wholesale Operations</strong> confirms that the recipient and shipment are authorized.</li>
+  <li><strong>Engineering</strong> implements field allowlists and tests that prohibited fields are absent.</li>
+  <li><strong>Support</strong> uses approved artifacts and avoids copying internal records into retailer responses.</li>
+</ul>
+
+<h2>6. Sharing controls</h2>
+<ol>
+  <li>Confirm the wholesale purpose and intended recipient.</li>
+  <li>Select the approved schema or artifact for that purpose.</li>
+  <li>Verify data against the governed source records.</li>
+  <li>Check that no internal-only or unapproved fields are present.</li>
+  <li>Use the approved transfer channel and retain the required issuance record.</li>
+  <li>Escalate uncertain classifications before disclosure.</li>
+</ol>
+
+<h2>7. Corrections and incidents</h2>
+<p>Correct externally shared traceability information through the approved replacement process; do not silently alter an issued historical record. Suspected disclosure of internal-only, personal, commercial, or security information must be reported immediately through Cocoarynth's data incident process. Do not resend or further distribute the affected file while review is pending.</p>
+
+<h2>8. Interpretation</h2>
+<p>This policy determines whether information may be shared. A partner's integration requirements determine which permitted fields and formats are needed for a particular engagement. Product code or an issue tracker determines what the application currently implements. Those sources serve different purposes and must not be treated as interchangeable.</p>
+
+<footer>Cocoarynth Data Governance · Controlled policy · Fictional workshop document · Source reference: https://docs.cocoarynth.example/policies/dg-tr-004</footer>
+</body>
+</html>
