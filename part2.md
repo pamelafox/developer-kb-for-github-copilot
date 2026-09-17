@@ -1,17 +1,37 @@
 # Part 2: Connect Copilot to GitHub
 
-In this part, you will enable GitHub MCP. MCP gives Copilot tools for retrieving live repository content, issues, pull requests, and discussions.
+In this part, you will explore the project's live GitHub artifacts in your browser, then enable GitHub MCP. MCP gives Copilot tools for retrieving repository content, issues, pull requests, and discussions.
 
 ## Contents
 
-- [1. Set up GitHub MCP](#1-set-up-github-mcp)
-- [2. Start a fresh chat](#2-start-a-fresh-chat)
-- [3. Ask focused follow-up questions](#3-ask-focused-follow-up-questions)
-- [4. Compare local and GitHub evidence](#4-compare-local-and-github-evidence)
-- [5. Check your understanding](#5-check-your-understanding)
-- [Troubleshooting](#troubleshooting)
+- [1. Explore the repository on GitHub](#1-explore-the-repository-on-github)
+- [2. Set up GitHub MCP](#2-set-up-github-mcp)
+- [3. Investigate with GitHub MCP](#3-investigate-with-github-mcp)
+- [Bonus: Trace the feature's history](#bonus-trace-the-features-history)
 
-## 1. Set up GitHub MCP
+## 1. Explore the repository on GitHub
+
+### Confirm your GitHub account
+
+1. Return to [pamelafox/cocoarynth-trace](https://github.com/pamelafox/cocoarynth-trace) in your browser.
+2. Select your profile picture in the upper-right corner and confirm that you are still signed in with the event-provided account from Part 1.
+3. If GitHub shows a not-found or access error, ask your instructor to verify your account before continuing.
+
+Use the same GitHub account when a Copilot client asks you to authorize GitHub MCP later in this part.
+
+### Browse the project activity
+
+Explore the repository before asking Copilot to investigate it:
+
+1. On the **Code** tab, scan the repository files and README.
+2. Open the **Issues** tab. Look at both open and closed issues, noting their titles, labels, and status.
+3. Open the **Pull requests** tab. Look at open, closed, and merged pull requests, and open one to inspect its description and changed files.
+4. Open the **Discussions** tab. Browse the categories and open a discussion to see how decisions and context are recorded.
+5. Notice which artifacts describe current code, completed work, proposed work, and team decisions.
+
+Do not create, edit, close, or comment on any GitHub artifact. You will ask Copilot to find the relevant evidence after GitHub MCP is connected.
+
+## 2. Set up GitHub MCP
 
 If the instructor has already configured a server named `github`, skip to the next section.
 
@@ -19,7 +39,7 @@ Follow the instructions for the Copilot client you selected in Part 1.
 
 ### Option A: Configure GitHub MCP in VS Code
 
-1. Create or open `.vscode/mcp.json` in the local checkout.
+1. Create or open `.mcp.json` at the root of the local checkout.
 2. Add this configuration:
 
    ```json
@@ -42,7 +62,7 @@ Follow the instructions for the Copilot client you selected in Part 1.
 6. Confirm that VS Code reports the server as running.
 7. In the Copilot Chat panel, select the tools icon and confirm that tools from the `github` server are listed.
 
-Do not commit `.vscode/mcp.json` or push changes from the lab checkout.
+Do not commit `.mcp.json` or push changes from the lab checkout.
 
 ### Option B: Configure GitHub MCP in Copilot CLI
 
@@ -77,7 +97,9 @@ Confirm that the built-in server is running and includes tools for repositories,
 
 The hosted `/readonly` endpoint and the CLI's built-in defaults prevent GitHub write tools from being exposed.
 
-## 2. Start a fresh chat
+## 3. Investigate with GitHub MCP
+
+### Start a fresh chat
 
 Start a new session in your selected client so it is clear which context comes from GitHub MCP. In VS Code, make sure the new chat is in Agent mode. In the Copilot App, start the session from the Cocoarynth Trace project.
 
@@ -92,23 +114,7 @@ Review each requested tool call before allowing it. Pay attention to:
 - Whether it distinguishes open work from merged work.
 - Whether its supporting links point to the repository, issue, pull request, and discussion.
 
-## 3. Ask focused follow-up questions
-
-Use these prompts if you need to inspect the evidence separately:
-
-- “Find the merged pull request that introduced Origin Passport downloads. What rationale does it give for the chosen format?”
-- “Find the open issue about another Origin Passport download format. Summarize its acceptance criteria and current state.”
-- “Find the discussion about sharing origin details with wholesale partners. Which fields did the participants agree to include or exclude?”
-
-## 4. Compare local and GitHub evidence
-
-Ask:
-
-> Separate your findings into facts proven by the current code and facts learned from GitHub issues, pull requests, or discussions. Include a link for each GitHub claim.
-
-The current code is the strongest evidence for implemented behavior. An open issue describes planned work, not completed functionality. A merged pull request and discussion can explain rationale that is not obvious from code alone.
-
-## 5. Check your understanding
+### Check your understanding
 
 Before continuing, make sure you can identify:
 
@@ -118,4 +124,32 @@ Before continuing, make sure you can identify:
 4. Which partner-facing fields are approved and which internal fields are excluded.
 5. Which claims came from local code and which came from live GitHub artifacts.
 
+<!-- markdownlint-disable MD033 -->
+<details>
+<summary>Check your answers</summary>
+
+- The merged pull request **Add downloadable Origin Passports for production batches** introduced the JSON download.
+- JSON was selected because the feature began as an internal API integration.
+- An open issue proposes CSV downloads; it describes planned work, not implemented behavior.
+- The approved partner-facing fields cover batch identity, origin, harvest, production, quality, and shipment facts. Internal notes, costs, supplier contacts, and operational metadata remain excluded.
+- The implementation files prove the application's current behavior. The merged pull request explains the JSON decision, the open issue tracks CSV work, and the discussion records which fields may be shared.
+
+</details>
+<!-- markdownlint-enable MD033 -->
+
 Do not decide whether the application meets any particular retailer's requirements yet. That question requires organizational documents introduced in a later part of the lab.
+
+## Bonus: Trace the feature's history
+
+This exercise is optional. Ask Copilot:
+
+> Use GitHub MCP to reconstruct the history of the Origin Passport export. Create a timeline using relevant commits, pull requests, issues, and discussions. For each event, include its date, status, link, and what changed or was decided.
+
+Check that the timeline:
+
+- Distinguishes merged work from open proposals.
+- Uses direct links to every GitHub artifact.
+- Explains how discussions influenced implementation.
+- Does not claim that planned CSV support is complete.
+
+[Return to the lab overview](README.md) | [Continue to Part 3](part3.md)

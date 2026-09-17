@@ -1,0 +1,8 @@
+.azure/
+.mcp.json
+.venv/
+.pytest_cache/
+test-results/
+__pycache__/
+*.pyc
+.DS_Store

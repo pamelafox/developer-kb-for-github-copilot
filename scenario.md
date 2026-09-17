@@ -253,7 +253,7 @@ Expected discovery:
 
 ### Section 1: Documents-only knowledge base
 
-Attendees upload the pilot requirements, architecture decision, and data-sharing policy. They inspect chunks and test document retrieval in the web interface.
+Attendees inspect the pre-ingested pilot requirements, architecture decision, data-sharing policy, and support runbook. They explore chunks and test document retrieval in the web interface.
 
 Suggested retrieval questions:
 
@@ -289,7 +289,7 @@ Attendees should inspect which tools Copilot calls and distinguish requirements 
 
 ### Section 3: Combined knowledge base
 
-Attendees create a combined knowledge base containing the uploaded file source and GitHub MCP knowledge source. They disable the separate integrations, start a fresh session, and repeat the primary prompt.
+Attendees connect to the pre-created `cocoarynth-kb-all`, which contains the shared Search Index Knowledge Source and shared GitHub MCP knowledge source. They disable the separate integrations, start a fresh session, and repeat the primary prompt.
 
 Suggested comparison prompt:
 

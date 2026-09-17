@@ -4,12 +4,19 @@ In this part, Copilot has access to the project code but not the project's live 
 
 ## Contents
 
-- [1. Set up GitHub Copilot](#1-set-up-github-copilot)
-- [2. Ask about the local repository](#2-ask-about-the-local-repository)
-- [3. Check your understanding](#3-check-your-understanding)
+- [1. Log in to GitHub](#1-log-in-to-github)
+- [2. Set up GitHub Copilot](#2-set-up-github-copilot)
+- [3. Ask about the local repository](#3-ask-about-the-local-repository)
 - [Bonus: Run the application](#bonus-run-the-application)
 
-## 1. Set up GitHub Copilot
+## 1. Log in to GitHub
+
+1. Open [github.com](https://github.com/).
+2. Select **Sign in** and use the event-provided GitHub account.
+3. Select your profile picture in the upper-right corner and confirm that the displayed username belongs to the event-provided account.
+4. Open [pamelafox/cocoarynth-trace](https://github.com/pamelafox/cocoarynth-trace) and confirm that you can access the repository.
+
+## 2. Set up GitHub Copilot
 
 Set up one of the GitHub Copilot options below. You will use the same option throughout the lab.
 
@@ -45,7 +52,7 @@ Set up one of the GitHub Copilot options below. You will use the same option thr
 9. Make sure the chat is in **Agent** mode. You may see a loop icon that displays **Agent** when selected.
 10. Send `Hello` to confirm the agent is working.
 
-## 2. Ask about the local repository
+## 3. Ask about the local repository
 
 Send this prompt:
 
@@ -53,7 +60,7 @@ Send this prompt:
 
 Watch how Copilot searches the project. Inspect its tool calls when possible and note which files it uses as evidence. Review requested tool permissions before allowing them.
 
-## 3. Check your understanding
+### Check your understanding
 
 1. What does Cocoarynth Trace do?
 2. What are the main components of the project?
@@ -80,7 +87,7 @@ The local code shows what the application does. It may not explain the product d
 
 This exercise is optional. It requires a current Node.js installation.
 
-### Ask Copilot to start the application
+### Option 1: Ask Copilot to start the application
 
 Send this prompt:
 
@@ -88,7 +95,7 @@ Send this prompt:
 
 Review requested tool permissions before allowing them. When Copilot confirms that the application is running, continue to [export an Origin Passport](#export-an-origin-passport).
 
-### Start the application manually
+### Option 2: Start the application manually
 
 If Copilot cannot start the application, use this fallback:
 

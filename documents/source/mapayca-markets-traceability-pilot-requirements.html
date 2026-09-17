@@ -4,33 +4,36 @@
 <meta charset="utf-8">
 <title>Mapayça Markets Traceability Pilot Requirements</title>
 <style>
+  :root { --mapayca-green:#004c3f; --mapayca-red:#e73526; --mapayca-ink:#18201e; --mapayca-line:#b8ccc5; --mapayca-tint:#eef5f2; --mapayca-alert:#fff2ef; }
   @page { size: Letter; margin: 0.65in 0.72in 0.7in; }
   * { box-sizing: border-box; }
-  body { margin:0; color:#30231e; font:10.5pt/1.42 Georgia, "Times New Roman", serif; }
-  header { border-bottom:3px solid #b58a3c; padding-bottom:14px; margin-bottom:18px; }
-  .brand { color:#5b3328; font:700 10pt/1.1 Helvetica, sans-serif; letter-spacing:1.4px; text-transform:uppercase; }
-  h1 { color:#5b3328; font:700 25pt/1.08 Georgia, serif; margin:16px 0 7px; }
-  .subtitle { color:#41644a; font:700 11pt/1.3 Helvetica, sans-serif; }
-  .meta { display:grid; grid-template-columns:1fr 1fr; gap:7px 24px; margin:16px 0 20px; padding:12px 14px; background:#f7f1e6; border-left:4px solid #b58a3c; font:9.5pt/1.35 Helvetica, sans-serif; }
-  h2 { color:#5b3328; font:700 15pt/1.2 Georgia, serif; margin:20px 0 8px; break-after:avoid; }
-  h3 { color:#41644a; font:700 11pt/1.25 Helvetica, sans-serif; margin:15px 0 5px; break-after:avoid; }
+  body { margin:0; color:var(--mapayca-ink); font:10.5pt/1.42 Georgia, "Times New Roman", serif; }
+  header { border-bottom:3px solid var(--mapayca-red); padding-bottom:14px; margin-bottom:18px; }
+  .brand-logo { display:block; width:3.35in; height:auto; margin-bottom:15px; }
+  .brand { color:var(--mapayca-green); font:700 9pt/1.1 Helvetica, sans-serif; letter-spacing:1.2px; text-transform:uppercase; }
+  h1 { color:var(--mapayca-green); font:700 25pt/1.08 Georgia, serif; margin:10px 0 7px; }
+  .subtitle { color:var(--mapayca-red); font:700 11pt/1.3 Helvetica, sans-serif; }
+  .meta { display:grid; grid-template-columns:1fr 1fr; gap:7px 24px; margin:16px 0 20px; padding:12px 14px; background:var(--mapayca-tint); border-left:4px solid var(--mapayca-green); font:9.5pt/1.35 Helvetica, sans-serif; }
+  h2 { color:var(--mapayca-green); font:700 15pt/1.2 Georgia, serif; margin:20px 0 8px; break-after:avoid; }
+  h3 { color:var(--mapayca-red); font:700 11pt/1.25 Helvetica, sans-serif; margin:15px 0 5px; break-after:avoid; }
   p { margin:0 0 9px; }
   ul, ol { margin:6px 0 10px 21px; padding:0; }
   li { margin:0 0 4px; }
   table { width:100%; border-collapse:collapse; margin:9px 0 15px; font:8.6pt/1.28 Helvetica, sans-serif; break-inside:auto; }
-  th { color:white; background:var(--cocoa); text-align:left; padding:6px 7px; }
-  td { border-bottom:1px solid #d8c9ad; padding:6px 7px; vertical-align:top; }
+  th { color:white; background:var(--mapayca-green); text-align:left; padding:6px 7px; }
+  td { border-bottom:1px solid var(--mapayca-line); padding:6px 7px; vertical-align:top; }
   tr { break-inside:avoid; }
-  code { font:8.8pt Menlo, monospace; color:#5b3328; }
-  .csv-example { margin:8px 0 12px; padding:10px; border:1px solid #d8c9ad; background:#f7f1e6; font:5.2pt/1.45 Menlo, monospace; white-space:pre; }
-  .callout { margin:12px 0; padding:11px 13px; border:1px solid #d8c9ad; border-left:5px solid #41644a; background:#fbfaf6; break-inside:avoid; }
-  .reject { border-left-color:#9a3f32; background:#fff7f4; font-weight:bold; }
-  footer { margin-top:24px; padding-top:8px; border-top:1px solid #d8c9ad; color:#6f625b; font:8pt Helvetica, sans-serif; }
+  code { font:8.8pt Menlo, monospace; color:var(--mapayca-green); }
+  .csv-example { margin:8px 0 12px; padding:10px; border:1px solid var(--mapayca-line); background:var(--mapayca-tint); font:5.2pt/1.45 Menlo, monospace; white-space:pre; }
+  .callout { margin:12px 0; padding:11px 13px; border:1px solid var(--mapayca-line); border-left:5px solid var(--mapayca-green); background:var(--mapayca-tint); break-inside:avoid; }
+  .reject { border-color:#efbbb3; border-left-color:var(--mapayca-red); background:var(--mapayca-alert); font-weight:bold; }
+  footer { margin-top:24px; padding-top:8px; border-top:1px solid var(--mapayca-line); color:#52615d; font:8pt Helvetica, sans-serif; }
 </style>
 </head>
 <body>
 <header>
-  <div class="brand">Mapayça Markets · Retail Systems &amp; Responsible Sourcing</div>
+  <img class="brand-logo" src="../../mapayca_logo.png" alt="Mapayça Markets">
+  <div class="brand">Retail Systems &amp; Responsible Sourcing</div>
   <h1>Traceability Pilot Requirements</h1>
   <div class="subtitle">Cocoarynth Origin Passport import · Ecuador Esmeraldas 72%</div>
 </header>

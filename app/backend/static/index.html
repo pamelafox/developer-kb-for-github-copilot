@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundry IQ workshop portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/styles.css?v=9" />
+  </head>
+  <body>
+    <header>
+      <img class="brand-mark" src="/assets/cocoarynth-mark.png?v=2" alt="Cocoarynth" />
+      <div class="brand-copy"><span class="kicker">Cocoarynth Trace</span><h1>Knowledge explorer</h1></div>
+      <div class="service-state"><span></span> Foundry IQ connected</div>
+    </header>
+
+    <main>
+      <aside>
+        <nav aria-label="Knowledge explorer pages">
+          <button class="nav-item active" data-target="documents">Documents</button>
+          <button class="nav-item" data-target="chunks">Document chunks</button>
+          <button class="nav-item" data-target="search">Document search</button>
+          <button class="nav-item" data-target="documents-kb">Documents knowledge base</button>
+          <button class="nav-item" data-target="combined-kb">Combined knowledge base</button>
+        </nav>
+      </aside>
+
+      <section class="workspace">
+        <div id="documents" class="panel active">
+          <div class="panel-heading"><h2>Documents</h2><p>Files in the private Blob container, opened through the application proxy.</p></div>
+          <div id="document-list" class="document-list" aria-live="polite"><div class="empty-state">Loading documents...</div></div>
+        </div>
+
+        <div id="chunks" class="panel">
+          <div class="panel-heading"><h2>Document chunks</h2><p>Inspect Content Understanding output in page order.</p></div>
+          <label for="document-select">Document</label>
+          <select id="document-select"><option value="">Select a document</option></select>
+          <div id="chunk-summary" class="result-summary"></div>
+          <div id="chunk-list" class="result-list"><div class="empty-state">Select a document to inspect its chunks.</div></div>
+        </div>
+
+        <div id="search" class="panel">
+          <div class="panel-heading"><h2>Document search</h2><p>Run a hybrid semantic and vector query directly against the chunk index.</p></div>
+          <form id="search-form" class="search-bar"><input id="search-query" aria-label="Search document chunks" value="CSV export requirements" /><button class="primary" type="submit">Search</button></form>
+          <div id="search-summary" class="result-summary"></div>
+          <div id="search-results" class="result-list"><div class="empty-state">Search results will appear here.</div></div>
+        </div>
+
+        <div id="documents-kb" class="panel">
+          <div class="panel-heading"><h2>Documents knowledge base</h2></div>
+          <div id="documents-kb-configuration" class="configuration-grid"><div class="empty-state">Loading configuration...</div></div>
+          <form class="kb-search" data-combined="false"><textarea aria-label="Documents knowledge base question" rows="3">What must change in the Origin Passport export for the Mapayça Markets pilot?</textarea><button class="primary" type="submit">Search documents KB</button></form>
+          <div class="kb-output"><div class="empty-state">The extractive response and activity log will appear here.</div></div>
+          <div class="mcp-strip" data-kb="documents"><span>Documents KB MCP</span><code>Loading endpoint...</code><button class="copy-endpoint" aria-label="Copy documents MCP endpoint">Copy</button></div>
+        </div>
+
+        <div id="combined-kb" class="panel">
+          <div class="panel-heading"><h2>Combined knowledge base</h2><p>Inspect its configuration and retrieve from indexed documents and live GitHub tools in one trace.</p></div>
+          <div id="combined-kb-configuration" class="configuration-grid"><div class="empty-state">Loading configuration...</div></div>
+          <form class="kb-search" data-combined="true"><textarea aria-label="Combined knowledge base question" rows="3">Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker, check relevant issues for related open work, and cite both the pilot requirements and current implementation evidence.</textarea><button class="primary" type="submit">Search combined KB</button></form>
+          <div class="kb-output"><div class="empty-state">The extractive response, GitHub evidence, and activity log will appear here.</div></div>
+          <div class="mcp-strip" data-kb="combined"><span>Combined KB MCP</span><code>Loading endpoint...</code><button class="copy-endpoint" aria-label="Copy combined MCP endpoint">Copy</button></div>
+        </div>
+      </section>
+    </main>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="/assets/app.js?v=9"></script>
+  </body>
+</html>

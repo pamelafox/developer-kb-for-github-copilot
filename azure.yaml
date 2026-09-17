@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: developer-kb-for-github-copilot
+metadata:
+  template: developer-kb-for-github-copilot@0.0.1
+infra:
+  provider: bicep
+  path: infra
+  module: main
+services:
+  web:
+    project: .
+    language: py
+    host: containerapp
+    docker:
+      path: ./app/backend/Dockerfile
+      remoteBuild: true
+hooks:
+  postprovision:
+    windows:
+      shell: pwsh
+      run: uv run --with-requirements app/backend/requirements.txt python -m scripts.preingest
+      interactive: true
+      continueOnError: false
+    posix:
+      shell: sh
+      run: uv run --with-requirements app/backend/requirements.txt python -m scripts.preingest
+      interactive: true
+      continueOnError: false
