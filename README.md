@@ -4,10 +4,6 @@ You are an engineer working for **Cocoarynth**, a fictional single-origin chocol
 
 You will begin with the project code, then connect GitHub Copilot to live GitHub artifacts through GitHub MCP. Your instructor may present additional material between each part.
 
-## Workshop slides
-
-The RevealJS presentation is in [docs/index.html](docs/index.html). Serve the repository locally and open `/docs/`, or use the published GitHub Pages site when it is enabled.
-
 Instructors can use the [instructor guide](README.instructor.md) for deployment, local development, and testing instructions.
 
 ## Lab parts
