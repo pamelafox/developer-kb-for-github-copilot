@@ -395,7 +395,7 @@
 		.speaker-profile-photo {
 			display: block;
 			width: 100%;
-			height: 318px;
+			height: 270px;
 			object-fit: cover;
 			border: 0;
 			border-radius: 14px;
@@ -419,7 +419,7 @@
 		}
 
 		.speaker-profile-bio {
-			margin: auto 0 38px;
+			margin: auto 0 40px;
 			max-width: 94%;
 			color: #000000;
 			font-size: 0.58em !important;
@@ -593,7 +593,7 @@
 							<img class="speaker-photo" src="said-nikjou-headshot.jpeg" alt="Said Nikjou">
 							<div class="speaker-details">
 								<p>Said Nikjou</p>
-								<p class="role">Cloud Solution Architect</p>
+								<p class="role">AI Forward Deployed Engineer</p>
 								<p class="role">Microsoft</p>
 							</div>
 						</div>
@@ -609,17 +609,17 @@
 							<img class="speaker-profile-photo" src="pamelafox-headshot.jpg" alt="Pamela Fox">
 							<p class="speaker-profile-name">Pamela Fox</p>
 							<p class="speaker-profile-role">Principal Cloud Advocate</p>
-							<p class="speaker-profile-bio">Principal Cloud Advocate at Microsoft, focused on Python, AI, and developer tools. Formerly at UC Berkeley, Coursera, Khan Academy, and Google.</p>
+							<p class="speaker-profile-bio">Principal Cloud Advocate at Microsoft, focused on Python, AI, and developer tools. Previously, she lectured at UC Berkeley, and worked for Coursera, Khan Academy, and Google.</p>
 						</div>
 						<div class="speaker-profile">
 							<img class="speaker-profile-photo" src="said-nikjou-headshot.jpeg" alt="Said Nikjou">
 							<p class="speaker-profile-name">Said Nikjou</p>
-							<p class="speaker-profile-role">Cloud Solution Architect</p>
-							<p class="speaker-profile-bio">TBD</p>
+							<p class="speaker-profile-role">AI Forward Deployed Engineer</p>
+							<p class="speaker-profile-bio">AI Forward Deployed Engineer at Microsoft, focused on AI agents, GH Copilot, Azure AI, and enterprise automation. He has spent over 15 years helping organizations turn technology innovation into business outcomes.</p>
 						</div>
 					</div>
 					<aside class="notes">
-						Introduce both workshop speakers. Replace Said's placeholder bio before the event.
+						Introduce both workshop speakers.
 					</aside>
 				</section>
 
@@ -682,7 +682,7 @@
 					<p class="eyebrow">Part 1 · 15 minutes</p>
 					<h2>Meet Cocoarynth Trace</h2>
 					<div class="logo-row">
-						<img src="cocoarynth-logo.png" alt="Cocoarynth logo">
+						<img src="images/cocoarynth_logo.png" alt="Cocoarynth logo">
 						<img src="cocoarynth-mark.png" alt="Cocoarynth cacao maze mark">
 					</div>
 				</section>
@@ -811,10 +811,10 @@
 				</section>
 
 				<section class="heading-only">
-					<p class="eyebrow">Part 3 · 15 minutes</p>
+					<p class="eyebrow">Part 3 · 30 minutes</p>
 					<h2>Explore a document knowledge base</h2>
 					<div class="logo-row">
-						<img src="mapayca-logo.png" alt="Mapayça Markets logo">
+						<img src="images/mapayca_logo.png" alt="Mapayça Markets logo">
 					</div>
 				</section>
 
@@ -877,7 +877,7 @@
 					<h3>The authoritative requirement</h3>
 					<div class="two-column">
 						<div style="text-align: center;">
-							<img src="mapayca-logo.png" alt="Mapayça Markets logo" style="width: 210px; border-radius: 20px;">
+							<img src="images/mapayca_logo.png" alt="Mapayça Markets logo" style="width: 210px; border-radius: 20px;">
 						</div>
 						<div>
 							<p class="big-quote" style="font-size: 0.98em !important; text-align: left;">“The importer requires CSV and rejects JSON uploads.”</p>
@@ -892,7 +892,7 @@
 				</section>
 
 				<section class="heading-only">
-					<p class="eyebrow">Part 4 · 15 minutes</p>
+					<p class="eyebrow">Part 3 · continued</p>
 					<h2>Connect Copilot to the documents KB</h2>
 					<p class="subtitle">Keep GitHub MCP enabled. Add the documents-only KB as a second integration.</p>
 				</section>
@@ -958,43 +958,42 @@
 				</section>
 
 				<section class="heading-only">
-					<p class="eyebrow">Part 5 · 20 minutes</p>
+					<p class="eyebrow">Part 4 · 20 minutes</p>
 					<h2>Use the combined knowledge base</h2>
-					<p class="subtitle">Move source coordination behind one reusable MCP endpoint.</p>
+					<p class="subtitle">Add company engineering standards while keeping live GitHub evidence direct.</p>
 				</section>
 
 				<section>
 					<h3>The combined KB has two knowledge sources</h3>
 					<div class="flow">
 						<div class="node green">GitHub Copilot</div>
-						<div class="arrow">⇄</div>
-						<div class="node purple">Combined KB<br><small>Foundry IQ plans retrieval</small></div>
-						<div class="arrow">↙</div>
-						<div class="node gold">Search index source<br><small>documents</small></div>
+						<div class="arrow">→</div>
+						<div class="node purple">Combined KB<br><small>low reasoning</small></div>
+						<div class="arrow">→</div>
+						<div class="node gold">Search index source<br><small>project requirements</small></div>
 						<div class="arrow">+</div>
-						<div class="node blue">MCP server source<br><small>GitHub tools</small></div>
+						<div class="node blue">Search index source<br><small>engineering practices</small></div>
 					</div>
-					<p class="callout"><code>cocoarynth-kb-all</code> packages the retrieval configuration behind one native MCP endpoint.</p>
+					<p class="callout"><code>cocoarynth-kb-all</code> lets Foundry IQ plan retrieval across both indexes behind one native MCP endpoint.</p>
 				</section>
 
 				<section>
-					<h3>Isolate the comparison</h3>
+					<h3>Create a grounded PRD</h3>
 					<div class="step"><div class="step-number">1</div><div>Connect <code>cocoarynth-combined</code>.</div></div>
-					<div class="step"><div class="step-number">2</div><div>Disable the separate GitHub and documents-only integrations.</div></div>
+					<div class="step"><div class="step-number">2</div><div>Disable <code>cocoarynth-documents</code>, but keep direct GitHub MCP enabled.</div></div>
 					<div class="step"><div class="step-number">3</div><div>Start a fresh chat with no previous answer context.</div></div>
-					<div class="step"><div class="step-number">4</div><div>Repeat the same pilot-readiness prompt.</div></div>
+					<div class="step"><div class="step-number">4</div><div>Create <code>origin-passport-csv-prd.md</code> from GitHub evidence, project requirements, and engineering standards.</div></div>
 					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part4.md">Open Part 4 instructions</a></p>
 				</section>
 
 				<section>
 					<h3>Compare where retrieval decisions happen</h3>
 					<table>
-						<thead><tr><th>Separate integrations</th><th>Combined knowledge base</th></tr></thead>
+						<thead><tr><th>Layer</th><th>Responsibility</th></tr></thead>
 						<tbody>
-							<tr><td>Copilot plans calls to GitHub MCP and the documents KB</td><td>Copilot calls one combined KB tool</td></tr>
-							<tr><td>Client-specific orchestration</td><td>Reusable retrieval configuration</td></tr>
-							<tr><td>Attendee GitHub identity</td><td>Instructor-managed read-only lab identity</td></tr>
-							<tr><td>Two visible integration boundaries</td><td>One endpoint with nested source activity</td></tr>
+							<tr><td>Foundry IQ</td><td>Plans retrieval across the two Search indexes inside the combined KB</td></tr>
+							<tr><td>GitHub Copilot</td><td>Coordinates the combined KB, direct GitHub MCP, and the local workspace</td></tr>
+							<tr><td>Direct GitHub MCP</td><td>Retrieves live repository evidence with the attendee's GitHub authorization</td></tr>
 						</tbody>
 					</table>
 				</section>
