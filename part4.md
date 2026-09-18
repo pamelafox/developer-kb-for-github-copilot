@@ -1,4 +1,4 @@
-# Part 4: Create a grounded product requirements document
+# Part 4: Connect Copilot to a combined knowledge base MCP server
 
 In this part, you will connect GitHub Copilot to a knowledge base that combines project requirements with Cocoarynth engineering practices. You will keep direct GitHub MCP enabled, then use both integrations to create a local product requirements document (PRD) for CSV Origin Passport support.
 
@@ -60,14 +60,16 @@ The first two power the corpus-specific MCP calls you already tried. The third i
 
 6. Review the extracted evidence, references, and activity log.
 7. Check whether Foundry IQ searched both indexes. Retrieval planning can select one or both sources based on the question, so source use is not guaranteed.
-8. Under **Combined knowledge base**, select **Call over MCP** and ask the same question.
-9. Confirm that the first MCP content block contains the evidence array and each remaining block contains one reference, linked by `ref_id`.
-10. Compare the MCP content-only result with the richer query response.
+8. Under **Combined knowledge base**, select **Call over MCP**.
+9. Notice that this page displays the MCP endpoint used to connect external clients.
+10. Ask the same question.
+11. Confirm that the first MCP content block contains the evidence array and each remaining block contains one reference, linked by `ref_id`.
+12. Compare the MCP content-only result with the richer query response.
 
 ## 2. Get the connection details
 
-1. Under **Combined knowledge base**, select **Configuration**.
-2. In the top-level configuration table, find **MCP URL** and select **Copy**.
+1. Under **Combined knowledge base**, select **Call over MCP**.
+2. Next to **MCP endpoint**, select **Copy**.
 3. Use the same shared Foundry IQ query key supplied for Part 3.
 
 ## 3. Connect GitHub Copilot

@@ -42,6 +42,7 @@ function setLoading(container, message) {
 }
 
 const panelPaths = {
+  home: "/",
   documents: "/project-requirements",
   chunks: "/project-requirements/chunks",
   search: "/project-requirements/search",
@@ -58,15 +59,15 @@ const panelPaths = {
 function activatePanel(target, updateHistory = false) {
   const button = $(`.nav-item[data-target="${target}"]`);
   const panel = $(`#${target}`);
-  if (!button || !panel) return;
+  if (!panel) return;
   $$(".nav-item, .panel").forEach((item) => item.classList.remove("active"));
-  button.classList.add("active");
+  if (button) button.classList.add("active");
   panel.classList.add("active");
   if (updateHistory) window.history.pushState({ target }, "", panelPaths[target]);
 }
 
 function activatePanelFromLocation() {
-  const target = Object.entries(panelPaths).find(([, path]) => path === window.location.pathname)?.[0] || "documents";
+  const target = Object.entries(panelPaths).find(([, path]) => path === window.location.pathname)?.[0] || "home";
   activatePanel(target);
 }
 
@@ -257,8 +258,9 @@ async function loadConfiguration() {
       "cocoarynth-kb-all": "combined",
     };
     for (const kb of result.knowledgeBases) {
-      const strip = $(`.mcp-strip[data-kb="${endpointKinds[kb.name]}"]`);
-      if (strip) $("code", strip).textContent = kb.mcpUrl;
+      $$(`.mcp-strip[data-kb="${endpointKinds[kb.name]}"]`).forEach((strip) => {
+        $("code", strip).textContent = kb.mcpUrl;
+      });
     }
     container.replaceChildren();
     for (const kb of result.knowledgeBases.filter((item) => item.name === "cocoarynth-kb-all")) {
@@ -277,12 +279,12 @@ async function loadConfiguration() {
         if (!value) continue;
         facts.append(element("dt", "", label), element("dd", "", value));
       }
-      const endpointStrip = $('.mcp-strip[data-kb="combined"]');
       const endpointValue = element("dd", "mcp-value mcp-strip");
       endpointValue.dataset.kb = "combined";
-      endpointValue.append($("code", endpointStrip), $("button", endpointStrip));
-      $("code", endpointValue).textContent = kb.mcpUrl;
-      endpointStrip.remove();
+      const copyButton = element("button", "copy-endpoint", "Copy");
+      copyButton.type = "button";
+      copyButton.setAttribute("aria-label", "Copy combined MCP endpoint");
+      endpointValue.append(element("code", "", kb.mcpUrl), copyButton);
       facts.append(element("dt", "", "MCP URL"), endpointValue);
       section.append(facts);
       const sourceList = element("div", "source-list");

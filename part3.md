@@ -1,4 +1,4 @@
-# Part 3: Connect GitHub Copilot to document retrieval
+# Part 3: Connect Copilot to a document retrieval MCP server
 
 In this part, you will explore Cocoarynth's pre-ingested document collection, test retrieval over MCP in the workshop portal, and connect GitHub Copilot to the document retrieval server.
 

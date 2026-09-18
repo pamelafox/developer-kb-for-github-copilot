@@ -383,6 +383,9 @@ def test_home_is_responsive(
 
     expect(page).to_have_title("Foundry IQ workshop portal")
     expect(page.get_by_role("heading", name="Workshop portal")).to_be_visible()
+    expect(page.get_by_role("heading", name="Welcome")).to_be_visible()
+    expect(page.locator("#home")).to_have_class(re.compile(r"\bactive\b"))
+    expect(page.locator(".nav-item.active")).to_have_count(0)
     expect(page.get_by_role("img", name="Cocoarynth")).to_be_visible()
     expect(page.get_by_role("img", name="Cocoarynth")).to_have_attribute(
         "src", re.compile(r"/assets/cocoarynth-mark\.png")
@@ -390,6 +393,16 @@ def test_home_is_responsive(
     expect(page.locator("#prefix")).to_have_count(0)
     expect(page.locator("#create-combined")).to_have_count(0)
     assert page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
+
+
+def test_header_brand_links_to_home(page: Page, live_server_url: str, live_smoke: bool) -> None:
+    mock_app_apis(page, live_smoke)
+    page.goto(f"{live_server_url}combined/query")
+
+    page.get_by_role("link", name="Workshop portal home").click()
+
+    expect(page).to_have_url(re.compile(r"/$"))
+    expect(page.locator("#home")).to_have_class(re.compile(r"\bactive\b"))
 
 
 def test_loads_corpus_inventory(page: Page, live_server_url: str, live_smoke: bool) -> None:
@@ -650,6 +663,11 @@ def test_exposes_combined_mcp_config_and_three_call_pages(
         "cocoarynth-kb-all"
     )
     expect(page.locator("#combined-kb-configuration .config-facts").first).to_contain_text("MCP URL")
+    page.locator(".nav-group-combined").get_by_role("button", name="Call over MCP", exact=True).click()
+    expect(page.locator('#combined-mcp > .mcp-strip[data-kb="combined"] code')).to_contain_text(
+        "cocoarynth-kb-all"
+    )
+    expect(page.locator("#combined-mcp > .mcp-strip")).to_contain_text("MCP endpoint")
     expect(page.locator(".mcp-search")).to_have_count(3)
     expect(page.locator(".nav-group-combined")).to_have_css("border-top-style", "solid")
 

@@ -1,4 +1,4 @@
-# Part 2: Connect Copilot to GitHub
+# Part 2: Connect Copilot to the GitHub MCP server
 
 In this part, you will explore the project's live GitHub artifacts in your browser, then enable GitHub MCP. MCP gives Copilot tools for retrieving repository content, issues, pull requests, and discussions.
 

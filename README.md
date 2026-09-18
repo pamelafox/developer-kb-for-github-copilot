@@ -4,25 +4,13 @@ You are an engineer working for **Cocoarynth**, a fictional single-origin chocol
 
 You will begin with the project code, then connect GitHub Copilot to live GitHub artifacts through GitHub MCP. Your instructor may present additional material between each part.
 
+Instructors can use the [instructor guide](README.instructor.md) for deployment, local development, and testing instructions.
+
 ## Lab parts
 
 1. [Part 1: Meet the project](part1.md)
-2. [Part 2: Connect Copilot to GitHub](part2.md)
-3. [Part 3: Connect Copilot to the document knowledge base](part3.md)
-4. [Part 4: Use the combined knowledge base](part4.md)
+2. [Part 2: Connect Copilot to the GitHub MCP server](part2.md)
+3. [Part 3: Connect Copilot to a document retrieval MCP server](part3.md)
+4. [Part 4: Connect Copilot to a combined knowledge base MCP server](part4.md)
 
 Open only the part your instructor asks you to complete.
-
-You do not need to install dependencies or run the application.
-
-## Before you begin
-
-Confirm that:
-
-- You are signed in to the event-provided GitHub account.
-- Your account can open [pamelafox/cocoarynth-trace](https://github.com/pamelafox/cocoarynth-trace) on GitHub.
-- At least one of these clients is available: GitHub Copilot in VS Code, GitHub Copilot CLI, or GitHub Copilot App.
-
-The repository is read-only for this lab. Do not create, edit, close, or comment on GitHub artifacts.
-
-When the instructor is ready, begin with [Part 1](part1.md).

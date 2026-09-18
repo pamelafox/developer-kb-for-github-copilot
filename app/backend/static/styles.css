@@ -8,8 +8,10 @@ button:hover { border-color: var(--green); }
 button.primary { border-color: var(--green); background: var(--green); color: white; }
 button.primary:hover { background: var(--green-dark); }
 header { min-height: 108px; padding: 18px clamp(22px, 4vw, 58px); display: flex; align-items: center; gap: 18px; color: #fffaf2; background: var(--ink); border-bottom: 5px solid var(--gold); }
+.brand-home { display: flex; flex: 1; align-items: center; gap: 18px; color: inherit; text-decoration: none; }
+.brand-home:focus-visible { outline: 3px solid var(--gold); outline-offset: 5px; }
 .brand-mark { width: 62px; height: 62px; object-fit: cover; border: 2px solid #d5b467; }
-.brand-copy { flex: 1; }
+.brand-copy { min-width: 0; }
 h1, h2, h3, h4, p { margin: 0; }
 h1 { font-size: clamp(1.55rem, 3vw, 2.35rem); line-height: 1; letter-spacing: 0; }
 h2 { font-size: 1.45rem; letter-spacing: 0; }
@@ -32,6 +34,11 @@ nav { display: grid; gap: 4px; position: sticky; top: 24px; }
 @keyframes reveal { from { opacity: 0; transform: translateY(6px); } }
 .panel-heading { margin-bottom: 28px; }
 .panel-heading p { margin-top: 5px; color: var(--muted); }
+.welcome-panel { max-width: 780px; }
+.welcome-options { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+.welcome-options section { display: grid; grid-template-columns: minmax(190px, .65fr) minmax(0, 1fr); gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.welcome-options h3 { font-size: 1rem; }
+.welcome-options p { color: var(--muted); line-height: 1.6; }
 label { display: block; margin-bottom: 7px; font-size: .78rem; font-weight: 700; }
 input, textarea, select { width: 100%; border: 1px solid #aab7ac; border-radius: 4px; padding: .78rem; background: white; color: var(--ink); }
 textarea { resize: vertical; min-height: 92px; }
@@ -146,6 +153,7 @@ pre { max-height: 300px; margin: 8px 0 0; padding: 12px; overflow: auto; color: 
   .service-state { margin-left: 66px; }
   .panel-heading { grid-template-columns: 44px 1fr; }
   .panel-heading > span { width: 40px; height: 40px; }
+  .welcome-options section { grid-template-columns: 1fr; gap: 6px; }
   .search-bar { grid-template-columns: 1fr; }
   .search-bar button, .kb-search button, .mcp-search button { width: 100%; }
   .document-row { grid-template-columns: minmax(0, 1fr) 22px; }
