@@ -9,12 +9,6 @@ from azure.search.documents.indexes.models import (
     KnowledgeBase,
     KnowledgeBaseAzureOpenAIModel,
     KnowledgeSourceReference,
-    McpServerAutoOutputParsing,
-    McpServerKnowledgeSource,
-    McpServerKnowledgeSourceParameters,
-    McpServerStoredHeadersAuthentication,
-    McpServerStoredHeadersParameters,
-    McpServerTool,
     SearchIndexFieldReference,
     SearchIndexKnowledgeSource,
     SearchIndexKnowledgeSourceParameters,
@@ -24,9 +18,9 @@ from azure.search.documents.knowledgebases.models import (
     KnowledgeBaseMessage,
     KnowledgeBaseMessageTextContent,
     KnowledgeBaseRetrievalRequest,
-    KnowledgeRetrievalMediumReasoningEffort,
+    KnowledgeRetrievalLowReasoningEffort,
+    KnowledgeRetrievalMinimalReasoningEffort,
     KnowledgeRetrievalOutputMode,
-    KnowledgeSourceParams,
     SearchIndexKnowledgeSourceParams,
 )
 from azure.storage.blob import BlobServiceClient
@@ -35,6 +29,8 @@ from .config import Settings
 from .naming import SharedResources
 
 CORPUS_CONTAINER = "knowledge"
+ENGINEERING_PRACTICE_CONTAINER = "engineering-practices"
+RERANKER_THRESHOLD = 1.7
 CHUNK_FIELDS = [
     "chunk_id",
     "parent_id",
@@ -45,6 +41,7 @@ CHUNK_FIELDS = [
     "page_number_to",
     "image_path",
 ]
+SOURCE_DATA_FIELDS = [field_name for field_name in CHUNK_FIELDS if field_name != "chunk"]
 
 
 class FoundryIqService:
@@ -69,19 +66,10 @@ class FoundryIqService:
             name=resources.document_source,
             description="Cocoarynth workshop documents processed with Content Understanding",
             search_index_parameters=SearchIndexKnowledgeSourceParameters(
-                search_index_name=resources.generated_index,
+                search_index_name=resources.document_index,
                 source_data_fields=[
                     SearchIndexFieldReference(name=field_name)
-                    for field_name in (
-                        "chunk_id",
-                        "parent_id",
-                        "title",
-                        "blob_path",
-                        "chunk",
-                        "page_number_from",
-                        "page_number_to",
-                        "image_path",
-                    )
+                    for field_name in SOURCE_DATA_FIELDS
                 ],
                 search_fields=[SearchIndexFieldReference(name="chunk")],
                 semantic_configuration_name="semantic-configuration",
@@ -101,29 +89,38 @@ class FoundryIqService:
                 )
             ],
             knowledge_sources=[KnowledgeSourceReference(name=resources.document_source)],
+            retrieval_reasoning_effort=KnowledgeRetrievalMinimalReasoningEffort(),
             output_mode=KnowledgeRetrievalOutputMode.EXTRACTIVE_DATA,
         )
         self.index_client.create_or_update_knowledge_base(knowledge_base)
         return resources.as_dict()
 
-    def list_documents(self) -> dict[str, Any]:
-        container = self.blob_service.get_container_client(CORPUS_CONTAINER)
+    def list_documents(
+        self,
+        container_name: str = CORPUS_CONTAINER,
+        content_path: str = "/api/documents/content",
+    ) -> dict[str, Any]:
+        container = self.blob_service.get_container_client(container_name)
         try:
             documents = [
                 {
                     "name": blob.name,
                     "size": blob.size,
                     "lastModified": blob.last_modified.isoformat() if blob.last_modified else None,
-                    "url": f"/api/documents/content/{blob.name}",
+                    "url": f"{content_path}/{blob.name}",
                 }
                 for blob in container.list_blobs()
             ]
         finally:
             container.close()
-        return {"container": CORPUS_CONTAINER, "documents": sorted(documents, key=lambda item: item["name"])}
+        return {"container": container_name, "documents": sorted(documents, key=lambda item: item["name"])}
 
-    def download_document(self, blob_name: str) -> tuple[bytes, str]:
-        blob = self.blob_service.get_blob_client(CORPUS_CONTAINER, blob_name)
+    def download_document(
+        self,
+        blob_name: str,
+        container_name: str = CORPUS_CONTAINER,
+    ) -> tuple[bytes, str]:
+        blob = self.blob_service.get_blob_client(container_name, blob_name)
         try:
             content = blob.download_blob().readall()
             properties = blob.get_blob_properties()
@@ -132,8 +129,14 @@ class FoundryIqService:
         finally:
             blob.close()
 
-    def list_chunks(self, resources: SharedResources, document: str, limit: int = 100) -> dict[str, Any]:
-        index_name = self._find_generated_index(resources)
+    def list_chunks(
+        self,
+        resources: SharedResources,
+        document: str,
+        limit: int = 100,
+        index_name: str | None = None,
+    ) -> dict[str, Any]:
+        index_name = index_name or self._find_document_index(resources)
         client = SearchClient(self.settings.search_endpoint, index_name, self.credential)
         try:
             escaped_document = document.replace("'", "''")
@@ -149,8 +152,15 @@ class FoundryIqService:
             client.close()
         return {"index": index_name, "document": document, "chunks": documents}
 
-    def search_documents(self, resources: SharedResources, query: str, limit: int = 10) -> dict[str, Any]:
-        client = SearchClient(self.settings.search_endpoint, resources.generated_index, self.credential)
+    def search_documents(
+        self,
+        resources: SharedResources,
+        query: str,
+        limit: int = 10,
+        index_name: str | None = None,
+    ) -> dict[str, Any]:
+        index_name = index_name or resources.document_index
+        client = SearchClient(self.settings.search_endpoint, index_name, self.credential)
         try:
             results = client.search(
                 search_text=query,
@@ -170,15 +180,24 @@ class FoundryIqService:
             matches = [self._serialize_search_value(dict(result)) for result in results]
         finally:
             client.close()
-        return {"index": resources.generated_index, "query": query, "matches": matches}
+        return {"index": index_name, "query": query, "matches": matches}
 
     def get_knowledge_base_configuration(self, resources: SharedResources) -> dict[str, Any]:
         knowledge_bases = []
-        for name in (resources.document_knowledge_base, resources.combined_knowledge_base):
+        for name in (
+            resources.document_knowledge_base,
+            resources.engineering_practice_knowledge_base,
+            resources.combined_knowledge_base,
+        ):
             knowledge_base = self.index_client.get_knowledge_base(name).as_dict()
+            knowledge_base["rerankerThreshold"] = RERANKER_THRESHOLD
+            knowledge_base["mcpUrl"] = (
+                f"{self.settings.search_endpoint}/knowledgebases/{name}/mcp"
+                "?api-version=2026-08-01-preview"
+            )
             knowledge_bases.append(self._redact_secrets(knowledge_base))
         knowledge_sources = []
-        for name in (resources.document_source, resources.github_source):
+        for name in (resources.document_source, resources.engineering_practice_source):
             source = self.index_client.get_knowledge_source(name).as_dict()
             knowledge_sources.append(self._redact_secrets(source))
         return {"knowledgeBases": knowledge_bases, "knowledgeSources": knowledge_sources}
@@ -192,15 +211,16 @@ class FoundryIqService:
                 knowledge_source_name=resources.document_source,
                 include_references=True,
                 include_reference_source_data=True,
+                reranker_threshold=RERANKER_THRESHOLD,
             )
         ]
         if combined:
             source_params.append(
-                KnowledgeSourceParams(
-                    knowledge_source_name=resources.github_source,
+                SearchIndexKnowledgeSourceParams(
+                    knowledge_source_name=resources.engineering_practice_source,
                     include_references=True,
                     include_reference_source_data=True,
-                    kind="mcpServer",
+                    reranker_threshold=RERANKER_THRESHOLD,
                 )
             )
         request = KnowledgeBaseRetrievalRequest(
@@ -248,34 +268,41 @@ class FoundryIqService:
         return value
 
     def create_shared_combined_workspace(self, resources: SharedResources) -> dict[str, Any]:
-        if not self.settings.github_pat:
-            raise ValueError("The instructor has not configured GITHUB_LAB_PAT.")
-
-        github_source = McpServerKnowledgeSource(
-            name=resources.github_source,
-            description="Read-only live evidence from the pamelafox/cocoarynth-trace GitHub repository",
-            mcp_server_parameters=McpServerKnowledgeSourceParameters(
-                server_url=self.settings.github_mcp_url,
-                authentication=McpServerStoredHeadersAuthentication(
-                    stored_headers_parameters=McpServerStoredHeadersParameters(
-                        {"headers": {"Authorization": f"Bearer {self.settings.github_pat}"}}
-                    )
-                ),
-                tools=[
-                    McpServerTool(
-                        name=tool,
-                        output_parsing=McpServerAutoOutputParsing(),
-                        **({"inclusion_mode": "always"} if tool in {"search_code", "search_issues"} else {}),
-                    )
-                    for tool in self.settings.github_mcp_tools
+        engineering_practice_source = SearchIndexKnowledgeSource(
+            name=resources.engineering_practice_source,
+            description="Cocoarynth engineering, API, frontend, accessibility, and engineering culture guidance",
+            search_index_parameters=SearchIndexKnowledgeSourceParameters(
+                search_index_name=resources.engineering_practice_index,
+                source_data_fields=[
+                    SearchIndexFieldReference(name=field_name)
+                    for field_name in SOURCE_DATA_FIELDS
                 ],
+                search_fields=[SearchIndexFieldReference(name="chunk")],
+                semantic_configuration_name="semantic-configuration",
             ),
         )
-        self.index_client.create_or_update_knowledge_source(github_source)
+        self.index_client.create_or_update_knowledge_source(engineering_practice_source)
+
+        engineering_practice_knowledge_base = KnowledgeBase(
+            name=resources.engineering_practice_knowledge_base,
+            description="Shared engineering-practices knowledge base for the Cocoarynth workshop",
+            models=[
+                KnowledgeBaseAzureOpenAIModel(
+                    azure_open_ai_parameters=self._model_parameters(
+                        self.settings.chat_deployment,
+                        self.settings.chat_model,
+                    )
+                )
+            ],
+            knowledge_sources=[KnowledgeSourceReference(name=resources.engineering_practice_source)],
+            retrieval_reasoning_effort=KnowledgeRetrievalMinimalReasoningEffort(),
+            output_mode=KnowledgeRetrievalOutputMode.EXTRACTIVE_DATA,
+        )
+        self.index_client.create_or_update_knowledge_base(engineering_practice_knowledge_base)
 
         knowledge_base = KnowledgeBase(
             name=resources.combined_knowledge_base,
-            description="Shared indexed documents and live GitHub evidence for the Cocoarynth workshop",
+            description="Shared project documents and company engineering practices for the Cocoarynth workshop",
             models=[
                 KnowledgeBaseAzureOpenAIModel(
                     azure_open_ai_parameters=self._model_parameters(
@@ -286,26 +313,19 @@ class FoundryIqService:
             ],
             knowledge_sources=[
                 KnowledgeSourceReference(name=resources.document_source),
-                KnowledgeSourceReference(name=resources.github_source),
+                KnowledgeSourceReference(name=resources.engineering_practice_source),
             ],
-            retrieval_reasoning_effort=KnowledgeRetrievalMediumReasoningEffort(),
+            retrieval_reasoning_effort=KnowledgeRetrievalLowReasoningEffort(),
             output_mode=KnowledgeRetrievalOutputMode.EXTRACTIVE_DATA,
             retrieval_instructions=(
-                "Use indexed documents for policies and requirements. Use GitHub tools for live repository files, "
-                "issues, and pull requests only in pamelafox/cocoarynth-trace. For search_code, put the repository "
-                "qualifier inside the query string, for example: "
-                "{'query': 'pilot requirements repo:pamelafox/cocoarynth-trace'}. search_code does not accept "
-                "separate owner or repo arguments. For search_issues, always set owner to 'pamelafox' and repo to "
-                "'cocoarynth-trace', for example: {'query': 'pilot requirements', 'owner': 'pamelafox', "
-                "'repo': 'cocoarynth-trace'}. For get_file_contents, issue_read, and pull_request_read, also set "
-                "owner to 'pamelafox' and repo to 'cocoarynth-trace'. Do not search or read any other repository. "
-                "Use search_issues to find relevant issue numbers and search_code to find relevant file paths before "
-                "reading them. Cite the source of factual claims."
+                "Use project documents for product requirements, architecture decisions, policies, and support "
+                "constraints. Use company engineering practices for React, API, frontend design, accessibility, and engineering culture. "
+                "Distinguish product requirements from implementation guidance and cite factual claims."
             ),
         )
         self.index_client.create_or_update_knowledge_base(knowledge_base)
         return resources.as_dict()
 
-    def _find_generated_index(self, resources: SharedResources) -> str:
-        self.index_client.get_index(resources.generated_index)
-        return resources.generated_index
+    def _find_document_index(self, resources: SharedResources) -> str:
+        self.index_client.get_index(resources.document_index)
+        return resources.document_index

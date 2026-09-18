@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cocoarynth Product UI and Accessibility Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap">
+<style>
+  :root { --cocoa:#321c15; --gold:#a66a10; --cream:#fff9ef; --ink:#24201e; --green:#236548; --line:#d9cdbb; --tint:#f7efe2; }
+  @page { size:Letter; margin:0.68in 0.75in 0.72in; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); font:10.5pt/1.45 "Source Sans 3", Helvetica, sans-serif; }
+  header { border-top:8px solid var(--cocoa); border-bottom:3px solid var(--gold); padding:17px 0 15px; }
+  .series { color:var(--green); font-weight:700; font-size:9pt; letter-spacing:1.2px; text-transform:uppercase; }
+  h1 { color:var(--cocoa); font:700 25pt/1.08 Fraunces, Georgia, serif; margin:9px 0 5px; }
+  .subtitle { color:#624d42; font-size:11pt; }
+  .meta { width:100%; margin:15px 0 18px; border-collapse:collapse; font-size:9.2pt; }
+  .meta td { padding:5px 8px; border-bottom:1px solid var(--line); }
+  .meta td:first-child { width:28%; color:var(--cocoa); font-weight:700; }
+  h2 { color:var(--cocoa); font:700 15pt Fraunces, Georgia, serif; margin:19px 0 7px; break-after:avoid; }
+  h3 { color:var(--green); font-size:11pt; margin:13px 0 5px; break-after:avoid; }
+  p { margin:0 0 9px; }
+  ul, ol { margin:5px 0 10px 21px; padding:0; }
+  li { margin-bottom:4px; }
+  code { color:var(--cocoa); font:9pt "IBM Plex Mono", Menlo, monospace; }
+  .rule { padding:11px 13px; background:#edf5f0; border-left:5px solid var(--green); break-inside:avoid; }
+  .palette { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:10px 0 14px; break-inside:avoid; }
+  .swatch { min-height:68px; padding:8px; border:1px solid var(--line); font-size:8pt; }
+  .cocoa { color:white; background:#321c15; } .gold { color:#241808; background:#d6a84f; }
+  .cream { background:#fff9ef; } .ink { color:white; background:#24201e; } .green { color:white; background:#236548; }
+  table { width:100%; border-collapse:collapse; margin:9px 0 15px; font-size:9pt; }
+  th { color:white; background:var(--cocoa); text-align:left; padding:6px 7px; }
+  td { border-bottom:1px solid var(--line); padding:6px 7px; vertical-align:top; }
+  tr { break-inside:avoid; }
+  footer { margin-top:23px; border-top:1px solid var(--line); padding-top:8px; color:#675f5a; font-size:8pt; }
+</style>
+</head>
+<body>
+<header>
+  <div class="series">Cocoarynth Product · Company Standard</div>
+  <h1>Product UI and Accessibility Guide</h1>
+  <div class="subtitle">A clear, inclusive visual system for operational traceability work</div>
+</header>
+<table class="meta">
+<tr><td>Document ID</td><td>DESIGN-A11Y-03</td></tr>
+<tr><td>Status</td><td>Approved</td></tr>
+<tr><td>Effective date</td><td>2026-09-15</td></tr>
+<tr><td>Owners</td><td>Product Design and Accessibility</td></tr>
+<tr><td>Conformance target</td><td>WCAG 2.2 Level AA</td></tr>
+</table>
+
+<h2>1. Design character</h2>
+<p>Cocoarynth Trace is an operational product, not a confectionery advertisement. Its interface should feel precise, warm, and trustworthy. Use the cacao and labyrinth identity as a restrained brand signal while prioritizing dense, scannable information and repeated work.</p>
+<div class="rule"><strong>Required:</strong> Product workflows must meet WCAG 2.2 Level AA and remain usable with keyboard-only navigation, screen magnification, high zoom, and common screen readers.</div>
+
+<h2>2. Color system</h2>
+<div class="palette">
+  <div class="swatch cocoa"><strong>Cocoa 900</strong><br>#321C15<br>Primary text and brand</div>
+  <div class="swatch gold"><strong>Gold 300</strong><br>#D6A84F<br>Rules and non-text accents</div>
+  <div class="swatch cream"><strong>Cream 050</strong><br>#FFF9EF<br>Warm surface</div>
+  <div class="swatch ink"><strong>Ink 900</strong><br>#24201E<br>Body text</div>
+  <div class="swatch green"><strong>Leaf 700</strong><br>#236548<br>Success and supporting accent</div>
+</div>
+<ul>
+  <li>Use Cocoa 900 or Ink 900 for text on Cream 050 and white surfaces.</li>
+  <li>Gold is primarily a border, divider, or large decorative accent. Do not use light gold for small text on cream or white.</li>
+  <li>Leaf 700 may signal confirmed or healthy states, but every status also needs text or an icon with an accessible name.</li>
+  <li>Use the established danger and focus tokens from the application theme. A focus ring must remain visually distinct from both brand and status colors.</li>
+  <li>Verify text, icon, control-boundary, chart, and focus contrast in the rendered state, including hover, disabled, selected, and error variants.</li>
+</ul>
+
+<h2>3. Typography</h2>
+<table>
+<thead><tr><th>Role</th><th>Typeface</th><th>Use</th></tr></thead>
+<tbody>
+<tr><td>Display</td><td>Fraunces</td><td>Product identity and restrained page-level headings only</td></tr>
+<tr><td>Interface</td><td>Source Sans 3</td><td>Navigation, forms, tables, body text, and compact headings</td></tr>
+<tr><td>Code and data</td><td>IBM Plex Mono</td><td>Identifiers, code, structured examples, and fixed-width comparisons</td></tr>
+</tbody>
+</table>
+<ul>
+  <li>Do not use display-sized type inside compact panels or cards.</li>
+  <li>Use at least 16 CSS pixels for ordinary application body text unless a tested dense-data context requires otherwise.</li>
+  <li>Do not convey hierarchy through size alone. Combine a logical heading level with weight, spacing, and placement.</li>
+  <li>Allow browser zoom and text reflow. Do not scale font size from viewport width.</li>
+</ul>
+
+<h2>4. Layout and information density</h2>
+<ul>
+  <li>Use a predictable shell with stable navigation and a clear page title.</li>
+  <li>Prefer unframed sections and full-width work areas over nested cards. Cards are for repeated records, bounded tools, and dialogs.</li>
+  <li>Use grids, tables, and definition lists when users compare values. Preserve row and column meaning for assistive technology.</li>
+  <li>Set stable dimensions for toolbars, icon buttons, counters, and repeated tiles so loading and hover states do not shift the layout.</li>
+  <li>At 400% zoom and narrow widths, reflow into a usable reading and action order without two-dimensional scrolling except for genuinely tabular content.</li>
+</ul>
+
+<h2>5. Controls and interaction</h2>
+<ul>
+  <li>Use buttons for commands and links for navigation. Prefer native controls before custom widgets.</li>
+  <li>Use familiar icons for common compact actions, paired with an accessible name and a tooltip where meaning is not obvious.</li>
+  <li>Use checkboxes or toggles for binary settings, segmented controls for a small mode choice, menus for longer option sets, and proper inputs for numeric values.</li>
+  <li>Give every interactive element a visible focus indicator. Focus order must follow the visual and logical order.</li>
+  <li>Touch and pointer targets should be at least 24 by 24 CSS pixels, with larger targets for primary and frequent actions.</li>
+  <li>Do not require drag, hover, color perception, or precise pointer movement as the only way to complete a task.</li>
+</ul>
+
+<h2>6. Content and accessible names</h2>
+<ul>
+  <li>Use concise, specific labels such as “Download passport CSV” rather than “Click here.”</li>
+  <li>Keep visible labels and accessible names aligned so voice-control users can identify controls.</li>
+  <li>Alternative text describes the image's purpose in context, not every visible detail. Decorative images use <code>alt=""</code>.</li>
+  <li>Write errors that identify the problem and a next action. Associate field errors with their input and summarize multiple errors near the form heading.</li>
+  <li>Use plain language for operational decisions. Preserve exact identifiers and contract names where precision matters.</li>
+</ul>
+
+<h2>7. Status, motion, and feedback</h2>
+<ul>
+  <li>Pair color with text, shape, or iconography for draft, issued, superseded, warning, and failure states.</li>
+  <li>Announce important asynchronous results without moving keyboard focus unexpectedly.</li>
+  <li>Use motion only to explain change or continuity. Respect <code>prefers-reduced-motion</code> and avoid flashing content.</li>
+  <li>Loading indicators must preserve layout and communicate what is still pending. Long tasks need progress or meaningful status updates.</li>
+  <li>Do not let transient notifications contain the only copy of an important error or recovery instruction.</li>
+</ul>
+
+<h2>8. Data displays</h2>
+<ul>
+  <li>Provide a text equivalent for chart meaning and do not rely on color alone to distinguish series.</li>
+  <li>Use real table headers and captions for tabular data. Keep sortable state available to assistive technology.</li>
+  <li>Format dates, units, and percentages consistently while preserving machine-readable source values where users must audit them.</li>
+  <li>When truncating a value visually, provide a reliable way to inspect and copy the complete value.</li>
+  <li>Empty states should say what is absent and offer the next relevant action; avoid decorative marketing copy in operational screens.</li>
+</ul>
+
+<h2>9. Validation strategy</h2>
+<table>
+<thead><tr><th>Layer</th><th>Minimum practice</th></tr></thead>
+<tbody>
+<tr><td>Authoring</td><td>Semantic HTML, labeled controls, linting, and accessible component patterns</td></tr>
+<tr><td>Automated</td><td>Component and browser accessibility checks, contrast checks, and regression tests</td></tr>
+<tr><td>Manual</td><td>Keyboard workflow, focus order, zoom/reflow, screen-reader spot checks, and error recovery</td></tr>
+<tr><td>Human evaluation</td><td>Periodic expert review and feedback from people with disabilities for critical workflows</td></tr>
+</tbody>
+</table>
+<p>Automated tools detect only a portion of accessibility barriers. A zero-violation scan is useful evidence, not a conformance claim.</p>
+
+<h2>10. Definition of done</h2>
+<ol>
+  <li>The workflow is complete and understandable without a pointer.</li>
+  <li>Names, roles, values, states, and errors are available to assistive technology.</li>
+  <li>Text and controls retain contrast in every interactive state.</li>
+  <li>The page reflows at narrow widths and high zoom without obscured content.</li>
+  <li>Automated checks pass and the changed workflow receives focused manual testing.</li>
+  <li>Known limitations have an owner, severity, and remediation plan.</li>
+</ol>
+
+<footer>Cocoarynth Product Engineering · UI and Accessibility Guide · https://docs.cocoarynth.example/product/ui-accessibility</footer>
+</body>
+</html>

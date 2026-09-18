@@ -11,7 +11,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from .config import Settings, is_running_in_production
-from .foundry_iq import FoundryIqService
+from .foundry_iq import ENGINEERING_PRACTICE_CONTAINER, FoundryIqService
+from .mcp_client import McpRetrievalError, retrieve_over_mcp
 from .naming import SharedResources, shared_resources
 
 
@@ -24,27 +25,14 @@ class RetrievalRequest(BaseModel):
     combined: bool = False
 
 
+class McpRetrievalRequest(BaseModel):
+    question: str = Field(min_length=3, max_length=400)
+    target: str = Field(pattern="^(documents|engineering-practices|combined)$")
+
+
 class SearchRequest(BaseModel):
     query: str = Field(min_length=2, max_length=500)
     limit: int = Field(default=10, ge=1, le=50)
-
-
-def build_mcp_config(settings: Settings, resources: SharedResources, combined: bool) -> dict[str, Any]:
-    knowledge_base = resources.combined_knowledge_base if combined else resources.document_knowledge_base
-    url = f"{settings.search_endpoint}/knowledgebases/{knowledge_base}/mcp?api-version=2026-08-01-preview"
-    return {
-        "knowledgeBase": knowledge_base,
-        "url": url,
-        "vscode": {
-            "servers": {
-                knowledge_base: {
-                    "type": "http",
-                    "url": url,
-                    "headers": {"api-key": settings.search_query_key},
-                }
-            }
-        },
-    }
 
 
 @asynccontextmanager
@@ -56,6 +44,7 @@ async def lifespan(app: FastAPI):
         else AzureDeveloperCliCredential()
     )
     app.state.settings = settings
+    app.state.credential = credential
     app.state.service = FoundryIqService(settings, credential)
     yield
     app.state.service.index_client.close()
@@ -80,12 +69,31 @@ async def azure_service_error(_: Request, error: AzureError) -> JSONResponse:
     )
 
 
+@app.exception_handler(McpRetrievalError)
+async def mcp_service_error(_: Request, error: McpRetrievalError) -> JSONResponse:
+    return JSONResponse(
+        status_code=503,
+        content={
+            "detail": (
+                "The MCP retrieval endpoint is unavailable. Confirm that the selected knowledge base "
+                "has been provisioned and that the application identity can query Azure AI Search."
+            )
+        },
+    )
+
+
 @app.get("/", include_in_schema=False)
-@app.get("/documents", include_in_schema=False)
-@app.get("/document-chunks", include_in_schema=False)
-@app.get("/document-search", include_in_schema=False)
-@app.get("/documents-kb", include_in_schema=False)
-@app.get("/combined-kb", include_in_schema=False)
+@app.get("/project-requirements", include_in_schema=False)
+@app.get("/project-requirements/chunks", include_in_schema=False)
+@app.get("/project-requirements/search", include_in_schema=False)
+@app.get("/project-requirements/mcp", include_in_schema=False)
+@app.get("/engineering-practices", include_in_schema=False)
+@app.get("/engineering-practices/chunks", include_in_schema=False)
+@app.get("/engineering-practices/search", include_in_schema=False)
+@app.get("/engineering-practices/mcp", include_in_schema=False)
+@app.get("/combined/configuration", include_in_schema=False)
+@app.get("/combined/query", include_in_schema=False)
+@app.get("/combined/mcp", include_in_schema=False)
 async def index() -> FileResponse:
     return FileResponse(STATIC_DIR / "index.html")
 
@@ -104,7 +112,9 @@ async def document_overview(request: Request) -> dict[str, Any]:
 async def document_content(blob_name: str, request: Request) -> Response:
     if not blob_name.lower().endswith(".pdf"):
         raise HTTPException(status_code=404, detail="Document not found.")
-    content, _ = await run_in_threadpool(request.app.state.service.download_document, blob_name)
+    content, _ = await run_in_threadpool(
+        request.app.state.service.download_document, blob_name
+    )
     return Response(
         content=content,
         media_type="application/pdf",
@@ -132,8 +142,56 @@ async def search_documents(payload: SearchRequest, request: Request) -> dict[str
     )
 
 
+@app.get("/api/engineering-practices")
+async def engineering_practice_overview(request: Request) -> dict[str, Any]:
+    return await run_in_threadpool(
+        request.app.state.service.list_documents,
+        ENGINEERING_PRACTICE_CONTAINER,
+        "/api/engineering-practices/content",
+    )
+
+
+@app.get("/api/engineering-practices/content/{blob_name:path}")
+async def engineering_practice_content(blob_name: str, request: Request) -> Response:
+    if not blob_name.lower().endswith(".pdf"):
+        raise HTTPException(status_code=404, detail="Document not found.")
+    content, _ = await run_in_threadpool(
+        request.app.state.service.download_document,
+        blob_name,
+        ENGINEERING_PRACTICE_CONTAINER,
+    )
+    return Response(
+        content=content,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'inline; filename="{Path(blob_name).name}"'},
+    )
+
+
+@app.get("/api/engineering-practices/chunks")
+async def engineering_practice_chunks(request: Request, document: str, limit: int = 100) -> dict[str, Any]:
+    return await run_in_threadpool(
+        request.app.state.service.list_chunks,
+        SHARED_RESOURCES,
+        document,
+        min(limit, 500),
+        SHARED_RESOURCES.engineering_practice_index,
+    )
+
+
+@app.post("/api/engineering-practices/search")
+async def search_engineering_practices(payload: SearchRequest, request: Request) -> dict[str, Any]:
+    return await run_in_threadpool(
+        request.app.state.service.search_documents,
+        SHARED_RESOURCES,
+        payload.query,
+        payload.limit,
+        SHARED_RESOURCES.engineering_practice_index,
+    )
+
+
 @app.get("/api/knowledge-bases")
-async def knowledge_bases(request: Request) -> dict[str, Any]:
+async def knowledge_bases(request: Request, response: Response) -> dict[str, Any]:
+    response.headers["Cache-Control"] = "no-store"
     return await run_in_threadpool(
         request.app.state.service.get_knowledge_base_configuration,
         SHARED_RESOURCES,
@@ -150,6 +208,20 @@ async def retrieve(payload: RetrievalRequest, request: Request) -> dict[str, Any
     )
 
 
-@app.get("/api/mcp")
-async def mcp_config(request: Request, combined: bool = False) -> dict[str, Any]:
-    return build_mcp_config(request.app.state.settings, SHARED_RESOURCES, combined)
+@app.post("/api/mcp/retrieve")
+async def mcp_retrieve(payload: McpRetrievalRequest, request: Request) -> dict[str, Any]:
+    knowledge_base_names = {
+        "documents": SHARED_RESOURCES.document_knowledge_base,
+        "engineering-practices": SHARED_RESOURCES.engineering_practice_knowledge_base,
+        "combined": SHARED_RESOURCES.combined_knowledge_base,
+    }
+    knowledge_base_name = knowledge_base_names[payload.target]
+    server_url = (
+        f"{request.app.state.settings.search_endpoint}/knowledgebases/{knowledge_base_name}/mcp"
+        "?api-version=2026-08-01-preview"
+    )
+    return await retrieve_over_mcp(
+        server_url,
+        request.app.state.credential,
+        payload.question,
+    )

@@ -2,8 +2,6 @@ targetScope = 'resourceGroup'
 
 param environmentName string
 param location string
-@secure()
-param githubLabPat string
 param tags object
 param searchSku string
 param principalId string
@@ -193,6 +191,20 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2025-01-01'
       publicAccess: 'None'
     }
   }
+
+  resource styleGuideContainer 'containers' = {
+    name: 'engineering-practices'
+    properties: {
+      publicAccess: 'None'
+    }
+  }
+
+  resource styleGuideImagesContainer 'containers' = {
+    name: 'engineering-practice-images'
+    properties: {
+      publicAccess: 'None'
+    }
+  }
 }
 
 resource appSearchServiceContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
@@ -310,16 +322,6 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
           identity: appIdentity.id
         }
       ]
-      secrets: [
-        {
-          name: 'search-query-key'
-          value: search.listQueryKeys().value[0].key
-        }
-        {
-          name: 'github-lab-pat'
-          value: githubLabPat
-        }
-      ]
     }
     template: {
       containers: [
@@ -348,10 +350,6 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
               value: storage.name
             }
             {
-              name: 'AZURE_SEARCH_QUERY_KEY'
-              secretRef: 'search-query-key'
-            }
-            {
               name: 'AZURE_OPENAI_ENDPOINT'
               value: 'https://${aiAccount.name}.openai.azure.com'
             }
@@ -378,14 +376,6 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
             {
               name: 'AZURE_OPENAI_EMBEDDING_MODEL'
               value: embeddingDeployment.model
-            }
-            {
-              name: 'GITHUB_LAB_PAT'
-              secretRef: 'github-lab-pat'
-            }
-            {
-              name: 'GITHUB_MCP_URL'
-              value: 'https://api.githubcopilot.com/mcp/readonly'
             }
           ]
         }

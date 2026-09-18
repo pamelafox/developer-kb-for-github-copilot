@@ -13,6 +13,12 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         default=None,
         help="Run unmocked browser smoke tests against an already deployed application URL.",
     )
+    parser.addoption(
+        "--copilot-smoke",
+        action="store_true",
+        default=False,
+        help="Run GitHub Copilot SDK acceptance tests against the deployed workshop knowledge bases.",
+    )
 
 
 @pytest.fixture(scope="session")

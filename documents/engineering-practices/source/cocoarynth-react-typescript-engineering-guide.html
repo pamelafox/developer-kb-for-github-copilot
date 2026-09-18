@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cocoarynth React and TypeScript Engineering Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap">
+<style>
+  :root { --cocoa:#321c15; --gold:#a66a10; --cream:#fff9ef; --ink:#24201e; --green:#236548; --line:#d9cdbb; --tint:#f7efe2; }
+  @page { size:Letter; margin:0.68in 0.75in 0.72in; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); font:10.5pt/1.45 "Source Sans 3", Helvetica, sans-serif; }
+  header { border-top:8px solid var(--cocoa); border-bottom:3px solid var(--gold); padding:17px 0 15px; }
+  .series { color:var(--green); font-weight:700; font-size:9pt; letter-spacing:1.2px; text-transform:uppercase; }
+  h1 { color:var(--cocoa); font:700 25pt/1.08 Fraunces, Georgia, serif; margin:9px 0 5px; }
+  .subtitle { color:#624d42; font-size:11pt; }
+  .meta { width:100%; margin:15px 0 18px; border-collapse:collapse; font-size:9.2pt; }
+  .meta td { padding:5px 8px; border-bottom:1px solid var(--line); }
+  .meta td:first-child { width:28%; color:var(--cocoa); font-weight:700; }
+  h2 { color:var(--cocoa); font:700 15pt Fraunces, Georgia, serif; margin:19px 0 7px; break-after:avoid; }
+  h3 { color:var(--green); font-size:11pt; margin:13px 0 5px; break-after:avoid; }
+  p { margin:0 0 9px; }
+  ul, ol { margin:5px 0 10px 21px; padding:0; }
+  li { margin-bottom:4px; }
+  code { color:var(--cocoa); font:9pt "IBM Plex Mono", Menlo, monospace; }
+  pre { padding:10px 12px; background:var(--tint); border-left:4px solid var(--gold); white-space:pre-wrap; font:8.5pt/1.4 "IBM Plex Mono", Menlo, monospace; break-inside:avoid; }
+  .rule { padding:11px 13px; background:#edf5f0; border-left:5px solid var(--green); break-inside:avoid; }
+  .avoid { padding:10px 12px; background:var(--tint); border:1px solid var(--line); break-inside:avoid; }
+  footer { margin-top:23px; border-top:1px solid var(--line); padding-top:8px; color:#675f5a; font-size:8pt; }
+</style>
+</head>
+<body>
+<header>
+  <div class="series">Cocoarynth Engineering · Company Standard</div>
+  <h1>React and TypeScript Engineering Guide</h1>
+  <div class="subtitle">Maintainable product interfaces for Cocoarynth Trace</div>
+</header>
+<table class="meta">
+<tr><td>Document ID</td><td>ENG-WEB-01</td></tr>
+<tr><td>Status</td><td>Approved</td></tr>
+<tr><td>Effective date</td><td>2026-09-15</td></tr>
+<tr><td>Owners</td><td>Trace Web Platform and Developer Experience</td></tr>
+<tr><td>Applies to</td><td>React and TypeScript production code</td></tr>
+</table>
+
+<h2>1. Engineering intent</h2>
+<p>Cocoarynth Trace interfaces carry sourcing, production, certification, and shipment facts. Code should make the ownership and movement of those facts easy to inspect. Prefer explicit data boundaries, small components, predictable state, and tests that describe user-visible behavior.</p>
+<div class="rule"><strong>Required:</strong> New frontend production code uses TypeScript in strict mode, functional React components, semantic HTML, and the repository's configured formatter and linter. Do not weaken a compiler or lint rule only to make a change pass.</div>
+
+<h2>2. TypeScript</h2>
+<ul>
+  <li>Model domain concepts with named types. Use unions for finite states such as <code>"draft" | "issued" | "superseded"</code>.</li>
+  <li>Prefer <code>unknown</code> at untrusted boundaries and narrow it through validation. Avoid <code>any</code>; an exception requires a focused explanation in review.</li>
+  <li>Keep nullability honest. Do not substitute empty strings or zeroes when a value is genuinely absent.</li>
+  <li>Use immutable inputs and return values by default. A function that mutates shared state must make that behavior obvious in its name and ownership.</li>
+  <li>Infer local types when the result is clear. Annotate exported functions, domain models, state shapes, and boundaries where inference would hide a contract.</li>
+  <li>Do not duplicate server schemas by hand when the project provides generated or shared contract types.</li>
+</ul>
+<pre><code>type PassportStatus = "draft" | "issued" | "superseded";
+
+type OriginPassportSummary = {
+  id: string;
+  batchNumber: string;
+  status: PassportStatus;
+  issuedAt: string | null;
+};</code></pre>
+
+<h2>3. Components and module boundaries</h2>
+<ul>
+  <li>Give each component one recognizable UI responsibility. Extract a component when it owns behavior, repeated structure, or a testable concept, not merely to shorten a file.</li>
+  <li>Keep route and feature modules responsible for data loading and workflow state. Keep reusable presentational components independent of route-specific APIs.</li>
+  <li>Use composition and ordinary props before introducing context. Context is appropriate for stable cross-cutting dependencies, not as a general state store.</li>
+  <li>Do not create wrapper components that only rename native HTML without adding semantics, policy, or repeated behavior.</li>
+  <li>Preserve repository naming and folder conventions. Component names use PascalCase; hooks begin with <code>use</code>; event handlers describe the event or outcome.</li>
+</ul>
+
+<h2>4. State, effects, and data flow</h2>
+<ul>
+  <li>Keep state as close as possible to the components that coordinate it. Lift it only when two owners need one source of truth.</li>
+  <li>Derive values during rendering when they can be calculated from props or state. Do not mirror derived values into another state variable.</li>
+  <li>Use effects to synchronize with systems outside React, such as network subscriptions, browser APIs, or third-party widgets. Do not use effects as a substitute for event handling or derivation.</li>
+  <li>Abort or ignore obsolete asynchronous work so an older request cannot overwrite newer state.</li>
+  <li>Represent loading, empty, error, success, and permission-denied states deliberately. A blank panel is not an error strategy.</li>
+  <li>Keep server state in the project's data-fetching layer when one exists; do not build a second cache inside component state.</li>
+</ul>
+
+<h2>5. Forms and user actions</h2>
+<ul>
+  <li>Associate every input with a visible label and expose validation errors programmatically.</li>
+  <li>Validate at the boundary and preserve the user's entered values after a recoverable error.</li>
+  <li>Disable or guard repeated destructive submissions. Show progress without replacing a clear button label with unexplained animation.</li>
+  <li>Use native buttons for actions and links for navigation. Keyboard operation must follow the same workflow as pointer operation.</li>
+  <li>Confirm high-impact destructive actions and describe the object affected. Do not use confirmation dialogs for routine reversible actions.</li>
+</ul>
+
+<h2>6. Accessibility in component code</h2>
+<ul>
+  <li>Start with native semantic elements. Add ARIA only when native semantics cannot express the interaction.</li>
+  <li>Preserve a logical heading hierarchy, accessible names, visible keyboard focus, and meaningful document order.</li>
+  <li>Do not communicate status through color alone. Announce asynchronous errors and confirmations through an appropriate live region.</li>
+  <li>Images that convey information require useful alternative text. Decorative images use an empty alternative.</li>
+  <li>Custom widgets require keyboard, focus, and screen-reader behavior equivalent to their native counterpart.</li>
+</ul>
+
+<h2>7. Testing expectations</h2>
+<ul>
+  <li>Unit-test pure transformation and validation logic, especially format conversion and permission decisions.</li>
+  <li>Use React Testing Library for behavior at the component boundary. Query by role and accessible name when possible.</li>
+  <li>Use Playwright for critical workflows, browser integration, responsive behavior, and accessibility scans.</li>
+  <li>Test loading, empty, failure, and recovery paths, not only the successful response.</li>
+  <li>Treat snapshots as narrow regression aids. Do not replace assertions about behavior with large unexplained snapshots.</li>
+  <li>Automated accessibility checks supplement keyboard, screen-reader, zoom, and human review; they do not prove conformance.</li>
+</ul>
+
+<h2>8. Review and delivery</h2>
+<ul>
+  <li>Keep changes small enough that a reviewer can understand intent, behavior, and risk.</li>
+  <li>Include tests with behavior changes and update user-facing or architectural documentation when contracts change.</li>
+  <li>Review for correctness, accessibility, security, operability, and consistency before discussing style preferences.</li>
+  <li>Release through the normal automated path. A change is not complete until failures are observable and rollback or mitigation is understood.</li>
+  <li>After an incident, document the timeline, contributing conditions, what worked, and concrete preventive actions. Focus on systems and learning rather than blame.</li>
+</ul>
+
+<h2>9. Patterns to avoid</h2>
+<div class="avoid">
+<ul>
+  <li>Class components in new code without a documented compatibility reason.</li>
+  <li>One global component state object for unrelated workflows.</li>
+  <li>Effects that update state solely because another state value changed.</li>
+  <li>Deep prop drilling solved by immediately adding a global store.</li>
+  <li>Visual-only controls built from <code>div</code> or <code>span</code>.</li>
+  <li>Tests coupled to implementation details such as private state or exact component trees.</li>
+</ul>
+</div>
+
+<h2>10. Pull request checklist</h2>
+<ol>
+  <li>Types describe the domain and reject invalid states at boundaries.</li>
+  <li>Data ownership and component responsibilities are clear.</li>
+  <li>Loading, empty, error, and success states are usable.</li>
+  <li>Keyboard and accessible-name behavior has been checked.</li>
+  <li>Focused tests cover the changed behavior and failure paths.</li>
+  <li>Operational impact, documentation, and rollout are addressed.</li>
+</ol>
+
+<footer>Cocoarynth Engineering · React and TypeScript Engineering Guide · https://docs.cocoarynth.example/engineering/react-typescript</footer>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering Culture at Cocoarynth</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/simple.css" id="theme">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap">
+  <style>
+    :root {
+      --cocoa: #321c15;
+      --gold: #d6a84f;
+      --cream: #fff9ef;
+      --ink: #24201e;
+      --green: #236548;
+      --line: #d9cdbb;
+      --tint: #f7efe2;
+    }
+
+    .reveal {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Source Sans 3", sans-serif;
+    }
+
+    .reveal .slides section {
+      box-sizing: border-box;
+      height: 720px;
+      padding: 54px 72px 46px !important;
+      text-align: left;
+    }
+
+    .reveal h1,
+    .reveal h2,
+    .reveal h3 {
+      color: var(--cocoa);
+      font-family: Fraunces, Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .reveal h1 { font-size: 2.35em; line-height: 1.04; }
+    .reveal h2 { font-size: 1.85em; }
+    .reveal h3 { margin: 0 0 28px; font-size: 1.38em; }
+
+    .reveal p,
+    .reveal li,
+    .reveal td,
+    .reveal th {
+      font-size: 0.82em;
+      line-height: 1.35;
+    }
+
+    .reveal li { margin-bottom: 0.38em; }
+    .reveal strong { color: var(--cocoa); }
+    .reveal a { color: var(--green); text-decoration: underline; }
+    .reveal code { font-family: "IBM Plex Mono", monospace; }
+
+    .reveal section.heading-only {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background: var(--cocoa);
+      color: var(--cream);
+    }
+
+    .reveal section.heading-only h1,
+    .reveal section.heading-only h2,
+    .reveal section.heading-only p {
+      color: var(--cream);
+    }
+
+    .reveal section.heading-only h1::after,
+    .reveal section.heading-only h2::after {
+      display: block;
+      width: 120px;
+      height: 7px;
+      margin-top: 22px;
+      background: var(--gold);
+      content: "";
+    }
+
+    .title-slide {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .title-slide::after {
+      position: absolute;
+      top: -170px;
+      right: -160px;
+      width: 560px;
+      height: 560px;
+      border: 44px solid var(--gold);
+      border-radius: 50%;
+      opacity: 0.18;
+      content: "";
+    }
+
+    .title-slide img {
+      position: absolute;
+      right: 78px;
+      bottom: 58px;
+      width: 210px;
+      border-radius: 4px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 0.58em !important;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      color: #675349;
+      font-size: 0.86em !important;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+    }
+
+    .column {
+      padding-top: 12px;
+      border-top: 5px solid var(--gold);
+    }
+
+    .column h4 {
+      margin: 0 0 14px;
+      color: var(--green);
+      font-size: 0.9em;
+    }
+
+    .culture-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+      margin-top: 34px;
+    }
+
+    .culture-pair > div {
+      padding: 22px 24px;
+      border-top: 6px solid var(--line);
+      background: white;
+    }
+
+    .culture-pair .good { border-color: var(--green); }
+    .culture-pair .bad { border-color: #9f3f35; }
+
+    .culture-pair h4 {
+      margin: 0 0 10px;
+      font-size: 0.86em;
+    }
+
+    .lifecycle {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .lifecycle div {
+      min-height: 112px;
+      padding: 18px 16px;
+      border-top: 5px solid var(--gold);
+      background: white;
+      font-size: 0.7em;
+      font-weight: 600;
+    }
+
+    .questions {
+      margin-top: 24px;
+      padding: 18px 24px;
+      border-left: 7px solid var(--green);
+      background: white;
+    }
+
+    .questions li { font-size: 0.74em; }
+
+    .metric {
+      color: var(--green);
+      font: 700 2.2em/1 Fraunces, Georgia, serif;
+    }
+
+    .reveal table {
+      width: 100%;
+      margin: 16px 0 0;
+      border-collapse: collapse;
+    }
+
+    .reveal th {
+      color: var(--cream);
+      background: var(--cocoa);
+      font-weight: 700;
+    }
+
+    .reveal th,
+    .reveal td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .quote {
+      max-width: 900px;
+      margin-top: 52px;
+      padding-left: 28px;
+      border-left: 8px solid var(--gold);
+      color: var(--cocoa);
+      font: 700 1.28em/1.3 Fraunces, Georgia, serif;
+    }
+
+    .source {
+      position: absolute;
+      right: 72px;
+      bottom: 24px;
+      left: 72px;
+      color: #756960;
+      font-size: 0.42em !important;
+    }
+
+    .slide-number-a { background: var(--cocoa); }
+
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class="title-slide">
+        <p class="eyebrow">Cocoarynth Engineering</p>
+        <h1>Engineering Culture</h1>
+        <p class="subtitle">How teams make good engineering repeatable</p>
+        <p style="margin-top: 52px; font-size: 0.7em;">Technical presentation · 2026</p>
+        <img src="../../../logo.png" alt="Cocoarynth cacao pod and labyrinth mark">
+        <aside class="notes">Culture is the system around the code: how people learn, decide, review, release, observe, and improve.</aside>
+      </section>
+
+      <section>
+        <h3>Technical education teaches us how to build</h3>
+        <div class="two-column">
+          <div class="column">
+            <h4>Concepts</h4>
+            <ul>
+              <li>Algorithms and data structures</li>
+              <li>Databases and networks</li>
+              <li>Programming languages</li>
+              <li>Security and distributed systems</li>
+            </ul>
+          </div>
+          <div class="column">
+            <h4>Practice</h4>
+            <ul>
+              <li>Break a problem into parts</li>
+              <li>Read and write code</li>
+              <li>Measure correctness</li>
+              <li>Explain a technical choice</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>The job asks us to build together</h3>
+        <div class="two-column">
+          <div class="column">
+            <ul>
+              <li>Understand code we did not write</li>
+              <li>Plan under uncertainty</li>
+              <li>Follow and improve conventions</li>
+              <li>Review work constructively</li>
+            </ul>
+          </div>
+          <div class="column">
+            <ul>
+              <li>Release changes safely</li>
+              <li>Observe real behavior</li>
+              <li>Respond when systems fail</li>
+              <li>Teach the next person</li>
+            </ul>
+          </div>
+        </div>
+        <p class="quote">Engineering culture turns individual skill into a team capability.</p>
+      </section>
+
+      <section>
+        <h3>A product team has several goals at once</h3>
+        <ol>
+          <li>Create a product that solves a real user problem.</li>
+          <li>Keep the codebase understandable, adaptable, and dependable.</li>
+          <li>Give engineers room to learn and exercise judgment.</li>
+          <li>Deliver with limited time, attention, and money.</li>
+        </ol>
+        <p class="quote">Culture is how a team handles the tension between these goals.</p>
+      </section>
+
+      <section>
+        <h3>Culture is observable</h3>
+        <p>It appears in defaults, incentives, tools, documents, and daily decisions.</p>
+        <div class="lifecycle">
+          <div>Onboard people</div>
+          <div>Understand the system</div>
+          <div>Plan changes</div>
+          <div>Write consistent code</div>
+          <div>Test behavior</div>
+          <div>Review and improve</div>
+          <div>Release and monitor</div>
+          <div>Learn from failure</div>
+        </div>
+      </section>
+
+      <section class="heading-only">
+        <h2>Onboard people</h2>
+        <p>Make the first contribution a supported learning experience.</p>
+      </section>
+
+      <section>
+        <h3>Good onboarding shortens the path to useful context</h3>
+        <ul>
+          <li>Explain the product, users, architecture, and operating model.</li>
+          <li>Provide a reproducible setup and a small, real first change.</li>
+          <li>Pair on the first review, release, and production observation.</li>
+          <li>Keep setup and architecture guidance self-service, current, and searchable.</li>
+          <li>Name people who can answer product, system, and process questions.</li>
+        </ul>
+        <div class="culture-pair">
+          <div class="bad"><h4>Weak culture</h4><p>Treats the first week as an initiation and rewards guessing.</p></div>
+          <div class="good"><h4>Strong culture</h4><p>Invests in context so newcomers can contribute safely.</p></div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Questions to ask about onboarding</h3>
+        <div class="questions">
+          <ul>
+            <li>Can a new engineer set up the project from written instructions?</li>
+            <li>Who explains product and architecture decisions?</li>
+            <li>How soon does a newcomer ship a small supported change?</li>
+            <li>Where can they ask questions without social penalty?</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="heading-only">
+        <h2>Understand the system</h2>
+        <p>Document what the code does and why it exists.</p>
+      </section>
+
+      <section>
+        <h3>Documentation exists at several distances</h3>
+        <table>
+          <thead><tr><th>Distance</th><th>Useful evidence</th></tr></thead>
+          <tbody>
+            <tr><td>At the code</td><td>Names, types, focused comments, tests, and deprecation notes</td></tr>
+            <tr><td>At the component</td><td>Interfaces, ownership, dependencies, runbooks, and local setup</td></tr>
+            <tr><td>At the system</td><td>Architecture diagrams, decision records, data flows, and threat models</td></tr>
+            <tr><td>Across time</td><td>Issues, pull requests, release notes, incident reviews, and migration plans</td></tr>
+          </tbody>
+        </table>
+        <p class="source">Good documentation preserves intent that code alone cannot establish.</p>
+      </section>
+
+      <section>
+        <h3>Plan the change before optimizing the implementation</h3>
+        <ul>
+          <li>Start with the user need and observable success criteria.</li>
+          <li>Inspect existing constraints before proposing a new abstraction.</li>
+          <li>Separate requirements, current behavior, recommendations, and open questions.</li>
+          <li>Record decisions that future engineers would otherwise have to rediscover.</li>
+          <li>Keep the plan proportional to risk; small changes still need a testable outcome.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Questions to ask before writing code</h3>
+        <div class="questions">
+          <ul>
+            <li>What user or operational outcome must change?</li>
+            <li>Which constraints come from policy, architecture, or external contracts?</li>
+            <li>What evidence describes the current implementation?</li>
+            <li>How will we know the change works and remains healthy?</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="heading-only">
+        <h2>Write consistent code</h2>
+        <p>Make the codebase feel like one system, not a collection of personal styles.</p>
+      </section>
+
+      <section>
+        <h3>Standards work best when tools reinforce them</h3>
+        <div class="two-column">
+          <div class="column">
+            <h4>Shared guidance</h4>
+            <ul>
+              <li>Language and framework conventions</li>
+              <li>API and data contracts</li>
+              <li>Design and accessibility standards</li>
+              <li>Architecture decision records</li>
+            </ul>
+          </div>
+          <div class="column">
+            <h4>Automated reinforcement</h4>
+            <ul>
+              <li>Formatters and linters</li>
+              <li>Type checking and schema validation</li>
+              <li>Dependency and security checks</li>
+              <li>Reusable components and templates</li>
+            </ul>
+          </div>
+        </div>
+        <div class="culture-pair">
+          <div class="bad"><h4>Weak culture</h4><p>Accepts any implementation as long as it appears to work.</p></div>
+          <div class="good"><h4>Strong culture</h4><p>Documents conventions and automates the unambiguous ones.</p></div>
+        </div>
+      </section>
+
+      <section class="heading-only">
+        <h2>Test behavior</h2>
+        <p>Confidence comes from evidence, not confidence in ourselves.</p>
+      </section>
+
+      <section>
+        <h3>Use layered evidence</h3>
+        <table>
+          <thead><tr><th>Layer</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Static checks</td><td>Reject syntax, type, formatting, and known security defects quickly</td></tr>
+            <tr><td>Unit tests</td><td>Verify focused domain rules and transformations</td></tr>
+            <tr><td>Integration tests</td><td>Verify boundaries such as APIs, storage, queues, and identity</td></tr>
+            <tr><td>Browser tests</td><td>Verify critical workflows in the rendered application</td></tr>
+            <tr><td>Human evaluation</td><td>Assess usability, accessibility, ambiguity, and unexpected behavior</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h3>A healthy testing culture</h3>
+        <div class="culture-pair">
+          <div class="bad"><h4>Weak culture</h4><p>Expects careful engineers to write code that is somehow free of defects.</p></div>
+          <div class="good"><h4>Strong culture</h4><p>Treats tests as executable knowledge and a foundation for safe change.</p></div>
+        </div>
+        <div class="questions">
+          <ul>
+            <li>Which risks does each test layer cover?</li>
+            <li>Do changed behaviors include failure and recovery paths?</li>
+            <li>How quickly does CI provide useful feedback?</li>
+            <li>Where are manual and exploratory checks still required?</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="heading-only">
+        <h2>Review and improve</h2>
+        <p>Code review is both a quality gate and a teaching system.</p>
+      </section>
+
+      <section>
+        <h3>Review the change, not the person</h3>
+        <ul>
+          <li>Keep changes small enough to understand and test.</li>
+          <li>Explain intent, constraints, evidence, and rollout risk in the pull request.</li>
+          <li>Review correctness, security, accessibility, operability, and maintainability.</li>
+          <li>Use automation for mechanical rules so humans can focus on judgment.</li>
+          <li>Make feedback specific, respectful, and connected to shared standards.</li>
+        </ul>
+        <div class="culture-pair">
+          <div class="bad"><h4>Weak culture</h4><p>Provides no feedback, or turns review into personal criticism.</p></div>
+          <div class="good"><h4>Strong culture</h4><p>Uses review to improve the change and spread understanding.</p></div>
+        </div>
+      </section>
+
+      <section class="heading-only">
+        <h2>Release and monitor</h2>
+        <p>Shipping is the beginning of production learning.</p>
+      </section>
+
+      <section>
+        <h3>Make routine releases boring</h3>
+        <ul>
+          <li>Automate repeatable build, validation, deployment, and rollback steps.</li>
+          <li>Use progressive delivery or feature controls when consequences are uncertain.</li>
+          <li>Define who can release, who observes, and how to halt or reverse a change.</li>
+          <li>Keep database and contract changes compatible throughout rollout.</li>
+          <li>Practice recovery before an urgent production event.</li>
+        </ul>
+        <div class="questions">
+          <ul>
+            <li>How often can the team release safely?</li>
+            <li>How long does rollback or mitigation take?</li>
+            <li>What evidence decides whether rollout continues?</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h3>Observe outcomes, not just uptime</h3>
+        <div class="two-column">
+          <div class="column">
+            <h4>System signals</h4>
+            <ul>
+              <li>Error rate and latency</li>
+              <li>Dependency and queue health</li>
+              <li>Capacity and saturation</li>
+              <li>Security-relevant events</li>
+            </ul>
+          </div>
+          <div class="column">
+            <h4>User signals</h4>
+            <ul>
+              <li>Workflow completion</li>
+              <li>Validation and export failures</li>
+              <li>Support patterns</li>
+              <li>Qualitative feedback</li>
+            </ul>
+          </div>
+        </div>
+        <p class="quote">A release is successful when users can achieve the intended outcome.</p>
+      </section>
+
+      <section class="heading-only">
+        <h2>Learn from failure</h2>
+        <p>Do not hide mistakes. Improve the system that made them possible.</p>
+      </section>
+
+      <section>
+        <h3>A useful incident review produces learning</h3>
+        <ol>
+          <li>Build a factual timeline from available evidence.</li>
+          <li>Describe impact and detection without minimizing either.</li>
+          <li>Identify contributing technical and organizational conditions.</li>
+          <li>Record what helped recovery as well as what failed.</li>
+          <li>Assign specific preventive actions with owners and follow-up dates.</li>
+        </ol>
+        <div class="culture-pair">
+          <div class="bad"><h4>Weak culture</h4><p>Finds a person to blame or quietly moves on.</p></div>
+          <div class="good"><h4>Strong culture</h4><p>Makes failure discussable and turns it into system improvement.</p></div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Culture questions reveal operating reality</h3>
+        <table>
+          <thead><tr><th>Ask</th><th>Listen for</th></tr></thead>
+          <tbody>
+            <tr><td>How does a new engineer learn the system?</td><td>Current docs, pairing, a real first change, and accessible help</td></tr>
+            <tr><td>How are standards enforced?</td><td>Shared conventions plus automation, with exceptions documented</td></tr>
+            <tr><td>What must be tested?</td><td>Risk-based expectations across multiple layers</td></tr>
+            <tr><td>How do releases fail safely?</td><td>Observable rollout, mitigation, rollback, and ownership</td></tr>
+            <tr><td>What happens after an incident?</td><td>Blameless learning and tracked preventive action</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h3>Culture is a product the team maintains</h3>
+        <ul>
+          <li>Write down the practices that should outlive individual memory.</li>
+          <li>Automate repeatable checks without automating away judgment.</li>
+          <li>Inspect outcomes and revise practices when they stop serving the team.</li>
+          <li>Make it easier to ask, learn, recover, and improve.</li>
+        </ul>
+        <p class="quote">The culture matters as much as the product.</p>
+        <p class="source">Cocoarynth Engineering · Engineering Culture · https://docs.cocoarynth.example/engineering/culture</p>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      width: 1280,
+      height: 720,
+      hash: true,
+      center: false,
+      slideNumber: true,
+      showNotes: false,
+      margin: 0,
+      plugins: [RevealHighlight],
+      pdfSeparateFragments: true
+    });
+  </script>
+</body>
+</html>

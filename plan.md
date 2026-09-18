@@ -16,15 +16,13 @@ The session flow follows [the organizer-facing outline](universe-session-outline
 
 ## Agreed approach
 
-Use one instructor-managed **Search Index Knowledge Source** over an explicit Azure AI Search index. Pre-ingest the corpus from standard Blob Storage during deployment with a Content Understanding skillset; do not use ADLS Gen2 ACL ingestion, a GitHub wiki connector, or attendee-managed indexers.
+Use two instructor-managed **Search Index Knowledge Sources** over explicit Azure AI Search indexes. Pre-ingest the project-document and company-engineering-practice corpora from separate standard Blob Storage containers during deployment with Content Understanding skillsets; do not use ADLS Gen2 ACL ingestion, a GitHub wiki connector, or attendee-managed indexers.
 
-Attendees use an instructor-hosted web interface to explore the shared corpus and chunks, test retrieval, and connect two pre-created shared knowledge bases. `cocoarynth-kb-docs` contains indexed documents; `cocoarynth-kb-all` combines those documents with one shared GitHub MCP knowledge source. Attendees do not create Azure resources, upload documents, or run notebooks or scripts locally.
-
-The instructor provisions the Azure resources and web application and generates one shared, read-only GitHub lab PAT beforehand. The backend supplies that PAT when configuring GitHub knowledge sources; it is not distributed to attendees.
+Attendees use an instructor-hosted web interface to explore the project-document corpus and chunks, test retrieval, and connect two pre-created shared knowledge bases. `cocoarynth-kb-docs` contains project documents; `cocoarynth-kb-all` combines project documents with company engineering and design guidance from a second index. Attendees do not create Azure resources, upload documents, or run notebooks or scripts locally.
 
 Privately provide attendees with the shared Search query key and their KB's native MCP connection configuration. Copilot connects directly to Foundry IQ, not through an instructor-hosted MCP gateway. No attendee `.env` or model configuration is required. The secure distribution mechanism is still to be selected.
 
-GitHub supplies live code, issues, PRs, and discussions. The Blob-backed Search index supplies planning, architecture, and policy context. GitHub artifacts are not ingested in the required exercises.
+Direct GitHub MCP supplies live code, issues, PRs, and discussions using each attendee's GitHub authorization. The two Blob-backed Search indexes supply project requirements and company standards. GitHub artifacts are not ingested in the required exercises.
 
 ## Learning outcomes
 
@@ -34,8 +32,8 @@ By the end of the lab, attendees can:
 2. Use GitHub MCP tools to investigate live engineering artifacts.
 3. Explore pre-ingested documents and chunks and test retrieval through a web interface.
 4. Connect a knowledge base to Copilot through its native MCP endpoint and inspect supporting evidence.
-5. Compare client-side coordination of separate MCP integrations with retrieval through a combined knowledge base.
-6. Combine uploaded documents and live GitHub tools behind one knowledge base.
+5. Explain the boundary between Foundry IQ planning across two indexes and Copilot coordinating the KB with direct GitHub MCP.
+6. Create a locally saved, source-grounded PRD from project documents, company standards, and live GitHub evidence.
 7. Identify how to adapt the supplied implementation and infrastructure to their own team.
 
 ## Framing and scenario
@@ -73,7 +71,7 @@ The precise fictional company, repository, document titles, and seeded artifacts
 | 15-30 minutes | 15 minutes | Opening: Connect Copilot to GitHub | Configure GitHub MCP and investigate live engineering artifacts |
 | 30-45 minutes | 15 minutes | Section 1: Explore a document knowledge base | Explore the pre-ingested corpus and chunks, then test retrieval |
 | 45-60 minutes | 15 minutes | Section 2: Connect Copilot to the document knowledge base | Query documents and GitHub evidence through separate MCP integrations |
-| 60-80 minutes | 20 minutes | Section 3: Combine documents and live GitHub tools | Compare separate integrations with retrieval through a combined KB |
+| 60-80 minutes | 20 minutes | Section 3: Create a grounded PRD | Combine project documents, company standards, and live GitHub evidence |
 | 80-90 minutes | 10 minutes | Closing: Take the pattern back to your team | Recap the approaches and point to take-home infrastructure and learning resources |
 
 Total: 90 minutes. Hands-on work and troubleshooting are included in the section timings. Chunk exploration and retrieval testing are part of Section 1; there is no standalone retrieval-tuning exercise or required release-readiness brief.
@@ -128,24 +126,25 @@ Inspect source references and distinguish requirements from implementation facts
 
 The core deliverable is complete by minute 60: a pre-ingested document collection explored in the browser and exposed to Copilot through MCP.
 
-### Section 3: Combine documents and live GitHub tools
+### Section 3: Create a grounded PRD
 
-1. Review the shared MCP Server knowledge source pointing to GitHub's hosted read-only MCP endpoint.
-2. The deployment configures `storedHeaders` authentication using the instructor-managed lab PAT and an explicit read-only tool allowlist. Attendees do not enter or receive the PAT.
-3. Use the pre-created `cocoarynth-kb-all`, which references the Search Index Knowledge Source and shared GitHub MCP source.
-4. Configure the combined KB with retrieval reasoning effort `low`; MCP knowledge sources do not support `minimal` in the documented preview contract.
-5. Add the combined KB's native MCP endpoint directly to the chosen Copilot client using the supplied Search query key.
-6. Disable the separate GitHub and documents-only KB integrations and start a fresh comparison session.
-7. Repeat a question requiring both sources, inspect the retrieved evidence, and compare the response with the previous exercise.
+1. Review the two Search Index knowledge sources: project documents and Cocoarynth engineering practices.
+2. Use the pre-created `cocoarynth-kb-all`, which references both Search Index knowledge sources.
+3. Configure the combined KB with retrieval reasoning effort `medium` so it can use iterative retrieval across both indexes.
+4. Add the combined KB's native MCP endpoint directly to the chosen Copilot client using the supplied Search query key.
+5. Disable only the documents-only KB. Keep direct GitHub MCP enabled and start a fresh session.
+6. Ask Copilot to create a local Markdown PRD for CSV Origin Passport support using direct GitHub evidence plus requirements and standards from the combined KB.
+7. Inspect tool activity and verify that the PRD distinguishes requirements, current implementation, and recommendations with source links.
 
-No attendee document upload or additional document index is required. All KBs reuse the shared Search Index Knowledge Source.
+No attendee document upload or additional index is required. Both indexes are prepared before the session.
 
 The architectural contrast:
 
-| Separate integrations | Combined KB |
+| Layer | Responsibility |
 | --- | --- |
-| Copilot plans calls to GitHub MCP and the documents KB | Foundry IQ plans retrieval across files and GitHub tools |
-| Client-specific orchestration | Reusable multi-source retrieval configuration behind one endpoint |
+| Foundry IQ | Plans retrieval across project-document and engineering-practice indexes behind one endpoint |
+| GitHub Copilot | Coordinates the combined KB, direct GitHub MCP, and local workspace |
+| Direct GitHub MCP | Retrieves live repository evidence with attendee authorization |
 
 Do not promise that a combined KB always produces a better answer or always selects every source.
 
@@ -153,7 +152,7 @@ Do not promise that a combined KB always produces a better answer or always sele
 
 Return to the new-teammate analogy: understanding a project requires both its engineering artifacts and the context behind them.
 
-Recap the two approaches: connecting Copilot to separate MCP servers and combining sources behind a Foundry IQ knowledge base. Point attendees to the exercise repository, full infrastructure for their own Azure environment, and additional resources on MCP and retrieval best practices. State when the event environment expires and allow final questions.
+Recap the two coordination layers: Foundry IQ planning across indexed organizational knowledge and Copilot coordinating that KB with direct GitHub tools. Point attendees to the exercise repository, full infrastructure for their own Azure environment, and additional resources on MCP and retrieval best practices. State when the event environment expires and allow final questions.
 
 Keep detailed guidance on replacing the corpus and choosing scheduled ingestion in the take-home materials rather than adding another hands-on activity during closing.
 
@@ -167,7 +166,7 @@ These extensions are outside the required 90-minute session.
 
 ## Scope and delivery
 
-The instructor maintains the synthetic GitHub repository and document corpus, with sample questions and supporting evidence. Deployment pre-ingests the corpus and creates both shared KBs; the hosted application supports read-only exploration, retrieval testing, and connection configuration.
+The instructor maintains the synthetic GitHub repository and document corpus, with sample questions and supporting evidence. Deployment pre-ingests the corpora and creates three shared KBs; the hosted application supports read-only exploration, retrieval testing, and connection configuration.
 
 Use a few slides to explain MCP, GitHub MCP, and Foundry IQ, including the contrast between client-side tool coordination and retrieval behind a combined KB. Attendees operate the workflow themselves rather than only watching a demo.
 
@@ -209,13 +208,12 @@ Expected resources for 30 attendees, excluding fallback resources:
 
 | Object | Shared | Per attendee | Classroom total |
 | --- | --- | --- | --- |
-| Search index knowledge source | 1 | 0 | 1 |
-| Blob data source, skillset, and indexer | 1 each | 0 | 1 each |
-| Document index | 1 | 0 | 1 |
-| GitHub MCP knowledge source | 1 | 0 | 1 |
-| Knowledge bases | 2 | 0 | 2 |
+| Search index knowledge source | 2 | 0 | 2 |
+| Blob data source, skillset, and indexer | 2 each | 0 | 2 each |
+| Search index | 2 | 0 | 2 |
+| Knowledge bases | 3 | 0 | 3 |
 
-Budget for two knowledge sources and two knowledge bases, plus headroom for fallback objects. Confirm the chosen tier's actual limits before selecting the service configuration.
+Budget for two knowledge sources and three knowledge bases, plus headroom for fallback objects. Confirm the chosen tier's actual limits before selecting the service configuration.
 
 No attendee Azure sign-in, Azure subscription, Blob credentials, or Storage provisioning is required. Search uses managed identity for Blob and model access so attendees do not need storage or Azure OpenAI keys.
 
@@ -224,8 +222,8 @@ The take-home infrastructure must create the required resources, web application
 ### Web application requirements
 
 - Provide read-only corpus inventory, chunk visualization, and retrieval testing from the browser.
-- Provide read-only access to the shared documents-only and combined KBs.
-- Pre-create the shared GitHub MCP source and combined KB during deployment.
+- Provide read-only access to both single-index KBs and the combined KB.
+- Pre-create both Search Index knowledge sources and the combined KB during deployment.
 - Keep Azure resource-management operations and GitHub PAT handling in the backend, not in browser code.
 - Provide native KB MCP endpoint configuration for each supported Copilot client; do not proxy Copilot's MCP requests through the web application.
 - Show resource relationships, processing status, retrieved passages, source references, and actionable errors.
@@ -240,7 +238,6 @@ The following variables are for instructor-managed backend configuration and tak
 | --- | --- | --- |
 | `AZURE_SEARCH_ENDPOINT` | Shared lab Search endpoint | No |
 | `AZURE_SEARCH_QUERY_KEY` | Authenticate attendee KB MCP retrieval requests | Yes |
-| `GITHUB_LAB_PAT` | Authenticate Search's downstream GitHub MCP calls | Yes |
 | `AZURE_OPENAI_ENDPOINT` | Model endpoint used by Search | No |
 | `AZURE_OPENAI_EMBEDDING_DEPLOYMENT` | Embedding deployment name | No |
 | `AZURE_OPENAI_EMBEDDING_MODEL` | Embedding model name | No |
@@ -251,7 +248,7 @@ The following variables are for instructor-managed backend configuration and tak
 | `AZURE_STORAGE_ACCOUNT_ID` | Resource ID used by the Search data source and knowledge store | No |
 | `AZURE_CLIENT_ID` | User-assigned managed identity used by the Container App | No |
 
-Attendees receive only the lab web application URL, relevant repository URLs, and their native KB MCP endpoint configuration containing the shared Search query key. The GitHub lab PAT and model configuration stay in the backend configuration; the backend stores the PAT in each GitHub knowledge source as required.
+Attendees receive only the lab web application URL, relevant repository URLs, and their native KB MCP endpoint configuration containing the shared Search query key. Model configuration stays in the backend configuration. GitHub MCP authenticates directly through each attendee's event-provided GitHub account.
 
 Use the selected `azd` environment for local backend configuration; `dotenv-azd` loads its values at startup. Ignore `.env` and credential-bearing client configuration. Select an event-approved private mechanism for distributing the Search key and connection details; do not publish secrets in the repository, application logs, screenshots, or a public download URL.
 
@@ -263,31 +260,24 @@ Use the selected `azd` environment for local backend configuration; `dotenv-azd`
 | Attendee browser to lab web application | Event-appropriate portal access mechanism, to be selected; no Azure sign-in |
 | Lab web application's backend to Azure AI Search | Container App user-assigned managed identity with Search Service Contributor and Search Index Data Contributor roles |
 | Copilot client directly to a native KB MCP endpoint | Privately supplied shared Search query key |
-| Combined KB to GitHub MCP | Shared lab PAT stored by the backend in the attendee's MCP knowledge source |
 | Azure AI Search to embedding/chat deployments | Preconfigured Search managed identity |
-| Azure AI Search to Blob corpus and extracted images | Search managed identity with Storage Blob Data Contributor |
+| Azure AI Search to Blob corpora and extracted images | Search managed identity with Storage Blob Data Contributor |
 
-For downstream GitHub access, use `storedHeaders` with an `Authorization: Bearer <token>` header. Use `https://api.githubcopilot.com/mcp/readonly` and explicitly select the required toolsets and tools.
-
-The deployment creates the shared GitHub knowledge source and supplies its credentials before attendees arrive.
-
-Do not use `foundryConnection`: this architecture calls the KB directly from Copilot, not through Foundry Agent Service. Per-user credential forwarding and OAuth token refresh are outside the required scope.
+Use GitHub's hosted read-only MCP endpoint directly from the attendee's Copilot client and explicitly select the required read-only toolsets. Do not place GitHub credentials in the workshop backend or a Search knowledge source.
 
 ### Shared-service security boundary
 
 This is a shared administrative lab environment, not a multi-tenant security design.
 
 - The shared Search query key grants read-only query access across the lab Search service; it is not a per-attendee authorization boundary.
-- Stored header masking does not provide isolation from other Search administrators.
-- Keeping the GitHub PAT in the backend avoids distributing it as attendee configuration, but the web interface does not turn the shared Search service into an isolated multi-tenant environment.
-- The combined KB accesses GitHub as the shared lab identity, not as the individual attendee.
-- Use only synthetic/non-sensitive lab content and a dedicated read-only lab PAT.
-- Never use the instructor's normal personal PAT.
-- Rotate the distributed Search key and revoke the PAT after the advertised lab access window.
+- The web interface does not turn the shared Search service into an isolated multi-tenant environment.
+- Direct GitHub access uses the attendee's event-provided account and repository permissions.
+- Use only synthetic, non-sensitive lab content and read-only GitHub toolsets.
+- Rotate the distributed Search key after the advertised lab access window.
 
 ### Implementation and client support
 
-- Adapt the LTG242 Blob, Content Understanding, indexer, and Search Index Knowledge Source pattern into an idempotent instructor-run post-provision step.
+- Adapt the LTG242 Blob, Content Understanding, indexer, and Search Index Knowledge Source pattern into two idempotent instructor-run pipelines in the post-provision step.
 - Include the frontend, backend, configuration examples, and deployment instructions in the take-home repository.
 - Prepare the local repository and client setup on the Surface image; browser-based ingestion must not require attendee SDK installation.
 - Support CLI, app, and VS Code setup, including authenticated HTTP MCP headers.
@@ -301,8 +291,8 @@ This is a shared administrative lab environment, not a multi-tenant security des
 - Target `2026-05-01-preview` for the Content Understanding indexer resources and `2026-08-01-preview` for native knowledge-base MCP endpoints; pin a compatible Python SDK in the backend.
 - Apply the API version explicitly where supported; do not assume an environment variable changes SDK defaults.
 - Pin and rehearse the supported client versions/configuration syntax before the event.
-- Use Content Understanding semantic chunking and a small set of text-rich files to keep processing predictable.
-- The post-provision script compares Blob SHA-256 metadata, uploads changed PDFs, removes stale files and chunks, and reruns the indexer.
+- Use Content Understanding semantic chunking and two small sets of text-rich files to keep processing predictable.
+- The post-provision script compares Blob SHA-256 metadata independently for both corpora, uploads changed PDFs, removes stale files and chunks, and reruns both indexers.
 - Surface retrieval failures clearly and verify the documented upload processing duration before attendees arrive.
 - Do not introduce scheduled ingestion or source synchronization into the required exercises.
 
@@ -319,7 +309,7 @@ This is a shared administrative lab environment, not a multi-tenant security des
 
 - Exercise the end-to-end flow on the actual Surface image with event-style GitHub accounts, not instructor credentials.
 - Confirm all three clients can authenticate to the native KB MCP endpoint.
-- Confirm the GitHub MCP source can authenticate and invoke the selected tools through Search.
+- Confirm direct GitHub MCP can authenticate with event-style attendee accounts and invoke the selected read-only tools.
 - Exercise expected classroom concurrency against the web application, Search, model deployments, and the shared PAT's GitHub API rate limits.
 - Prepare a populated documents KB and combined KB as recovery paths, while keeping attendee creation as the normal path.
 - Provide observable progress during synchronous ingestion and clear recovery instructions. Rehearse the 15-minute ingestion block with the prepared corpus.

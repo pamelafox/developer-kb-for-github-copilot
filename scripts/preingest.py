@@ -1,12 +1,13 @@
 import hashlib
 import os
 import time
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
-from azure.core.exceptions import HttpResponseError, ResourceNotFoundError
+from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError
 from azure.core.rest import HttpRequest
 from azure.identity import AzureDeveloperCliCredential
 from azure.search.documents import SearchClient
@@ -19,11 +20,10 @@ from app.backend.foundry_iq import FoundryIqService
 from app.backend.naming import shared_resources
 
 
-CORPUS_DIR = Path(__file__).parents[1] / "documents"
+DOCUMENT_CORPUS_DIR = Path(__file__).parents[1] / "documents"
+ENGINEERING_PRACTICE_CORPUS_DIR = DOCUMENT_CORPUS_DIR / "engineering-practices"
 SHARED_RESOURCES = shared_resources()
 SEARCH_API_VERSION = "2026-05-01-preview"
-CORPUS_CONTAINER = "knowledge"
-EXTRACTED_IMAGES_CONTAINER = "extracted-images"
 SEMANTIC_CONFIGURATION = "semantic-configuration"
 VECTOR_PROFILE = "vector-search-profile"
 EMBEDDING_DIMENSIONS = 3072
@@ -31,10 +31,39 @@ INDEXER_POLL_SECONDS = 10
 INDEXER_TIMEOUT = timedelta(minutes=30)
 
 
-def build_index(settings: Settings) -> SearchIndex:
+@dataclass(frozen=True)
+class CorpusSpec:
+    key: str
+    directory: Path
+    index_name: str
+    container_name: str
+    extracted_images_container_name: str
+    description: str
+
+
+DOCUMENT_CORPUS = CorpusSpec(
+    key="documents",
+    directory=DOCUMENT_CORPUS_DIR,
+    index_name=SHARED_RESOURCES.document_index,
+    container_name="knowledge",
+    extracted_images_container_name="extracted-images",
+    description="Project requirements, architecture decisions, policies, and support documents.",
+)
+ENGINEERING_PRACTICE_CORPUS = CorpusSpec(
+    key="engineeringPractices",
+    directory=ENGINEERING_PRACTICE_CORPUS_DIR,
+    index_name=SHARED_RESOURCES.engineering_practice_index,
+    container_name="engineering-practices",
+    extracted_images_container_name="engineering-practice-images",
+    description="Cocoarynth engineering, API, frontend, accessibility, and engineering culture guidance.",
+)
+CORPORA = (DOCUMENT_CORPUS, ENGINEERING_PRACTICE_CORPUS)
+
+
+def build_index(settings: Settings, index_name: str = DOCUMENT_CORPUS.index_name) -> SearchIndex:
     return SearchIndex(
         {
-            "name": SHARED_RESOURCES.generated_index,
+            "name": index_name,
             "fields": [
                 {
                     "name": "chunk_id",
@@ -153,8 +182,9 @@ def build_indexer_payloads(
     settings: Settings,
     storage_resource_id: str,
     foundry_endpoint: str,
+    corpus: CorpusSpec = DOCUMENT_CORPUS,
 ) -> dict[str, tuple[str, dict[str, Any]]]:
-    index_name = SHARED_RESOURCES.generated_index
+    index_name = corpus.index_name
     data_source_name = f"{index_name}-blob-source"
     skillset_name = f"{index_name}-content-understanding"
     indexer_name = f"{index_name}-blob-indexer"
@@ -162,11 +192,11 @@ def build_indexer_payloads(
         "name": data_source_name,
         "type": "azureblob",
         "credentials": {"connectionString": f"ResourceId={storage_resource_id};"},
-        "container": {"name": CORPUS_CONTAINER},
+        "container": {"name": corpus.container_name},
     }
     skillset = {
         "name": skillset_name,
-        "description": "Semantic PDF chunking, image extraction, and vectorization.",
+        "description": f"Semantic PDF chunking, image extraction, and vectorization. {corpus.description}",
         "skills": [
             {
                 "@odata.type": "#Microsoft.Skills.Util.ContentUnderstandingSkill",
@@ -211,7 +241,7 @@ def build_indexer_payloads(
                     "objects": [],
                     "files": [
                         {
-                            "storageContainer": EXTRACTED_IMAGES_CONTAINER,
+                            "storageContainer": corpus.extracted_images_container_name,
                             "source": "/document/normalized_images/*",
                         }
                     ],
@@ -291,10 +321,13 @@ def sync_blob_corpus(container: ContainerClient, corpus_dir: Path) -> dict[str, 
     return {"uploaded": uploaded, "skipped": skipped, "deleted": deleted}
 
 
-def clear_index_documents(service: FoundryIqService) -> int:
+def clear_index_documents(
+    service: FoundryIqService,
+    index_name: str = DOCUMENT_CORPUS.index_name,
+) -> int:
     client = SearchClient(
         service.settings.search_endpoint,
-        SHARED_RESOURCES.generated_index,
+        index_name,
         service.credential,
     )
     try:
@@ -326,11 +359,19 @@ def put_preview_resource(
     response.raise_for_status()
 
 
-def wait_for_indexer(client: SearchIndexerClient, indexer_name: str, started_after: datetime) -> int:
+def wait_for_indexer(
+    client: SearchIndexerClient,
+    indexer_name: str,
+    started_after: datetime | None = None,
+) -> int:
     deadline = datetime.now(UTC) + INDEXER_TIMEOUT
     while datetime.now(UTC) < deadline:
         result = client.get_indexer_status(indexer_name).last_result
-        if result is None or result.start_time is None or result.start_time < started_after:
+        if (
+            result is None
+            or result.start_time is None
+            or (started_after is not None and result.start_time < started_after)
+        ):
             time.sleep(INDEXER_POLL_SECONDS)
             continue
         status = getattr(result.status, "value", result.status)
@@ -344,32 +385,62 @@ def wait_for_indexer(client: SearchIndexerClient, indexer_name: str, started_aft
     raise TimeoutError(f"Indexer '{indexer_name}' did not finish within {INDEXER_TIMEOUT}.")
 
 
+def run_indexer_and_wait(client: SearchIndexerClient, indexer_name: str) -> int:
+    client.reset_indexer(indexer_name)
+    started_after = datetime.now(UTC) - timedelta(seconds=5)
+    try:
+        client.run_indexer(indexer_name)
+    except ResourceExistsError:
+        print(f"Indexer '{indexer_name}' is already running; waiting before starting a fresh run.")
+        wait_for_indexer(client, indexer_name)
+        client.reset_indexer(indexer_name)
+        started_after = datetime.now(UTC) - timedelta(seconds=5)
+        client.run_indexer(indexer_name)
+    return wait_for_indexer(client, indexer_name, started_after)
+
+
 def ingest_corpus(
     service: FoundryIqService,
     container: ContainerClient,
     storage_resource_id: str,
     foundry_endpoint: str,
-    corpus_dir: Path = CORPUS_DIR,
+    corpus: CorpusSpec = DOCUMENT_CORPUS,
 ) -> dict[str, Any]:
-    files = sync_blob_corpus(container, corpus_dir)
-    service.index_client.create_or_update_index(build_index(service.settings))
-    removed_chunks = clear_index_documents(service)
-    service.create_document_workspace(SHARED_RESOURCES)
+    files = sync_blob_corpus(container, corpus.directory)
+    service.index_client.create_or_update_index(build_index(service.settings, corpus.index_name))
+    removed_chunks = clear_index_documents(service, corpus.index_name)
 
-    pipeline = build_indexer_payloads(service.settings, storage_resource_id, foundry_endpoint)
+    pipeline = build_indexer_payloads(service.settings, storage_resource_id, foundry_endpoint, corpus)
     indexer_client = SearchIndexerClient(service.settings.search_endpoint, service.credential)
     try:
         for collection, (name, payload) in pipeline.items():
             put_preview_resource(indexer_client, service.settings.search_endpoint, collection, name, payload)
         indexer_name = pipeline["indexers"][0]
-        indexer_client.reset_indexer(indexer_name)
-        started_after = datetime.now(UTC) - timedelta(seconds=5)
-        indexer_client.run_indexer(indexer_name)
-        indexed_items = wait_for_indexer(indexer_client, indexer_name, started_after)
+        indexed_items = run_indexer_and_wait(indexer_client, indexer_name)
     finally:
         indexer_client.close()
-    service.create_shared_combined_workspace(SHARED_RESOURCES)
     return {**files, "removedChunks": removed_chunks, "indexedItems": indexed_items}
+
+
+def ingest_corpora(
+    service: FoundryIqService,
+    blob_service: BlobServiceClient,
+    storage_resource_id: str,
+    foundry_endpoint: str,
+) -> dict[str, dict[str, Any]]:
+    results = {
+        corpus.key: ingest_corpus(
+            service,
+            blob_service.get_container_client(corpus.container_name),
+            storage_resource_id,
+            foundry_endpoint,
+            corpus,
+        )
+        for corpus in CORPORA
+    }
+    service.create_document_workspace(SHARED_RESOURCES)
+    service.create_shared_combined_workspace(SHARED_RESOURCES)
+    return results
 
 
 def ingest_with_retry(operation: Any, attempts: int = 12, delay_seconds: int = 10) -> dict[str, Any]:
@@ -392,17 +463,6 @@ def main() -> None:
         embedding_model=os.getenv("AZURE_OPENAI_EMBEDDING_MODEL", "text-embedding-3-large"),
         chat_deployment=os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT", "gpt-5.4-mini"),
         chat_model=os.getenv("AZURE_OPENAI_CHAT_MODEL", "gpt-5.4-mini"),
-        search_query_key="",
-        github_pat=os.environ["GITHUB_LAB_PAT"],
-        github_mcp_url=os.getenv("GITHUB_MCP_URL", "https://api.githubcopilot.com/mcp/readonly"),
-        github_mcp_tools=tuple(
-            tool.strip()
-            for tool in os.getenv(
-                "GITHUB_MCP_TOOLS",
-                "search_code,search_issues,get_file_contents,issue_read,pull_request_read",
-            ).split(",")
-            if tool.strip()
-        ),
         managed_identity_client_id=None,
     )
     credential = AzureDeveloperCliCredential()
@@ -411,20 +471,22 @@ def main() -> None:
         account_url=f"https://{os.environ['AZURE_STORAGE_ACCOUNT_NAME']}.blob.core.windows.net",
         credential=credential,
     )
-    container = blob_service.get_container_client(CORPUS_CONTAINER)
     try:
         result = ingest_with_retry(
-            lambda: ingest_corpus(
+            lambda: ingest_corpora(
                 service,
-                container,
+                blob_service,
                 os.environ["AZURE_STORAGE_ACCOUNT_ID"],
                 os.environ["AZURE_AI_FOUNDRY_ENDPOINT"].rstrip("/"),
             )
         )
-        print(
-            f"Shared corpus ready: {len(result['uploaded'])} uploaded, "
-            f"{len(result['skipped'])} unchanged, {result['indexedItems']} documents processed."
-        )
+        for corpus in CORPORA:
+            corpus_result = result[corpus.key]
+            print(
+                f"{corpus.key}: {len(corpus_result['uploaded'])} uploaded, "
+                f"{len(corpus_result['skipped'])} unchanged, "
+                f"{corpus_result['indexedItems']} documents processed."
+            )
     finally:
         blob_service.close()
         service.index_client.close()

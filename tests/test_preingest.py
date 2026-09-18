@@ -5,13 +5,34 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from azure.core.exceptions import HttpResponseError
+from azure.core.exceptions import HttpResponseError, ResourceExistsError
 
 from app.backend.config import Settings
-from scripts.preingest import build_indexer_payloads, ingest_corpus, ingest_with_retry, sync_blob_corpus
+from scripts.preingest import (
+    ENGINEERING_PRACTICE_CORPUS,
+    build_indexer_payloads,
+    ingest_corpora,
+    ingest_with_retry,
+    run_indexer_and_wait,
+    sync_blob_corpus,
+)
 
 
 class IngestCorpusTests(unittest.TestCase):
+    @patch("scripts.preingest.wait_for_indexer", side_effect=[0, 12])
+    def test_waits_for_active_indexer_then_starts_fresh_run(self, wait: Mock) -> None:
+        client = Mock()
+        client.run_indexer.side_effect = [ResourceExistsError("Already running"), None]
+
+        indexed_items = run_indexer_and_wait(client, "documents-indexer")
+
+        self.assertEqual(indexed_items, 12)
+        self.assertEqual(client.reset_indexer.call_count, 2)
+        self.assertEqual(client.run_indexer.call_count, 2)
+        self.assertEqual(wait.call_count, 2)
+        self.assertEqual(wait.call_args_list[0].args, (client, "documents-indexer"))
+        self.assertIsNotNone(wait.call_args_list[1].args[2])
+
     def test_uploads_changed_pdfs_and_removes_stale_blobs(self) -> None:
         container = Mock()
         existing_digest = hashlib.sha256(b"existing").hexdigest()
@@ -43,10 +64,6 @@ class IngestCorpusTests(unittest.TestCase):
             embedding_model="text-embedding-3-large",
             chat_deployment="gpt-4.1-mini",
             chat_model="gpt-4.1-mini",
-            search_query_key="",
-            github_pat="",
-            github_mcp_url="",
-            github_mcp_tools=(),
             managed_identity_client_id=None,
         )
 
@@ -70,12 +87,27 @@ class IngestCorpusTests(unittest.TestCase):
         )
         self.assertEqual(pipeline["indexers"][1]["targetIndexName"], "cocoarynth-documents-index")
 
+        style_pipeline = build_indexer_payloads(
+            settings,
+            "/subscriptions/sub/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/store",
+            "https://example.services.ai.azure.com",
+            ENGINEERING_PRACTICE_CORPUS,
+        )
+        self.assertEqual(style_pipeline["datasources"][1]["container"]["name"], "engineering-practices")
+        self.assertEqual(style_pipeline["indexers"][1]["targetIndexName"], "cocoarynth-engineering-practices-index")
+        self.assertEqual(
+            style_pipeline["skillsets"][1]["knowledgeStore"]["projections"][0]["files"][0][
+                "storageContainer"
+            ],
+            "engineering-practice-images",
+        )
+
     @patch("scripts.preingest.wait_for_indexer", return_value=12)
     @patch("scripts.preingest.put_preview_resource")
     @patch("scripts.preingest.SearchIndexerClient")
     @patch("scripts.preingest.clear_index_documents", return_value=4)
     @patch("scripts.preingest.sync_blob_corpus")
-    def test_ingestion_creates_both_shared_knowledge_bases(
+    def test_ingestion_indexes_both_corpora_before_creating_knowledge_bases(
         self,
         sync_corpus: Mock,
         clear_documents: Mock,
@@ -92,28 +124,32 @@ class IngestCorpusTests(unittest.TestCase):
             embedding_model="text-embedding-3-large",
             chat_deployment="gpt-4.1-mini",
             chat_model="gpt-4.1-mini",
-            search_query_key="",
-            github_pat="github-token",
-            github_mcp_url="https://api.githubcopilot.com/mcp/readonly",
-            github_mcp_tools=("get_file_contents",),
             managed_identity_client_id=None,
         )
 
-        result = ingest_corpus(
+        blob_service = Mock()
+        result = ingest_corpora(
             service,
-            Mock(),
+            blob_service,
             "/subscriptions/sub/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/store",
             "https://example.services.ai.azure.com",
         )
 
         service.create_document_workspace.assert_called_once()
         service.create_shared_combined_workspace.assert_called_once()
-        self.assertEqual(result["indexedItems"], 12)
-        self.assertEqual(result["removedChunks"], 4)
-        self.assertEqual(put_resource.call_count, 3)
-        indexer_client_type.return_value.run_indexer.assert_called_once()
-        wait.assert_called_once()
-        clear_documents.assert_called_once_with(service)
+        self.assertEqual(result["documents"]["indexedItems"], 12)
+        self.assertEqual(result["engineeringPractices"]["removedChunks"], 4)
+        self.assertEqual(put_resource.call_count, 6)
+        self.assertEqual(indexer_client_type.return_value.run_indexer.call_count, 2)
+        self.assertEqual(wait.call_count, 2)
+        self.assertEqual(
+            [call.args[0] for call in blob_service.get_container_client.call_args_list],
+            ["knowledge", "engineering-practices"],
+        )
+        self.assertEqual(
+            [call.args[1] for call in clear_documents.call_args_list],
+            ["cocoarynth-documents-index", "cocoarynth-engineering-practices-index"],
+        )
 
     @patch("scripts.preingest.time.sleep")
     def test_retries_while_search_rbac_propagates(self, sleep: Mock) -> None:

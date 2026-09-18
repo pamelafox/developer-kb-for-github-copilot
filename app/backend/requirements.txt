@@ -2,7 +2,8 @@ azure-identity==1.25.2
 azure-search-documents==12.1.0b1
 azure-storage-blob==12.27.1
 dotenv-azd==0.3.0
-fastapi==0.115.12
+fastapi==0.141.1
 gunicorn==23.0.0
+mcp==2.2.0
 python-multipart==0.0.20
 uvicorn[standard]==0.34.2
