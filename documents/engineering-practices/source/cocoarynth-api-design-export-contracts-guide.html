@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cocoarynth API Design and Export Contracts Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap">
+<style>
+  :root { --cocoa:#321c15; --gold:#a66a10; --cream:#fff9ef; --ink:#24201e; --green:#236548; --line:#d9cdbb; --tint:#f7efe2; }
+  @page { size:Letter; margin:0.68in 0.75in 0.72in; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); font:10.5pt/1.45 "Source Sans 3", Helvetica, sans-serif; }
+  header { border-top:8px solid var(--cocoa); border-bottom:3px solid var(--gold); padding:17px 0 15px; }
+  .series { color:var(--green); font-weight:700; font-size:9pt; letter-spacing:1.2px; text-transform:uppercase; }
+  h1 { color:var(--cocoa); font:700 25pt/1.08 Fraunces, Georgia, serif; margin:9px 0 5px; }
+  .subtitle { color:#624d42; font-size:11pt; }
+  .meta { width:100%; margin:15px 0 18px; border-collapse:collapse; font-size:9.2pt; }
+  .meta td { padding:5px 8px; border-bottom:1px solid var(--line); }
+  .meta td:first-child { width:28%; color:var(--cocoa); font-weight:700; }
+  h2 { color:var(--cocoa); font:700 15pt Fraunces, Georgia, serif; margin:19px 0 7px; break-after:avoid; }
+  h3 { color:var(--green); font-size:11pt; margin:13px 0 5px; break-after:avoid; }
+  p { margin:0 0 9px; }
+  ul, ol { margin:5px 0 10px 21px; padding:0; }
+  li { margin-bottom:4px; }
+  code { color:var(--cocoa); font:9pt "IBM Plex Mono", Menlo, monospace; }
+  pre { padding:10px 12px; background:var(--tint); border-left:4px solid var(--gold); white-space:pre-wrap; font:8.3pt/1.4 "IBM Plex Mono", Menlo, monospace; break-inside:avoid; }
+  .rule { padding:11px 13px; background:#edf5f0; border-left:5px solid var(--green); break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; margin:9px 0 15px; font-size:9pt; }
+  th { color:white; background:var(--cocoa); text-align:left; padding:6px 7px; }
+  td { border-bottom:1px solid var(--line); padding:6px 7px; vertical-align:top; }
+  tr { break-inside:avoid; }
+  footer { margin-top:23px; border-top:1px solid var(--line); padding-top:8px; color:#675f5a; font-size:8pt; }
+</style>
+</head>
+<body>
+<header>
+  <div class="series">Cocoarynth Engineering · Company Standard</div>
+  <h1>API Design and Export Contracts Guide</h1>
+  <div class="subtitle">Stable boundaries for traceability data and partner integrations</div>
+</header>
+<table class="meta">
+<tr><td>Document ID</td><td>ENG-API-02</td></tr>
+<tr><td>Status</td><td>Approved</td></tr>
+<tr><td>Effective date</td><td>2026-09-15</td></tr>
+<tr><td>Owners</td><td>Trace Platform and Partner Integrations</td></tr>
+<tr><td>Applies to</td><td>HTTP APIs, downloads, and machine-readable exports</td></tr>
+</table>
+
+<h2>1. Contract first</h2>
+<p>An API contract is the externally observable agreement between a producer and its consumers. Begin with consumer workflows, resource ownership, authorization, data sensitivity, and failure behavior. Implementation convenience does not justify an unstable public shape.</p>
+<div class="rule"><strong>Required:</strong> A new or changed partner-facing endpoint must have an OpenAPI description, representative examples, boundary validation, authorization rules, and contract tests before release.</div>
+
+<h2>2. Resources and URLs</h2>
+<ul>
+  <li>Use nouns for resources and collections: <code>/origin-passports</code>, <code>/batches/{batchId}</code>, and <code>/shipments/{shipmentId}</code>.</li>
+  <li>Use stable opaque identifiers in URLs. Do not expose database position or mutable display names as identity.</li>
+  <li>Represent a workflow action as a subordinate resource when it has its own result or lifecycle, such as <code>POST /origin-passports/{id}/exports</code>.</li>
+  <li>Avoid verbs in collection paths unless the operation cannot be modeled honestly as resource creation or transition.</li>
+  <li>Keep nesting shallow. A URL should identify ownership, not reproduce the entire data model.</li>
+</ul>
+
+<h2>3. HTTP behavior</h2>
+<table>
+<thead><tr><th>Operation</th><th>Expected behavior</th><th>Typical success</th></tr></thead>
+<tbody>
+<tr><td><code>GET</code></td><td>Read without changing server state.</td><td><code>200</code> or <code>304</code></td></tr>
+<tr><td><code>POST</code></td><td>Create a resource or initiate a non-idempotent operation.</td><td><code>201</code>, <code>202</code>, or <code>200</code></td></tr>
+<tr><td><code>PUT</code></td><td>Replace a complete resource at a known URL; idempotent.</td><td><code>200</code> or <code>204</code></td></tr>
+<tr><td><code>PATCH</code></td><td>Apply a documented partial update with explicit field semantics.</td><td><code>200</code> or <code>204</code></td></tr>
+<tr><td><code>DELETE</code></td><td>Remove or retire according to retention policy; idempotent outcome.</td><td><code>204</code></td></tr>
+</tbody>
+</table>
+<p>Use <code>400</code> for malformed requests, <code>401</code> when authentication is absent or invalid, <code>403</code> when the caller is known but not permitted, <code>404</code> when the resource is unavailable to the caller, <code>409</code> for state conflicts, <code>422</code> for well-formed input that fails domain validation, and <code>429</code> for rate limits.</p>
+
+<h2>4. JSON representation</h2>
+<ul>
+  <li>Use UTF-8 JSON with consistent lower camel case property names unless an established API in the repository uses another convention.</li>
+  <li>Return ISO 8601 timestamps with an explicit offset, preferably UTC <code>Z</code>. Return calendar-only business dates as <code>YYYY-MM-DD</code>.</li>
+  <li>Do not overload missing, <code>null</code>, empty string, and zero. Document each field's absence semantics.</li>
+  <li>Represent money as a decimal string plus an ISO currency code. Never use binary floating point for financial calculations.</li>
+  <li>Additive fields are normally backward compatible, but consumers must be told to ignore fields they do not understand.</li>
+  <li>Do not expose internal notes, credentials, personal contact details, negotiated pricing, or operational identifiers unless the contract and authorization explicitly require them.</li>
+</ul>
+
+<h2>5. Errors</h2>
+<p>Errors use one stable envelope and a machine-readable code. Human-readable messages may improve without requiring a client release; client logic must branch on the code, not message text.</p>
+<pre><code>{
+  "error": {
+    "code": "export_format_not_supported",
+    "message": "The requested export format is not available.",
+    "requestId": "req_01J...",
+    "details": [{"field": "format", "reason": "allowed: json"}]
+  }
+}</code></pre>
+<p>Do not return stack traces, dependency messages, secrets, or existence details that bypass authorization. Log diagnostic context under the same request identifier.</p>
+
+<h2>6. Collections and pagination</h2>
+<ul>
+  <li>Paginate collections that can grow. Prefer an opaque continuation cursor over a mutable row offset.</li>
+  <li>Document stable ordering and apply a deterministic tie-breaker.</li>
+  <li>Bound page size and return links or cursor fields needed for the next request.</li>
+  <li>Filters and sort keys form part of the contract. Validate unsupported combinations rather than silently ignoring them.</li>
+</ul>
+
+<h2>7. Idempotency and concurrency</h2>
+<ul>
+  <li>Support an idempotency key for partner operations that may be retried and would otherwise create duplicates.</li>
+  <li>Store enough request identity to return the original outcome for an accepted retry.</li>
+  <li>Use entity tags or an explicit version for conflicting edits where lost updates matter.</li>
+  <li>Do not promise exactly-once delivery across distributed systems. Design repeatable outcomes and observable reconciliation.</li>
+</ul>
+
+<h2>8. Export contracts</h2>
+<p>A download is an API response and receives the same contract discipline as JSON. The requested format determines serialization, filename, media type, escaping, and validation. Renaming a JSON file to end in <code>.csv</code> is not CSV support.</p>
+<h3>Format negotiation</h3>
+<ul>
+  <li>Use a documented query parameter or format-specific subordinate resource when users explicitly choose a download format.</li>
+  <li>Return <code>406</code> or a domain validation error for an unsupported representation; do not silently substitute another format.</li>
+  <li>Set <code>Content-Type</code> and <code>Content-Disposition</code> consistently with the bytes returned.</li>
+</ul>
+<h3>CSV requirements</h3>
+<ul>
+  <li>Generate CSV with a standards-based library, not string concatenation.</li>
+  <li>Use UTF-8, a stable documented header order, and one record shape per contract version.</li>
+  <li>Quote commas, quotes, carriage returns, and line breaks correctly; double embedded quotes.</li>
+  <li>Represent absent optional values as empty fields without dropping columns.</li>
+  <li>Protect spreadsheet consumers from formula injection when an exported text field begins with a formula-significant character.</li>
+  <li>Test parsing the produced bytes with an independent CSV parser and assert headers, row count, and representative edge cases.</li>
+</ul>
+
+<h2>9. Origin Passport example</h2>
+<p>Origin Passports are immutable issued snapshots. Adding CSV support should serialize the same authorized snapshot currently used by JSON; it must not rebuild historical values from mutable source tables or create a second business-data pathway.</p>
+<pre><code>GET /origin-passports/OP-EC-2026-0042/export?format=csv
+
+200 OK
+Content-Type: text/csv; charset=utf-8
+Content-Disposition: attachment; filename="OP-EC-2026-0042.csv"</code></pre>
+<p>The endpoint must preserve existing authorization, supersession visibility, audit logging, and retention behavior. A format change does not authorize additional fields.</p>
+
+<h2>10. Versioning and deprecation</h2>
+<ul>
+  <li>Prefer compatible additions and explicit capability discovery before introducing a new API version.</li>
+  <li>Version when an existing consumer cannot continue safely, not for every implementation change.</li>
+  <li>Publish a migration path and retirement date before removing a contract. Monitor usage and contact known consumers.</li>
+  <li>Keep old and new behavior covered by contract tests throughout the supported overlap.</li>
+</ul>
+
+<h2>11. Security and operations</h2>
+<ul>
+  <li>Authorize the requested resource and action on every request. Authentication alone is not authorization.</li>
+  <li>Apply least privilege, bounded inputs, rate limits, request-size limits, and safe logging.</li>
+  <li>Record request identifiers, outcomes, latency, dependency failures, and domain-relevant audit events without recording sensitive payloads.</li>
+  <li>Define alerts for sustained error rates, latency, and export failures. Document rollback or feature-disable steps before broad release.</li>
+</ul>
+
+<h2>12. Contract review checklist</h2>
+<ol>
+  <li>Consumer workflow and ownership are explicit.</li>
+  <li>Schema, examples, nullability, and sensitive-data exclusions are documented.</li>
+  <li>Status codes and error codes are predictable.</li>
+  <li>Retries, concurrency, pagination, and versioning are addressed where relevant.</li>
+  <li>Authorization and operational telemetry are tested.</li>
+  <li>Contract tests prove the actual bytes, headers, and failures a consumer receives.</li>
+</ol>
+
+<footer>Cocoarynth Engineering · API Design and Export Contracts Guide · https://docs.cocoarynth.example/engineering/api-contracts</footer>
+</body>
+</html>

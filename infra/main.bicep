@@ -8,10 +8,6 @@ param environmentName string
 @description('Primary Azure region for all resources.')
 param location string
 
-@secure()
-@description('Read-only fine-grained GitHub token used by Search to call the hosted GitHub MCP server.')
-param githubLabPat string
-
 @description('Azure AI Search SKU.')
 @allowed([
   'basic'
@@ -36,7 +32,6 @@ module resources './resources.bicep' = {
   params: {
     environmentName: environmentName
     location: location
-    githubLabPat: githubLabPat
     principalId: deployer().objectId
     searchSku: searchSku
     tags: tags

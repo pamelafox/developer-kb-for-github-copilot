@@ -1,18 +1,18 @@
-# Part 3: Connect GitHub Copilot to the document knowledge base
+# Part 3: Connect Copilot to a document retrieval MCP server
 
-In this part, you will explore Cocoarynth's pre-ingested document collection, test retrieval in the workshop portal, and connect GitHub Copilot to the documents-only knowledge base.
+In this part, you will explore Cocoarynth's pre-ingested document collection, test retrieval over MCP in the workshop portal, and connect GitHub Copilot to the document retrieval server.
 
 ## Contents
 
-- [1. Explore the document knowledge base](#1-explore-the-document-knowledge-base)
+- [1. Explore the document corpus](#1-explore-the-document-corpus)
 - [2. Get the connection details](#2-get-the-connection-details)
-- [3. Connect GitHub Copilot to knowledge base](#3-connect-github-copilot-to-knowledge-base)
+- [3. Connect GitHub Copilot](#3-connect-github-copilot)
 - [4. Start a fresh chat](#4-start-a-fresh-chat)
 - [5. Test document retrieval](#5-test-document-retrieval)
 - [6. Combine document and GitHub evidence](#6-combine-document-and-github-evidence)
 - [7. Check your understanding](#7-check-your-understanding)
 
-## 1. Explore the document knowledge base
+## 1. Explore the document corpus
 
 Your instructor has already indexed Cocoarynth documents into a Foundry IQ service using an Azure account. Since you do not have Azure accounts in this workshop, you will explore the Foundry IQ service using a special portal. If you're curious to see the code that ingested the documents, check out [foundry_iq.py](app/backend/foundry_iq.py).
 
@@ -21,7 +21,7 @@ Your instructor has already indexed Cocoarynth documents into a Foundry IQ servi
 The Cocoarynth documents are stored in Azure Blob Storage. These documents contain organizational context that is not available from application code or the GitHub repository.
 
 1. Open the workshop portal URL supplied by your instructor.
-2. Open **Documents**.
+2. Under **Corpus 1: Project requirements**, select **Browse documents**.
 3. Review the pre-ingested document inventory.
 4. Open each document and identify its purpose: pilot requirements, architecture decision, data-sharing policy, or support runbook.
 
@@ -29,7 +29,7 @@ The Cocoarynth documents are stored in Azure Blob Storage. These documents conta
 
 As part of the Foundry IQ ingestion pipeline, Azure Content Understanding extracted the content and metadata, and chunked the documents based on semantic boundaries.
 
-1. Open **Document chunks**.
+1. Under **Corpus 1: Project requirements**, select **View document chunks**.
 2. Select the document named "mapayca-markets-traceability-pilot-requirements.pdf".
 3. Review the chunks in page order.
 4. Inspect the page metadata and notice where one semantic topic ends and another begins.
@@ -39,35 +39,34 @@ As part of the Foundry IQ ingestion pipeline, Azure Content Understanding extrac
 
 The Foundry IQ search index contains all the document chunks, with vector embeddings for each one. You can directly query this search index using hybrid search, a combination of vector search and keyword search.
 
-1. Open **Document search**.
+1. Under **Corpus 1: Project requirements**, select **Search the index**.
 2. Search for `CSV export requirements`.
 3. Inspect the matching passages, source documents, page numbers, and relevance scores.
 4. Run a second search for `information excluded from wholesale exports`.
 
-### Query the documents knowledge base
+### Call document retrieval over MCP
 
-A Foundry IQ knowledge base sits on top of one or more knowledge sources, which can be a mix of search indexes and remote sources. You will start with a knowledge base that contains only a single knowledge source, the search index for the document chunks.
+MCP is a standard way for an AI application to discover and call tools. The workshop portal can call the `knowledge_base_retrieve` tool exposed for this corpus, so you can compare its content blocks with direct index search before connecting Copilot.
 
-1. Open **Documents knowledge base**.
+1. Under **Corpus 1: Project requirements**, select **Call over MCP**.
 2. Ask: “What must change in the Origin Passport export for the Mapayça Markets pilot?”
-3. Inspect the extractive response and source references.
-4. Review the activity log and identify the query planning and index search steps. The KB retrieval adds on the query planning stage, which proposes a better query.
-5. Compare the retrieved passages with the results from **Document search**.
+3. Inspect the MCP content blocks returned by `knowledge_base_retrieve`. Confirm that the first block contains the evidence array and each remaining block contains one reference.
+4. Match each evidence record to its reference using `ref_id`.
+5. Compare the retrieved passages with the results from **Search the index**.
 
-Before continuing, make sure you can explain the difference between a source document, an indexed chunk, direct hybrid search, and knowledge-base retrieval.
+Before continuing, make sure you can explain the difference between a source document, an indexed chunk, direct hybrid search, and an MCP tool call.
 
 ## 2. Get the connection details
 
-1. Open the workshop portal URL supplied by your instructor.
-2. Open **Documents knowledge base**.
-3. In the top-level configuration table, find **MCP URL** and select **Copy**.
-4. Get the shared Foundry IQ query key through the private method specified by your instructor. The query key is a shared lab credential. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the lab.
+1. Under **Corpus 1: Project requirements**, select **Call over MCP**.
+2. Next to **MCP endpoint**, select **Copy**.
+3. Get the shared Foundry IQ query key through the private method specified by your instructor. The query key is a shared lab credential. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the lab.
 
-## 3. Connect GitHub Copilot to knowledge base
+## 3. Connect GitHub Copilot
 
-Follow the instructions for the Copilot client you selected in Part 1. Name this connection `cocoarynth-documents` so it is easy to distinguish from GitHub MCP and the combined knowledge base used later.
+Follow the instructions for the Copilot client you selected in Part 1. Name this connection `cocoarynth-documents` so it is easy to distinguish from GitHub MCP and the combined retrieval server used later.
 
-### Option A: Configure the knowledge base in Copilot CLI
+### Option A: Configure the MCP server in Copilot CLI
 
 1. Exit the active interactive Copilot session if one is running.
 2. Run the following command, replacing both placeholders with the values supplied for the lab:
@@ -90,7 +89,7 @@ Follow the instructions for the Copilot client you selected in Part 1. Name this
 
 5. Confirm that `cocoarynth-documents` and the built-in GitHub MCP server are both running.
 
-### Option B: Configure the knowledge base in Copilot App
+### Option B: Configure the MCP server in Copilot App
 
 1. Open the GitHub Copilot App.
 2. Select **Customize** in the sidebar.
@@ -104,7 +103,7 @@ Follow the instructions for the Copilot client you selected in Part 1. Name this
 10. Leave other fields at their defaults, then select **Add server**.
 11. Confirm that `github` and `cocoarynth-documents` are both available.
 
-### Option C: Configure the knowledge base in VS Code
+### Option C: Configure the MCP server in VS Code
 
 1. Open `.mcp.json` at the root of the local checkout.
 2. Keep the existing `github` server and add the `cocoarynth-documents` server and secure input shown below.
@@ -176,7 +175,7 @@ Now ask a question that requires both integrations:
 
 > Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker, check relevant issues for related open work (using GitHub MCP), and cite both the pilot requirements and current implementation evidence.
 
-Inspect the tool calls and answer. Copilot should coordinate separate calls to the documents knowledge base and GitHub MCP.
+Inspect the tool calls and answer. Copilot should coordinate separate calls to document retrieval and GitHub MCP.
 
 A complete answer should establish that:
 
@@ -192,17 +191,17 @@ Before continuing, make sure you can answer:
 1. Which integration establishes that Mapayça Markets requires CSV?
 2. Which integration establishes that Cocoarynth Trace currently exports JSON?
 3. What work remains before the pilot can use the export?
-4. Which tool calls came from the documents knowledge base and which came from GitHub MCP?
+4. Which tool calls came from the document retrieval server and which came from GitHub MCP?
 5. Who coordinated retrieval across the two separate integrations in this exercise?
 
 <!-- markdownlint-disable MD033 -->
 <details>
 <summary>Check your answers</summary>
 
-- The documents knowledge base supplies the Mapayça Markets CSV requirement.
+- The document retrieval server supplies the Mapayça Markets CSV requirement.
 - GitHub MCP and the local repository supply the current JSON implementation evidence.
 - Cocoarynth must implement valid CSV generation while retaining the approved field allowlist and other pilot requirements.
-- Tool names and server names distinguish document-KB calls from GitHub calls.
+- Tool names and server names distinguish document retrieval calls from GitHub calls.
 - Copilot coordinated the two integrations in this exercise.
 
 </details>

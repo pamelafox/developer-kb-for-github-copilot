@@ -287,29 +287,30 @@ Expected answer:
 
 Attendees should inspect which tools Copilot calls and distinguish requirements evidence from implementation evidence.
 
-### Section 3: Combined knowledge base
+### Section 3: Grounded product requirements document
 
-Attendees connect to the pre-created `cocoarynth-kb-all`, which contains the shared Search Index Knowledge Source and shared GitHub MCP knowledge source. They disable the separate integrations, start a fresh session, and repeat the primary prompt.
+Attendees connect to the pre-created `cocoarynth-kb-all`, which contains separate Search Index knowledge sources for project documents and Cocoarynth company engineering practices. They disable the documents-only KB, keep direct GitHub MCP enabled, and start a fresh session.
 
-Suggested comparison prompt:
+Primary deliverable prompt:
 
-> Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker and cite both the pilot requirements and implementation evidence.
+> Create a local Markdown PRD for adding CSV Origin Passport export support. Use direct GitHub MCP for current implementation and open work, and use the combined KB for project requirements and company standards. Distinguish requirements, current behavior, and recommendations, and include source links.
 
-Attendees compare:
+Attendees verify:
 
-- Which sources were selected
-- Whether both the CSV requirement and JSON implementation were retrieved
-- How supporting evidence is attributed
-- Whether the answer expresses uncertainty appropriately
-- How retrieval through one combined endpoint differs from client-side coordination of two integrations
+- Foundry IQ can plan across the project-document and engineering-practice indexes.
+- Copilot coordinates the combined KB with direct GitHub MCP and the local workspace.
+- The PRD captures the CSV requirement, immutable-snapshot constraint, current JSON behavior, and open work.
+- API, React, accessibility, testing, rollout, and monitoring recommendations are grounded in the company guides.
+- Requirements, implementation facts, recommendations, and unresolved questions are labeled distinctly.
+- GitHub artifacts are linked and indexed sources are identified.
 
-The exercise must not claim that the combined knowledge base always produces a better answer or always invokes every source.
+The exercise must not claim that the combined knowledge base always invokes every index. A polished PRD is not accepted as grounded unless the tool activity and citations show the required evidence.
 
 ### Closing and optional extension
 
 The closing returns to the new-teammate analogy: code shows what exists, but planning and policy documents explain what the organization needs and why.
 
-An optional take-home task can ask attendees to draft a small implementation plan for the CSV issue using evidence from the combined knowledge base. The required workshop remains read-only and does not require attendees to modify the shared repository.
+The required workshop creates one local Markdown PRD but does not modify application code or any shared GitHub artifact. An optional take-home task can ask attendees to turn the PRD into an implementation plan in their own copy of the repository.
 
 ## Answer guide
 

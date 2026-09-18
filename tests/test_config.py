@@ -21,24 +21,20 @@ class EnvironmentLoadingTests(unittest.TestCase):
         load_azd_env.assert_not_called()
 
     @patch("app.backend.config.load_azd_env")
-    def test_uses_supported_github_mcp_tools_by_default(self, load_azd_env) -> None:
+    def test_settings_do_not_require_search_query_key(self, load_azd_env) -> None:
         with patch.dict(
             "os.environ",
             {
                 "AZURE_SEARCH_ENDPOINT": "https://example.search.windows.net",
                 "AZURE_OPENAI_ENDPOINT": "https://example.openai.azure.com",
-                "AZURE_SEARCH_QUERY_KEY": "query-key",
                 "AZURE_STORAGE_ACCOUNT_NAME": "storage",
             },
             clear=True,
         ):
             settings = Settings.from_environment()
 
-        self.assertEqual(
-            settings.github_mcp_tools,
-            ("search_code", "search_issues", "get_file_contents", "issue_read", "pull_request_read"),
-        )
-
+        self.assertEqual(settings.search_endpoint, "https://example.search.windows.net")
+        load_azd_env.assert_called_once_with(quiet=True)
 
 if __name__ == "__main__":
     unittest.main()

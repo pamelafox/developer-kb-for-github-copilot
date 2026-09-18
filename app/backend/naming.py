@@ -2,18 +2,22 @@ from dataclasses import asdict, dataclass
 
 
 SHARED_DOCUMENT_SOURCE = "cocoarynth-documents-source"
-SHARED_GENERATED_INDEX = "cocoarynth-documents-index"
+SHARED_DOCUMENT_INDEX = "cocoarynth-documents-index"
 SHARED_DOCUMENT_KNOWLEDGE_BASE = "cocoarynth-kb-docs"
-SHARED_GITHUB_SOURCE = "cocoarynth-github-source"
+SHARED_ENGINEERING_PRACTICE_SOURCE = "cocoarynth-engineering-practices-source"
+SHARED_ENGINEERING_PRACTICE_INDEX = "cocoarynth-engineering-practices-index"
+SHARED_ENGINEERING_PRACTICE_KNOWLEDGE_BASE = "cocoarynth-kb-engineering-practices"
 SHARED_COMBINED_KNOWLEDGE_BASE = "cocoarynth-kb-all"
 
 
 @dataclass(frozen=True)
 class SharedResources:
     document_source: str
-    generated_index: str
+    document_index: str
     document_knowledge_base: str
-    github_source: str
+    engineering_practice_source: str
+    engineering_practice_index: str
+    engineering_practice_knowledge_base: str
     combined_knowledge_base: str
 
     def as_dict(self) -> dict[str, str]:
@@ -23,8 +27,10 @@ class SharedResources:
 def shared_resources() -> SharedResources:
     return SharedResources(
         document_source=SHARED_DOCUMENT_SOURCE,
-        generated_index=SHARED_GENERATED_INDEX,
+        document_index=SHARED_DOCUMENT_INDEX,
         document_knowledge_base=SHARED_DOCUMENT_KNOWLEDGE_BASE,
-        github_source=SHARED_GITHUB_SOURCE,
+        engineering_practice_source=SHARED_ENGINEERING_PRACTICE_SOURCE,
+        engineering_practice_index=SHARED_ENGINEERING_PRACTICE_INDEX,
+        engineering_practice_knowledge_base=SHARED_ENGINEERING_PRACTICE_KNOWLEDGE_BASE,
         combined_knowledge_base=SHARED_COMBINED_KNOWLEDGE_BASE,
     )

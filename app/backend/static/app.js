@@ -1,7 +1,5 @@
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-let documents = [];
-const mcpEndpoints = {};
 
 function toast(message) {
   const element = $("#toast");
@@ -11,7 +9,7 @@ function toast(message) {
 }
 
 async function api(url, options = {}) {
-  const response = await fetch(url, options);
+  const response = await fetch(url, { cache: "no-store", ...options });
   if (!response.ok) {
     let message = `${response.status} ${response.statusText}`;
     try { message = (await response.json()).detail || message; } catch {}
@@ -44,25 +42,32 @@ function setLoading(container, message) {
 }
 
 const panelPaths = {
-  documents: "/documents",
-  chunks: "/document-chunks",
-  search: "/document-search",
-  "documents-kb": "/documents-kb",
-  "combined-kb": "/combined-kb",
+  home: "/",
+  documents: "/project-requirements",
+  chunks: "/project-requirements/chunks",
+  search: "/project-requirements/search",
+  "documents-mcp": "/project-requirements/mcp",
+  "engineering-practices": "/engineering-practices",
+  "engineering-practices-chunks": "/engineering-practices/chunks",
+  "engineering-practices-search": "/engineering-practices/search",
+  "engineering-practices-mcp": "/engineering-practices/mcp",
+  "combined-configuration": "/combined/configuration",
+  "combined-kb": "/combined/query",
+  "combined-mcp": "/combined/mcp",
 };
 
 function activatePanel(target, updateHistory = false) {
   const button = $(`.nav-item[data-target="${target}"]`);
   const panel = $(`#${target}`);
-  if (!button || !panel) return;
+  if (!panel) return;
   $$(".nav-item, .panel").forEach((item) => item.classList.remove("active"));
-  button.classList.add("active");
+  if (button) button.classList.add("active");
   panel.classList.add("active");
   if (updateHistory) window.history.pushState({ target }, "", panelPaths[target]);
 }
 
 function activatePanelFromLocation() {
-  const target = Object.entries(panelPaths).find(([, path]) => path === window.location.pathname)?.[0] || "documents";
+  const target = Object.entries(panelPaths).find(([, path]) => path === window.location.pathname)?.[0] || "home";
   activatePanel(target);
 }
 
@@ -70,11 +75,42 @@ $$('.nav-item').forEach((button) => button.addEventListener("click", () => activ
 window.addEventListener("popstate", activatePanelFromLocation);
 activatePanelFromLocation();
 
-async function loadDocuments() {
-  const list = $("#document-list");
+const corpora = [
+  {
+    inventoryUrl: "/api/documents",
+    chunksUrl: "/api/documents/chunks",
+    searchUrl: "/api/documents/search",
+    list: "#document-list",
+    select: "#document-select",
+    chunkList: "#chunk-list",
+    chunkSummary: "#chunk-summary",
+    searchForm: "#search-form",
+    searchQuery: "#search-query",
+    searchResults: "#search-results",
+    searchSummary: "#search-summary",
+    selectionLabel: "Select a document",
+  },
+  {
+    inventoryUrl: "/api/engineering-practices",
+    chunksUrl: "/api/engineering-practices/chunks",
+    searchUrl: "/api/engineering-practices/search",
+    list: "#engineering-practices-list",
+    select: "#engineering-practices-select",
+    chunkList: "#engineering-practices-chunk-list",
+    chunkSummary: "#engineering-practices-chunk-summary",
+    searchForm: "#engineering-practices-search-form",
+    searchQuery: "#engineering-practices-search-query",
+    searchResults: "#engineering-practices-search-results",
+    searchSummary: "#engineering-practices-search-summary",
+    selectionLabel: "Select an engineering practice document",
+  },
+];
+
+async function loadCorpus(corpus) {
+  const list = $(corpus.list);
   try {
-    const result = await api("/api/documents");
-    documents = result.documents || [];
+    const result = await api(corpus.inventoryUrl);
+    const documents = result.documents || [];
     list.replaceChildren();
     for (const document of documents) {
       const link = element("a", "document-row");
@@ -90,8 +126,8 @@ async function loadDocuments() {
     }
     if (!documents.length) list.append(element("div", "empty-state", "No PDF documents found."));
 
-    const select = $("#document-select");
-    select.replaceChildren(new Option("Select a document", ""));
+    const select = $(corpus.select);
+    select.replaceChildren(new Option(corpus.selectionLabel, ""));
     for (const document of documents) select.add(new Option(document.name, document.name));
   } catch (error) {
     list.replaceChildren(element("div", "empty-state error", error.message));
@@ -99,23 +135,25 @@ async function loadDocuments() {
   }
 }
 
-$("#document-select").addEventListener("change", async (event) => {
-  const documentName = event.target.value;
-  const list = $("#chunk-list");
-  if (!documentName) {
-    list.replaceChildren(element("div", "empty-state", "Select a document to inspect its chunks."));
-    return;
-  }
-  setLoading(list, "Loading ordered chunks...");
-  try {
-    const result = await api(`/api/documents/chunks?document=${encodeURIComponent(documentName)}&limit=500`);
-    $("#chunk-summary").textContent = `${result.chunks.length} chunks · ${result.index}`;
-    list.replaceChildren(...result.chunks.map((chunk, index) => renderChunk(chunk, index + 1)));
-  } catch (error) {
-    list.replaceChildren(element("div", "empty-state error", error.message));
-    toast(error.message);
-  }
-});
+for (const corpus of corpora) {
+  $(corpus.select).addEventListener("change", async (event) => {
+    const documentName = event.target.value;
+    const list = $(corpus.chunkList);
+    if (!documentName) {
+      list.replaceChildren(element("div", "empty-state", `${corpus.selectionLabel} to inspect its chunks.`));
+      return;
+    }
+    setLoading(list, "Loading ordered chunks...");
+    try {
+      const result = await api(`${corpus.chunksUrl}?document=${encodeURIComponent(documentName)}&limit=500`);
+      $(corpus.chunkSummary).textContent = `${result.chunks.length} chunks · ${result.index}`;
+      list.replaceChildren(...result.chunks.map((chunk, index) => renderChunk(chunk, index + 1)));
+    } catch (error) {
+      list.replaceChildren(element("div", "empty-state error", error.message));
+      toast(error.message);
+    }
+  });
+}
 
 function renderChunk(chunk, position, includeScore = false) {
   const article = element("article", "chunk-card");
@@ -149,26 +187,28 @@ function renderChunk(chunk, position, includeScore = false) {
   return article;
 }
 
-$("#search-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const query = $("#search-query").value.trim();
-  const results = $("#search-results");
-  if (!query) return;
-  setLoading(results, "Running hybrid search...");
-  try {
-    const result = await api("/api/documents/search", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, limit: 10 }),
-    });
-    $("#search-summary").textContent = `${result.matches.length} matches · hybrid semantic + vector`;
-    results.replaceChildren(...result.matches.map((chunk, index) => renderChunk(chunk, index + 1, true)));
-    if (!result.matches.length) results.append(element("div", "empty-state", "No matching chunks."));
-  } catch (error) {
-    results.replaceChildren(element("div", "empty-state error", error.message));
-    toast(error.message);
-  }
-});
+for (const corpus of corpora) {
+  $(corpus.searchForm).addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const query = $(corpus.searchQuery).value.trim();
+    const results = $(corpus.searchResults);
+    if (!query) return;
+    setLoading(results, "Running hybrid search...");
+    try {
+      const result = await api(corpus.searchUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, limit: 10 }),
+      });
+      $(corpus.searchSummary).textContent = `${result.matches.length} matches · ${result.index} · hybrid semantic + vector`;
+      results.replaceChildren(...result.matches.map((chunk, index) => renderChunk(chunk, index + 1, true)));
+      if (!result.matches.length) results.append(element("div", "empty-state", "No matching chunks."));
+    } catch (error) {
+      results.replaceChildren(element("div", "empty-state error", error.message));
+      toast(error.message);
+    }
+  });
+}
 
 function configDetails(title, value) {
   const details = element("details", "config-details");
@@ -207,16 +247,23 @@ function sourceFacts(source) {
 }
 
 async function loadConfiguration() {
-  const containers = {
-    documents: $("#documents-kb-configuration"),
-    combined: $("#combined-kb-configuration"),
-  };
-  Object.values(containers).forEach((container) => setLoading(container, "Loading live resource definition..."));
+  const container = $("#combined-kb-configuration");
+  setLoading(container, "Loading live resource definition...");
   try {
     const result = await api("/api/knowledge-bases");
     const sources = new Map(result.knowledgeSources.map((source) => [source.name, source]));
-    Object.values(containers).forEach((container) => container.replaceChildren());
+    const endpointKinds = {
+      "cocoarynth-kb-docs": "documents",
+      "cocoarynth-kb-engineering-practices": "engineering-practices",
+      "cocoarynth-kb-all": "combined",
+    };
     for (const kb of result.knowledgeBases) {
+      $$(`.mcp-strip[data-kb="${endpointKinds[kb.name]}"]`).forEach((strip) => {
+        $("code", strip).textContent = kb.mcpUrl;
+      });
+    }
+    container.replaceChildren();
+    for (const kb of result.knowledgeBases.filter((item) => item.name === "cocoarynth-kb-all")) {
       const section = element("section", "configuration-item");
       section.append(element("h3", "", kb.name));
       const facts = element("dl", "config-facts");
@@ -224,6 +271,7 @@ async function loadConfiguration() {
       for (const [label, value] of [
         ["Description", kb.description],
         ["Output mode", kb.outputMode || kb.output_mode || "default"],
+        ["Reranker threshold", kb.rerankerThreshold ?? kb.reranker_threshold],
         ["Reasoning", kb.retrievalReasoningEffort?.kind || kb.retrieval_reasoning_effort?.kind || "default"],
         ["Retrieval instructions", kb.retrievalInstructions || kb.retrieval_instructions],
         ["Model deployment", model.deploymentId || model.deployment_id || model.modelName || model.model_name],
@@ -231,12 +279,12 @@ async function loadConfiguration() {
         if (!value) continue;
         facts.append(element("dt", "", label), element("dd", "", value));
       }
-      const endpointKind = kb.name === "cocoarynth-kb-all" ? "combined" : "documents";
-      const endpointStrip = $(`.mcp-strip[data-kb="${endpointKind}"]`);
       const endpointValue = element("dd", "mcp-value mcp-strip");
-      endpointValue.dataset.kb = endpointKind;
-      endpointValue.append($("code", endpointStrip), $("button", endpointStrip));
-      endpointStrip.remove();
+      endpointValue.dataset.kb = "combined";
+      const copyButton = element("button", "copy-endpoint", "Copy");
+      copyButton.type = "button";
+      copyButton.setAttribute("aria-label", "Copy combined MCP endpoint");
+      endpointValue.append(element("code", "", kb.mcpUrl), copyButton);
       facts.append(element("dt", "", "MCP URL"), endpointValue);
       section.append(facts);
       const sourceList = element("div", "source-list");
@@ -249,10 +297,10 @@ async function loadConfiguration() {
         sourceList.append(row);
       }
       section.append(sourceList);
-      containers[endpointKind].append(section);
+      container.append(section);
     }
   } catch (error) {
-    Object.values(containers).forEach((container) => container.replaceChildren(element("div", "empty-state error", error.message)));
+    container.replaceChildren(element("div", "empty-state error", error.message));
     toast(error.message);
   }
 }
@@ -274,7 +322,7 @@ function activityLabel(activity) {
     searchIndex: "Index search",
     mcpServer: "MCP tool call",
     mcpTool: "MCP tool call",
-    agenticReasoning: "Agentic reasoning",
+    agenticReasoning: "Result re-ranking",
     modelAnswerSynthesis: "Answer synthesis",
   })[activity.type] || activity.type || "Activity";
 }
@@ -309,10 +357,14 @@ function createTokenMeter(activity) {
   meter.append(track);
 
   const legend = element("div", "token-legend");
-  for (const [kind, value] of [["Input", input], ["Output", output], ["Reasoning", reasoning]]) {
+  for (const [kind, label, value] of [
+    ["input", "Input", input],
+    ["output", "Output", output],
+    ["reasoning", "Re-ranker", reasoning],
+  ]) {
     if (!value) continue;
-    const item = element("span", `token-key token-${kind.toLowerCase()}`);
-    item.append(element("i"), document.createTextNode(`${kind} ${value.toLocaleString()}`));
+    const item = element("span", `token-key token-${kind}`);
+    item.append(element("i"), document.createTextNode(`${label} ${value.toLocaleString()}`));
     legend.append(item);
   }
   meter.append(legend);
@@ -338,9 +390,6 @@ function createActivityDetails(activity) {
     appendActivityFact(details, "Results", activity.count);
   } else if (activity.type === "modelQueryPlanning" || activity.type === "modelAnswerSynthesis") {
     appendActivityFact(details, "Model", activity.modelName);
-  } else if (activity.type === "agenticReasoning") {
-    appendActivityFact(details, "Reasoning effort", activity.retrievalReasoningEffort?.kind || "default");
-    details.append(element("p", "activity-note", "Reasoning tokens are consumed by Azure AI Search models, not the deployed chat model."));
   }
 
   if (activity.error?.message) details.append(element("div", "activity-error", activity.error.message));
@@ -427,7 +476,7 @@ $$('.kb-search').forEach((form) => form.addEventListener("submit", async (event)
   const question = $("textarea", form).value.trim();
   const combined = form.dataset.combined === "true";
   if (!question) return;
-  setLoading(output, combined ? "Searching documents and GitHub..." : "Searching documents knowledge base...");
+  setLoading(output, combined ? "Searching project documents and engineering practices..." : "Searching documents knowledge base...");
   try {
     const result = await api("/api/retrieve", {
       method: "POST",
@@ -441,22 +490,58 @@ $$('.kb-search').forEach((form) => form.addEventListener("submit", async (event)
   }
 }));
 
-async function loadMcpEndpoints() {
-  const [documentsConfig, combinedConfig] = await Promise.all([
-    api("/api/mcp?combined=false"),
-    api("/api/mcp?combined=true"),
-  ]);
-  mcpEndpoints.documents = documentsConfig.url;
-  mcpEndpoints.combined = combinedConfig.url;
-  $$(".mcp-strip").forEach((strip) => $("code", strip).textContent = mcpEndpoints[strip.dataset.kb]);
+function formatMcpContent(block) {
+  if (typeof block.text !== "string") return JSON.stringify(block, null, 2);
+  try {
+    return JSON.stringify(JSON.parse(block.text), null, 2);
+  } catch {
+    return block.text;
+  }
 }
+
+function renderMcpResult(container, response) {
+  container.replaceChildren();
+  const result = response.result || {};
+  const heading = element("div", "mcp-result-heading");
+  heading.append(
+    element("h3", "", `MCP content · ${(result.content || []).length} blocks`),
+    element("span", result.isError ? "mcp-status error" : "mcp-status", result.isError ? "Tool error" : "Success"),
+  );
+  container.append(heading);
+  for (const block of result.content || []) {
+    const item = element("article", "mcp-content-block");
+    item.append(element("span", "resource-kind", block.type || "content"));
+    item.append(element("pre", "", formatMcpContent(block)));
+    container.append(item);
+  }
+  if (!result.content?.length) container.append(element("div", "empty-state", "The MCP tool returned no content blocks."));
+}
+
+$$('.mcp-search').forEach((form) => form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const output = form.nextElementSibling;
+  const question = $("textarea", form).value.trim();
+  if (!question) return;
+  setLoading(output, "Calling knowledge_base_retrieve over MCP...");
+  try {
+    const result = await api("/api/mcp/retrieve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question, target: form.dataset.target }),
+    });
+    renderMcpResult(output, result);
+  } catch (error) {
+    output.replaceChildren(element("div", "empty-state error", error.message));
+    toast(error.message);
+  }
+}));
 
 document.addEventListener("click", async (event) => {
   const button = event.target.closest(".copy-endpoint");
   if (!button) return;
-  const endpoint = mcpEndpoints[button.closest(".mcp-strip").dataset.kb];
+  const endpoint = $("code", button.closest(".mcp-strip")).textContent;
   await navigator.clipboard.writeText(endpoint);
   toast("MCP endpoint copied.");
 });
 
-Promise.all([loadDocuments(), loadMcpEndpoints(), loadConfiguration()]).catch((error) => toast(error.message));
+Promise.all([...corpora.map(loadCorpus), loadConfiguration()]).catch((error) => toast(error.message));

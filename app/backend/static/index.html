@@ -7,28 +7,54 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/styles.css?v=9" />
+    <link rel="stylesheet" href="/assets/styles.css?v=12" />
   </head>
   <body>
     <header>
-      <img class="brand-mark" src="/assets/cocoarynth-mark.png?v=2" alt="Cocoarynth" />
-      <div class="brand-copy"><span class="kicker">Cocoarynth Trace</span><h1>Knowledge explorer</h1></div>
+      <a class="brand-home" href="/" aria-label="Workshop portal home">
+        <img class="brand-mark" src="/assets/cocoarynth-mark.png?v=2" alt="Cocoarynth" />
+        <div class="brand-copy"><span class="kicker">Cocoarynth Trace</span><h1>Workshop portal</h1></div>
+      </a>
       <div class="service-state"><span></span> Foundry IQ connected</div>
     </header>
 
     <main>
       <aside>
         <nav aria-label="Knowledge explorer pages">
-          <button class="nav-item active" data-target="documents">Documents</button>
-          <button class="nav-item" data-target="chunks">Document chunks</button>
-          <button class="nav-item" data-target="search">Document search</button>
-          <button class="nav-item" data-target="documents-kb">Documents knowledge base</button>
-          <button class="nav-item" data-target="combined-kb">Combined knowledge base</button>
+          <div class="nav-group">
+            <span class="nav-label">Corpus 1: Project requirements</span>
+            <button class="nav-item" data-target="documents">Browse documents</button>
+            <button class="nav-item" data-target="chunks">View document chunks</button>
+            <button class="nav-item" data-target="search">Search the index</button>
+            <button class="nav-item" data-target="documents-mcp">Call over MCP</button>
+          </div>
+          <div class="nav-group">
+            <span class="nav-label">Corpus 2: Engineering practices</span>
+            <button class="nav-item" data-target="engineering-practices">Browse documents</button>
+            <button class="nav-item" data-target="engineering-practices-chunks">View document chunks</button>
+            <button class="nav-item" data-target="engineering-practices-search">Search the index</button>
+            <button class="nav-item" data-target="engineering-practices-mcp">Call over MCP</button>
+          </div>
+          <div class="nav-group nav-group-combined">
+            <span class="nav-label">Combined knowledge base</span>
+            <button class="nav-item" data-target="combined-configuration">Configuration</button>
+            <button class="nav-item" data-target="combined-kb">Query knowledge base</button>
+            <button class="nav-item" data-target="combined-mcp">Call over MCP</button>
+          </div>
         </nav>
       </aside>
 
       <section class="workspace">
-        <div id="documents" class="panel active">
+        <div id="home" class="panel active welcome-panel">
+          <div class="panel-heading"><h2>Welcome</h2><p>Choose an area from the navigation to explore the workshop resources.</p></div>
+          <div class="welcome-options">
+            <section><h3>Project requirements</h3><p>Browse source documents, inspect chunks, search the index, or call retrieval over MCP.</p></section>
+            <section><h3>Engineering practices</h3><p>Explore the engineering guidance corpus through the same document and retrieval views.</p></section>
+            <section><h3>Combined knowledge base</h3><p>Inspect its configuration or retrieve across both corpora.</p></section>
+          </div>
+        </div>
+
+        <div id="documents" class="panel">
           <div class="panel-heading"><h2>Documents</h2><p>Files in the private Blob container, opened through the application proxy.</p></div>
           <div id="document-list" class="document-list" aria-live="polite"><div class="empty-state">Loading documents...</div></div>
         </div>
@@ -48,24 +74,60 @@
           <div id="search-results" class="result-list"><div class="empty-state">Search results will appear here.</div></div>
         </div>
 
-        <div id="documents-kb" class="panel">
-          <div class="panel-heading"><h2>Documents knowledge base</h2></div>
-          <div id="documents-kb-configuration" class="configuration-grid"><div class="empty-state">Loading configuration...</div></div>
-          <form class="kb-search" data-combined="false"><textarea aria-label="Documents knowledge base question" rows="3">What must change in the Origin Passport export for the Mapayça Markets pilot?</textarea><button class="primary" type="submit">Search documents KB</button></form>
-          <div class="kb-output"><div class="empty-state">The extractive response and activity log will appear here.</div></div>
-          <div class="mcp-strip" data-kb="documents"><span>Documents KB MCP</span><code>Loading endpoint...</code><button class="copy-endpoint" aria-label="Copy documents MCP endpoint">Copy</button></div>
+        <div id="engineering-practices" class="panel">
+          <div class="panel-heading"><h2>Engineering practices</h2><p>Company engineering guidance in its separate private Blob container.</p></div>
+          <div id="engineering-practices-list" class="document-list" aria-live="polite"><div class="empty-state">Loading engineering practices...</div></div>
+        </div>
+
+        <div id="engineering-practices-chunks" class="panel">
+          <div class="panel-heading"><h2>Engineering practice document chunks</h2><p>Inspect Content Understanding output from the engineering-practices index.</p></div>
+          <label for="engineering-practices-select">Document</label>
+          <select id="engineering-practices-select"><option value="">Select an engineering practice document</option></select>
+          <div id="engineering-practices-chunk-summary" class="result-summary"></div>
+          <div id="engineering-practices-chunk-list" class="result-list"><div class="empty-state">Select an engineering practice document to inspect its chunks.</div></div>
+        </div>
+
+        <div id="engineering-practices-search" class="panel">
+          <div class="panel-heading"><h2>Engineering practices search</h2><p>Run a hybrid semantic and vector query directly against the engineering-practices index.</p></div>
+          <form id="engineering-practices-search-form" class="search-bar"><input id="engineering-practices-search-query" aria-label="Search engineering practice chunks" value="testing review rollout and monitoring standards" /><button class="primary" type="submit">Search</button></form>
+          <div id="engineering-practices-search-summary" class="result-summary"></div>
+          <div id="engineering-practices-search-results" class="result-list"><div class="empty-state">Search results will appear here.</div></div>
+        </div>
+
+        <div id="documents-mcp" class="panel">
+          <div class="panel-heading"><h2>Project requirements over MCP</h2><p>Call the retrieval tool exposed for the project-requirements corpus.</p></div>
+          <div class="mcp-strip" data-kb="documents"><span>MCP endpoint</span><code>Loading endpoint...</code><button class="copy-endpoint" aria-label="Copy project requirements MCP endpoint">Copy</button></div>
+          <form class="mcp-search" data-target="documents"><textarea aria-label="Project requirements MCP question" rows="3">What must change in the Origin Passport export for the Mapayça Markets pilot?</textarea><button class="primary" type="submit">Call over MCP</button></form>
+          <div class="mcp-output"><div class="empty-state">MCP content blocks will appear here.</div></div>
+        </div>
+
+        <div id="engineering-practices-mcp" class="panel">
+          <div class="panel-heading"><h2>Engineering practices over MCP</h2><p>Call the retrieval tool exposed for the engineering-practices corpus.</p></div>
+          <div class="mcp-strip" data-kb="engineering-practices"><span>MCP endpoint</span><code>Loading endpoint...</code><button class="copy-endpoint" aria-label="Copy engineering practices MCP endpoint">Copy</button></div>
+          <form class="mcp-search" data-target="engineering-practices"><textarea aria-label="Engineering practices MCP question" rows="3">What testing, review, rollout, and monitoring standards apply?</textarea><button class="primary" type="submit">Call over MCP</button></form>
+          <div class="mcp-output"><div class="empty-state">MCP content blocks will appear here.</div></div>
+        </div>
+
+        <div id="combined-configuration" class="panel">
+          <div class="panel-heading"><h2>Combined knowledge base configuration</h2><p>Inspect the two-source retrieval definition and its MCP endpoint.</p></div>
+          <div id="combined-kb-configuration" class="configuration-grid"><div class="empty-state">Loading configuration...</div></div>
         </div>
 
         <div id="combined-kb" class="panel">
-          <div class="panel-heading"><h2>Combined knowledge base</h2><p>Inspect its configuration and retrieve from indexed documents and live GitHub tools in one trace.</p></div>
-          <div id="combined-kb-configuration" class="configuration-grid"><div class="empty-state">Loading configuration...</div></div>
-          <form class="kb-search" data-combined="true"><textarea aria-label="Combined knowledge base question" rows="3">Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker, check relevant issues for related open work, and cite both the pilot requirements and current implementation evidence.</textarea><button class="primary" type="submit">Search combined KB</button></form>
-          <div class="kb-output"><div class="empty-state">The extractive response, GitHub evidence, and activity log will appear here.</div></div>
-          <div class="mcp-strip" data-kb="combined"><span>Combined KB MCP</span><code>Loading endpoint...</code><button class="copy-endpoint" aria-label="Copy combined MCP endpoint">Copy</button></div>
+          <div class="panel-heading"><h2>Query knowledge base</h2><p>Retrieve from project requirements and engineering practices in one trace.</p></div>
+          <form class="kb-search" data-combined="true"><textarea aria-label="Combined knowledge base question" rows="3">What product requirements and company engineering standards should guide CSV Origin Passport support? Cite evidence from both corpora.</textarea><button class="primary" type="submit">Search combined KB</button></form>
+          <div class="kb-output"><div class="empty-state">The extractive response, cross-index evidence, and activity log will appear here.</div></div>
+        </div>
+
+        <div id="combined-mcp" class="panel">
+          <div class="panel-heading"><h2>Combined knowledge base over MCP</h2><p>Call the same two-source retrieval through the standard MCP tool interface.</p></div>
+          <div class="mcp-strip" data-kb="combined"><span>MCP endpoint</span><code>Loading endpoint...</code><button class="copy-endpoint" aria-label="Copy combined MCP endpoint">Copy</button></div>
+          <form class="mcp-search" data-target="combined"><textarea aria-label="Combined MCP question" rows="3">What product requirements and company engineering standards should guide CSV Origin Passport support? Cite evidence from both corpora.</textarea><button class="primary" type="submit">Call over MCP</button></form>
+          <div class="mcp-output"><div class="empty-state">MCP content blocks will appear here.</div></div>
         </div>
       </section>
     </main>
     <div id="toast" role="status" aria-live="polite"></div>
-    <script src="/assets/app.js?v=9"></script>
+    <script src="/assets/app.js?v=24"></script>
   </body>
 </html>
