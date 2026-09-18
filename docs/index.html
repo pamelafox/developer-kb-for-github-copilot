@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Building a developer knowledge base for GitHub Copilot</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reset.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/theme/simple.css" id="theme">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/a11y-light.min.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;600;700&display=swap">
+		<style>
+		:root {
+			--ink: #241814;
+			--heading: #361f16;
+			--cream: #ffffff;
+			--paper: #ffffff;
+			--cocoa: #5a3525;
+			--gold: #d5a23f;
+			--purple: #6e40c9;
+			--green: #237a45;
+			--blue: #0969da;
+			--muted: #6d5a50;
+			--border: rgba(90, 53, 37, 0.22);
+			--shadow: rgba(54, 31, 22, 0.14);
+		}
+
+		html,
+		body {
+			background: #ffffff;
+		}
+
+		.reveal {
+			background: #ffffff;
+			color: var(--ink);
+			font-family: 'Mona Sans', system-ui, sans-serif;
+		}
+
+		.reveal .slides section {
+			box-sizing: border-box;
+			height: 720px;
+			min-height: 720px;
+			padding: 66px 48px 62px;
+			text-align: left;
+		}
+
+		.reveal .slides section:not(.heading-only)::before {
+			display: none;
+		}
+
+		.reveal h1,
+		.reveal h2,
+		.reveal h3,
+		.reveal h4 {
+			color: #000000;
+			font-family: 'Mona Sans', system-ui, sans-serif;
+			text-transform: none;
+			letter-spacing: -0.02em;
+			font-weight: 600;
+		}
+
+		.reveal h1 { font-size: 1.9em; }
+		.reveal h2 { font-size: 1.68em; font-weight: 500; }
+		.reveal h3 { font-size: 1.48em; font-weight: 500; margin: 0 0 0.55em; }
+		.reveal h4 { font-size: 0.82em; margin: 0 0 0.35em; }
+
+		.reveal p,
+		.reveal li,
+		.reveal td,
+		.reveal th {
+			font-size: 0.78em;
+			line-height: 1.32;
+		}
+
+		.reveal strong { color: #000000; }
+		.reveal a { color: var(--blue); }
+		.reveal code {
+			border-radius: 0.3em;
+			background: rgba(110, 64, 201, 0.09);
+			color: #4d278e;
+			padding: 0.08em 0.25em;
+		}
+
+		.reveal pre {
+			width: 100%;
+			margin: 0;
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			background: #f6f2eb;
+			box-shadow: none;
+		}
+
+		.reveal pre code {
+			max-height: none;
+			padding: 14px 18px;
+			font-size: 0.76em;
+			line-height: 1.3;
+		}
+
+		.reveal table {
+			width: 100%;
+			border-collapse: separate;
+			border-spacing: 0;
+			overflow: hidden;
+			border: 1px solid #d0d7de;
+			border-radius: 4px;
+			background: var(--paper);
+		}
+
+		.reveal th,
+		.reveal td {
+			padding: 0.4em 0.55em;
+			border-bottom: 1px solid #d0d7de;
+		}
+
+		.reveal th {
+			background: #f6f8fa;
+			font-weight: 700;
+		}
+
+		.reveal tr:last-child td { border-bottom: 0; }
+		.reveal ul.tight li,
+		.reveal ol.tight li { margin-bottom: 0.26em; }
+
+		.reveal section.compact-title h3 {
+			font-size: 1.28em;
+		}
+
+		.reveal section.agenda-slide table {
+			font-size: 0.68em;
+		}
+
+		.reveal section.agenda-slide th,
+		.reveal section.agenda-slide td {
+			padding: 0.25em 0.48em;
+		}
+
+		.reveal section.heading-only {
+			display: block !important;
+			height: 100%;
+			min-height: 720px;
+			padding: 66px 48px 62px;
+			box-sizing: border-box;
+			text-align: left;
+			background: #ffffff;
+		}
+
+		.reveal section.title-slide {
+			display: block !important;
+			position: absolute;
+			overflow: hidden;
+			padding: 0;
+			text-align: left;
+			background: #ffffff;
+		}
+
+		.reveal section.title-slide h1 {
+			position: absolute;
+			top: 24px;
+			left: 178px;
+			right: 58px;
+			margin: 0;
+			color: #000000;
+			font-size: 1.46em;
+			font-weight: 600;
+			line-height: 1;
+			letter-spacing: -0.045em;
+		}
+
+		.reveal section.heading-only p {
+			max-width: 820px;
+		}
+
+		.reveal section:not(.title-slide)::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			box-sizing: border-box;
+			height: 46px;
+			border-top: 3px solid #078c2f;
+			background:
+				url('github-mark.png') 8px center / 30px 30px no-repeat,
+				url('universe-26-badge.png') right bottom / 81px 44px no-repeat,
+				#ffffff;
+		}
+
+		.reveal section.title-slide::after {
+			display: none;
+		}
+
+		.reveal section.title-slide::before {
+			content: "";
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			z-index: 10;
+			width: 81px;
+			height: 44px;
+			background: url('universe-26-badge.png') center / 81px 44px no-repeat;
+		}
+
+		.universe-sidebar {
+			position: absolute;
+			inset: 0 auto 0 0;
+			width: 153px;
+			border-right: 3px solid #008c2d;
+			background: #ffffff;
+		}
+
+		.sidebar-terminal {
+			display: grid;
+			height: 163px;
+			place-items: center;
+			background: #59e981;
+			color: #08b93d;
+			font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+			font-size: 2.12em;
+			font-weight: 700;
+			letter-spacing: -0.18em;
+		}
+
+		.sidebar-pixel {
+			position: relative;
+			height: 163px;
+			background: #07892b;
+		}
+
+		.pixel-cross {
+			position: absolute;
+			top: 66px;
+			left: 62px;
+			width: 30px;
+			height: 30px;
+			background: #c84c00;
+			box-shadow:
+				-30px 0 #ff70df,
+				30px 0 #ff70df,
+				0 -30px #ff70df,
+				0 30px #ff70df,
+				-30px 30px #ff70df,
+				30px 30px #ff70df,
+				-30px -30px #ff70df,
+				30px -30px #ff70df;
+		}
+
+		.sidebar-words {
+			position: relative;
+			height: 194px;
+			overflow: hidden;
+			background: #c6aa00;
+			color: #ffffff;
+			font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+			font-size: 0.36em;
+			line-height: 2.15;
+		}
+
+		.sidebar-words span {
+			position: absolute;
+			white-space: nowrap;
+		}
+
+		.sidebar-octocat {
+			position: relative;
+			height: 200px;
+			overflow: hidden;
+			border-radius: 18px 18px 0 0;
+			background: linear-gradient(#d9d9d9 0 27%, #f777df 27%);
+		}
+
+		.sidebar-octocat img {
+			position: absolute;
+			left: 18px;
+			bottom: -8px;
+			width: 116px;
+			height: 116px;
+			object-fit: contain;
+		}
+
+		.title-meta {
+			position: absolute;
+			left: 153px;
+			right: 0;
+			bottom: 0;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			box-sizing: border-box;
+			height: 150px;
+			border-top: 5px solid #078c2f;
+			overflow: hidden;
+			background: #ffffff;
+		}
+
+		.title-meta-cell {
+			display: grid;
+			grid-template-columns: 92px 1fr;
+			gap: 20px;
+			align-items: center;
+			box-sizing: border-box;
+			min-height: 0;
+			overflow: hidden;
+			padding: 16px 30px;
+			border-right: 3px solid #318bff;
+		}
+
+		.speaker-photo {
+			display: block;
+			width: 88px;
+			height: 88px;
+			object-fit: cover;
+			border-radius: 50%;
+		}
+
+		.speaker-details p {
+			margin: 0 0 4px;
+			color: #000000;
+			font-size: 0.58em;
+			line-height: 1.18;
+		}
+
+		.speaker-details .role {
+			color: #687a8e;
+			font-size: 0.56em;
+			font-weight: 600;
+		}
+
+		.title-meta-cell:last-child {
+			border-right: 0;
+		}
+
+		.eyebrow {
+			color: #718295;
+			font-size: 0.58em !important;
+			font-weight: 500;
+			letter-spacing: 0.02em;
+			text-transform: uppercase;
+		}
+
+		.subtitle {
+			color: var(--muted);
+			font-size: 0.73em !important;
+			line-height: 1.35 !important;
+		}
+
+		.two-column {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 30px;
+			align-items: start;
+		}
+
+		.three-column {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 20px;
+			align-items: stretch;
+		}
+
+		.card {
+			box-sizing: border-box;
+			height: 100%;
+			padding: 17px 19px;
+			border: 1px solid #d0d7de;
+			border-radius: 5px;
+			background: var(--paper);
+			box-shadow: none;
+		}
+
+		.card p,
+		.card li { font-size: 0.66em; }
+		.card.purple { border-top: 8px solid var(--purple); }
+		.card.gold { border-top: 8px solid var(--gold); }
+		.card.green { border-top: 8px solid var(--green); }
+		.card.blue { border-top: 8px solid var(--blue); }
+
+		.speaker-slide {
+			padding: 32px 40px 62px !important;
+		}
+
+		.speaker-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 40px;
+			height: 100%;
+		}
+
+		.speaker-profile {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.speaker-profile-photo {
+			display: block;
+			width: 100%;
+			height: 318px;
+			object-fit: cover;
+			border: 0;
+			border-radius: 14px;
+		}
+
+		.speaker-profile-name {
+			margin: 25px 0 0;
+			color: #000000;
+			font-size: 1.08em !important;
+			font-weight: 500;
+			line-height: 1 !important;
+		}
+
+		.speaker-profile-role {
+			margin: 6px 0 0;
+			color: #718295;
+			font-size: 0.5em !important;
+			font-weight: 600;
+			line-height: 1 !important;
+			text-transform: uppercase;
+		}
+
+		.speaker-profile-bio {
+			margin: auto 0 38px;
+			max-width: 94%;
+			color: #000000;
+			font-size: 0.58em !important;
+			line-height: 1.32 !important;
+		}
+
+		.big-quote {
+			margin: 0.55em auto 0;
+			max-width: 990px;
+			color: var(--heading);
+			font-family: 'Mona Sans', system-ui, sans-serif;
+			font-weight: 700;
+			font-size: 1.28em !important;
+			line-height: 1.22 !important;
+			text-align: center;
+		}
+
+		.prompt {
+			padding: 18px 22px;
+			border-left: 9px solid var(--purple);
+			border-radius: 10px;
+			background: rgba(110, 64, 201, 0.08);
+			font-size: 0.87em !important;
+			line-height: 1.35 !important;
+		}
+
+		.callout {
+			padding: 14px 18px;
+			border-radius: 4px;
+			background: #f6f8fa;
+			font-size: 0.72em !important;
+		}
+
+		.reveal .slide-number {
+			display: none !important;
+		}
+
+		.logo-row {
+			display: flex;
+			gap: 34px;
+			align-items: center;
+			justify-content: center;
+			margin-top: 24px;
+		}
+
+		.logo-row img {
+			width: 160px;
+			height: 160px;
+			object-fit: contain;
+			border-radius: 22px;
+			background: #fff;
+			box-shadow: 0 12px 28px rgba(54, 31, 22, 0.16);
+		}
+
+		.flow {
+			display: flex;
+			gap: 12px;
+			align-items: center;
+			justify-content: center;
+			margin-top: 24px;
+		}
+
+		.flow .node {
+			min-width: 148px;
+			padding: 17px 15px;
+			border: 2px solid var(--cocoa);
+			border-radius: 14px;
+			background: var(--paper);
+			font-size: 0.65em;
+			font-weight: 700;
+			text-align: center;
+		}
+
+		.flow .node.purple { border-color: var(--purple); background: rgba(110, 64, 201, 0.08); }
+		.flow .node.gold { border-color: var(--gold); background: rgba(213, 162, 63, 0.13); }
+		.flow .node.green { border-color: var(--green); background: rgba(35, 122, 69, 0.08); }
+		.flow .arrow {
+			color: var(--purple);
+			font-size: 1.25em;
+			font-weight: 700;
+		}
+
+		.stack {
+			display: grid;
+			gap: 11px;
+			margin-top: 18px;
+		}
+
+		.stack .layer {
+			padding: 11px 16px;
+			border-radius: 11px;
+			color: #fff;
+			font-size: 0.67em;
+			font-weight: 700;
+			text-align: center;
+		}
+
+		.layer.document { background: var(--cocoa); }
+		.layer.chunk { background: #8b5f43; }
+		.layer.index { background: var(--gold); color: var(--ink); }
+		.layer.kb { background: var(--purple); }
+		.layer.copilot { background: var(--green); }
+
+		.step {
+			display: grid;
+			grid-template-columns: 56px 1fr;
+			gap: 12px;
+			align-items: center;
+			margin: 10px 0;
+		}
+
+		.step-number {
+			display: grid;
+			width: 46px;
+			height: 46px;
+			place-items: center;
+			border-radius: 50%;
+			background: var(--purple);
+			color: #fff;
+			font-size: 0.72em;
+			font-weight: 700;
+		}
+
+		.step div:last-child {
+			font-size: 0.7em;
+			line-height: 1.25;
+		}
+
+		.status {
+			display: inline-block;
+			padding: 0.12em 0.5em;
+			border-radius: 999px;
+			font-size: 0.7em;
+			font-weight: 700;
+		}
+
+		.status.no { background: #ffebe9; color: #cf222e; }
+		.status.yes { background: #dafbe1; color: #116329; }
+		.status.open { background: #fff8c5; color: #7d4e00; }
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section class="heading-only title-slide">
+					<div class="universe-sidebar" aria-hidden="true">
+						<div class="sidebar-terminal">&gt;_</div>
+						<div class="sidebar-pixel"><div class="pixel-cross"></div></div>
+						<div class="sidebar-words">
+							<span style="top: 4px; left: 76px;">all&nbsp;&nbsp;tgthr</span>
+							<span style="top: 38px; left: 136px;">now</span>
+							<span style="top: 72px; left: 8px;">tgthr</span>
+							<span style="top: 106px; left: 16px;">now&nbsp;&nbsp;&nbsp;all</span>
+							<span style="top: 140px; left: 68px;">tgthr&nbsp;&nbsp;now</span>
+							<span style="top: 174px; left: 136px;">all</span>
+						</div>
+						<div class="sidebar-octocat"><img src="octocat.png" alt=""></div>
+					</div>
+					<h1>Building a developer knowledge base<br>for GitHub Copilot</h1>
+					<div class="title-meta">
+						<div class="title-meta-cell">
+							<img class="speaker-photo" src="pamelafox-headshot.jpg" alt="Pamela Fox">
+							<div class="speaker-details">
+								<p>Pamela Fox</p>
+								<p class="role">Principal Cloud Advocate</p>
+								<p class="role">Microsoft / GitHub</p>
+							</div>
+						</div>
+						<div class="title-meta-cell">
+							<img class="speaker-photo" src="said-nikjou-headshot.jpeg" alt="Said Nikjou">
+							<div class="speaker-details">
+								<p>Said Nikjou</p>
+								<p class="role">Cloud Solution Architect</p>
+								<p class="role">Microsoft</p>
+							</div>
+						</div>
+					</div>
+					<aside class="notes">
+						Welcome attendees and establish that this is hands-on. They will use one Copilot client throughout the workshop.
+					</aside>
+				</section>
+
+				<section class="speaker-slide">
+					<div class="speaker-grid">
+						<div class="speaker-profile">
+							<img class="speaker-profile-photo" src="pamelafox-headshot.jpg" alt="Pamela Fox">
+							<p class="speaker-profile-name">Pamela Fox</p>
+							<p class="speaker-profile-role">Principal Cloud Advocate</p>
+							<p class="speaker-profile-bio">Principal Cloud Advocate at Microsoft, focused on Python, AI, and developer tools. Formerly at UC Berkeley, Coursera, Khan Academy, and Google.</p>
+						</div>
+						<div class="speaker-profile">
+							<img class="speaker-profile-photo" src="said-nikjou-headshot.jpeg" alt="Said Nikjou">
+							<p class="speaker-profile-name">Said Nikjou</p>
+							<p class="speaker-profile-role">Cloud Solution Architect</p>
+							<p class="speaker-profile-bio">TBD</p>
+						</div>
+					</div>
+					<aside class="notes">
+						Introduce both workshop speakers. Replace Said's placeholder bio before the event.
+					</aside>
+				</section>
+
+				<section class="heading-only">
+					<p class="eyebrow">The context gap</p>
+					<p class="big-quote">Imagine joining a team with access to the codebase, but none of the planning documents. Could you explain why a feature was built the way it was?</p>
+					<aside class="notes">
+						Pause after the question. Ask for a quick show of hands. The expected answer is: not reliably.
+					</aside>
+				</section>
+
+				<section class="compact-title">
+					<h3>One engineering answer can span three worlds</h3>
+					<div class="three-column">
+						<div class="card blue">
+							<h4>Code</h4>
+							<p>What behavior exists today?</p>
+							<p><strong>Evidence:</strong> implementation, tests, configuration</p>
+						</div>
+						<div class="card purple">
+							<h4>GitHub activity</h4>
+							<p>What changed, why, and what remains open?</p>
+							<p><strong>Evidence:</strong> PRs, issues, discussions</p>
+						</div>
+						<div class="card gold">
+							<h4>Organization documents</h4>
+							<p>What does the business require or prohibit?</p>
+							<p><strong>Evidence:</strong> requirements, ADRs, policies</p>
+						</div>
+					</div>
+					<p class="callout"><strong>Today:</strong> give GitHub Copilot access to each kind of evidence, then compare two ways to coordinate retrieval.</p>
+				</section>
+
+				<section class="agenda-slide">
+					<h3>Our 90-minute path</h3>
+					<table>
+						<thead><tr><th>Time</th><th>Activity</th><th>Context added</th></tr></thead>
+						<tbody>
+							<tr><td>0–15</td><td>Meet the project and your coding agent</td><td>Local code</td></tr>
+							<tr><td>15–30</td><td>Connect Copilot to GitHub</td><td>Issues, PRs, discussions</td></tr>
+							<tr><td>30–45</td><td>Explore a document knowledge base</td><td>Requirements, ADRs, policy</td></tr>
+							<tr><td>45–60</td><td>Connect Copilot to the documents KB</td><td>Separate MCP integrations</td></tr>
+							<tr><td>60–80</td><td>Use the combined knowledge base</td><td>One reusable retrieval endpoint</td></tr>
+							<tr><td>80–90</td><td>Take the pattern back to your team</td><td>Architecture choices</td></tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h3>Choose one Copilot client</h3>
+					<div class="three-column">
+						<div class="card green"><h4>Copilot CLI</h4><p>Work from a terminal in the local repository.</p></div>
+						<div class="card purple"><h4>Copilot App</h4><p>Work from a project session connected to the repository.</p></div>
+						<div class="card blue"><h4>VS Code</h4><p>Work in Agent mode with the repository open.</p></div>
+					</div>
+					<p class="callout">Use the same client for every exercise so the architectural comparison stays clear.</p>
+				</section>
+
+				<section class="heading-only">
+					<p class="eyebrow">Part 1 · 15 minutes</p>
+					<h2>Meet Cocoarynth Trace</h2>
+					<div class="logo-row">
+						<img src="cocoarynth-logo.png" alt="Cocoarynth logo">
+						<img src="cocoarynth-mark.png" alt="Cocoarynth cacao maze mark">
+					</div>
+				</section>
+
+				<section>
+					<h3>A traceability app for single-origin chocolate</h3>
+					<div class="two-column">
+						<div>
+							<ul class="tight">
+								<li>Tracks cacao origin, production, and shipment</li>
+								<li>Connects finished batches to wholesale deliveries</li>
+								<li>Generates an <strong>Origin Passport</strong></li>
+								<li>Exports approved traceability fields</li>
+							</ul>
+						</div>
+						<div class="flow" style="flex-direction: column; margin-top: 0;">
+							<div class="node gold">Cacao origin</div>
+							<div class="arrow">↓</div>
+							<div class="node purple">Production batch</div>
+							<div class="arrow">↓</div>
+							<div class="node green">Origin Passport</div>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Exercise: investigate the local repository</h3>
+					<p class="prompt">Using the implementation files and tests, explain what this project does, identify its main components, and describe how it exports an Origin Passport. Cite the files that support your answer.</p>
+					<div class="three-column" style="margin-top: 22px;">
+						<div class="card gold"><h4>Watch</h4><p>Which files does Copilot inspect?</p></div>
+						<div class="card purple"><h4>Review</h4><p>What tool permissions does it request?</p></div>
+						<div class="card green"><h4>Verify</h4><p>Which claims have direct code evidence?</p></div>
+					</div>
+					<p style="font-size: 0.56em; margin-top: 18px;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part1.md">Open Part 1 instructions</a></p>
+				</section>
+
+				<section>
+					<h3>What local code can prove</h3>
+					<div class="two-column">
+						<div class="card green">
+							<h4>We can establish</h4>
+							<ul class="tight">
+								<li>The application exports JSON</li>
+								<li>Which fields are included</li>
+								<li>Which fields are excluded</li>
+								<li>How the endpoint and UI behave</li>
+							</ul>
+						</div>
+						<div class="card gold">
+							<h4>We still cannot establish</h4>
+							<ul class="tight">
+								<li>Why JSON was originally chosen</li>
+								<li>What work is planned</li>
+								<li>What a retailer requires</li>
+								<li>Whether the pilot is ready</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section class="heading-only">
+					<p class="eyebrow">Part 2 · 15 minutes</p>
+					<h2>Connect Copilot to GitHub</h2>
+					<p class="subtitle">Add live engineering artifacts without copying them into the prompt.</p>
+				</section>
+
+				<section>
+					<h3>MCP gives agents a standard way to use external tools</h3>
+					<div class="flow">
+						<div class="node green">GitHub Copilot<br><small>MCP host</small></div>
+						<div class="arrow">⇄</div>
+						<div class="node purple">MCP client</div>
+						<div class="arrow">⇄</div>
+						<div class="node gold">GitHub MCP server</div>
+						<div class="arrow">⇄</div>
+						<div class="node blue">Repositories<br>Issues · PRs · Discussions</div>
+					</div>
+					<p class="callout"><strong>The model suggests calls; the client runtime executes them.</strong> Review permissions and tool calls before trusting the answer.</p>
+				</section>
+
+				<section>
+					<h3>Use the hosted read-only GitHub MCP endpoint</h3>
+					<div class="two-column">
+						<div>
+							<p><strong>Endpoint</strong></p>
+							<pre><code data-trim>https://api.githubcopilot.com/mcp/readonly</code></pre>
+							<p><strong>Toolsets</strong></p>
+							<pre><code data-trim>repos,issues,pull_requests,discussions</code></pre>
+						</div>
+						<div class="card purple">
+							<h4>Why read-only?</h4>
+							<ul class="tight">
+								<li>Shared synthetic repository</li>
+								<li>No accidental issue or PR changes</li>
+								<li>Focus on investigation and evidence</li>
+								<li>Same conceptual setup across clients</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Exercise: investigate the feature history</h3>
+					<p class="prompt">Use GitHub MCP to investigate this repository. Why was the Origin Passport export built this way, and what related work remains open? Cite the relevant pull request, issue, and discussion.</p>
+					<div class="flow">
+						<div class="node green">Merged PR<br><small>original choice</small></div>
+						<div class="arrow">+</div>
+						<div class="node gold">Open issue<br><small>remaining work</small></div>
+						<div class="arrow">+</div>
+						<div class="node purple">Discussion<br><small>field policy</small></div>
+					</div>
+					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part2.md">Open Part 2 instructions</a></p>
+				</section>
+
+				<section>
+					<h3>GitHub closes one gap—and reveals another</h3>
+					<table>
+						<thead><tr><th>Question</th><th>GitHub evidence</th><th>Answer?</th></tr></thead>
+						<tbody>
+							<tr><td>Why JSON?</td><td>Merged implementation PR</td><td><span class="status yes">Yes</span></td></tr>
+							<tr><td>Is CSV planned?</td><td>Open CSV-support issue</td><td><span class="status yes">Yes</span></td></tr>
+							<tr><td>Which fields are partner-safe?</td><td>Engineering discussion</td><td><span class="status yes">Yes</span></td></tr>
+							<tr><td>Does Mapayça require CSV?</td><td>No authoritative requirement in GitHub</td><td><span class="status no">No</span></td></tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section class="heading-only">
+					<p class="eyebrow">Part 3 · 15 minutes</p>
+					<h2>Explore a document knowledge base</h2>
+					<div class="logo-row">
+						<img src="mapayca-logo.png" alt="Mapayça Markets logo">
+					</div>
+				</section>
+
+				<section>
+					<h3>The missing context lives in organizational documents</h3>
+					<div class="two-column">
+						<div class="card gold">
+							<h4>Mapayça pilot requirements</h4>
+							<p>Defines the required CSV format, schema, dates, and acceptance criteria.</p>
+						</div>
+						<div class="card purple">
+							<h4>Architecture decision</h4>
+							<p>Explains why an Origin Passport is an immutable snapshot.</p>
+						</div>
+						<div class="card green">
+							<h4>Data-sharing policy</h4>
+							<p>Separates shareable traceability facts from confidential data.</p>
+						</div>
+						<div class="card blue">
+							<h4>Support runbook</h4>
+							<p>Guides validation, regeneration, and import troubleshooting.</p>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>The corpus was prepared before you arrived</h3>
+					<div class="flow">
+						<div class="node gold">PDF documents<br><small>Blob Storage</small></div>
+						<div class="arrow">→</div>
+						<div class="node purple">Content Understanding<br><small>extract + chunk</small></div>
+						<div class="arrow">→</div>
+						<div class="node blue">Azure AI Search<br><small>hybrid index</small></div>
+						<div class="arrow">→</div>
+						<div class="node green">Foundry IQ KB<br><small>retrieval planning</small></div>
+					</div>
+					<p class="callout">No attendee Azure account, Python environment, document upload, or indexer run is required.</p>
+				</section>
+
+				<section>
+					<h3>Know which layer you are inspecting</h3>
+					<div class="stack">
+						<div class="layer document">Source document · complete organizational artifact</div>
+						<div class="layer chunk">Indexed chunk · semantically bounded passage with metadata</div>
+						<div class="layer index">Hybrid search · keyword + vector matching over chunks</div>
+						<div class="layer kb">Knowledge-base retrieval · query planning + source references</div>
+						<div class="layer copilot">Copilot answer · synthesis from retrieved evidence</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Exercise: follow evidence through the portal</h3>
+					<div class="step"><div class="step-number">1</div><div><strong>Documents:</strong> identify the purpose of each artifact.</div></div>
+					<div class="step"><div class="step-number">2</div><div><strong>Chunks:</strong> inspect semantic boundaries and page metadata.</div></div>
+					<div class="step"><div class="step-number">3</div><div><strong>Search:</strong> query <code>CSV export requirements</code>.</div></div>
+					<div class="step"><div class="step-number">4</div><div><strong>Documents KB:</strong> inspect extractive passages, references, and activity.</div></div>
+				</section>
+
+				<section>
+					<h3>The authoritative requirement</h3>
+					<div class="two-column">
+						<div style="text-align: center;">
+							<img src="mapayca-logo.png" alt="Mapayça Markets logo" style="width: 210px; border-radius: 20px;">
+						</div>
+						<div>
+							<p class="big-quote" style="font-size: 0.98em !important; text-align: left;">“The importer requires CSV and rejects JSON uploads.”</p>
+							<ul class="tight">
+								<li>Stable header row</li>
+								<li>One batch per row</li>
+								<li>ISO <code>YYYY-MM-DD</code> dates</li>
+								<li>No pricing or personal contacts</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section class="heading-only">
+					<p class="eyebrow">Part 4 · 15 minutes</p>
+					<h2>Connect Copilot to the documents KB</h2>
+					<p class="subtitle">Keep GitHub MCP enabled. Add the documents-only KB as a second integration.</p>
+				</section>
+
+				<section>
+					<h3>One native MCP endpoint exposes the documents KB</h3>
+					<div class="two-column">
+						<div class="card purple">
+							<h4>Connection</h4>
+							<ul class="tight">
+								<li>Name: <code>cocoarynth-documents</code></li>
+								<li>Transport: authenticated HTTP</li>
+								<li>Credential: shared Search query key</li>
+								<li>Tool: knowledge-base retrieval</li>
+							</ul>
+						</div>
+						<div class="card gold">
+							<h4>Credential hygiene</h4>
+							<ul class="tight">
+								<li>Use the private distribution method</li>
+								<li>Do not paste the key into chat</li>
+								<li>Do not commit client configuration</li>
+								<li>Do not include the key in screenshots</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Separate integrations: Copilot coordinates the calls</h3>
+					<div class="flow">
+						<div class="node green">GitHub Copilot<br><small>plans across tools</small></div>
+						<div class="arrow">↙</div>
+						<div class="node purple">GitHub MCP<br><small>live engineering artifacts</small></div>
+						<div class="arrow">+</div>
+						<div class="node gold">Documents KB<br><small>organizational documents</small></div>
+					</div>
+					<p class="callout">The client sees two integrations and decides when to call each one.</p>
+				</section>
+
+				<section>
+					<h3>Exercise: answer the pilot-readiness question</h3>
+					<p class="prompt">Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker, check relevant issues for related open work using GitHub MCP, and cite both the pilot requirements and current implementation evidence.</p>
+					<div class="three-column" style="margin-top: 22px;">
+						<div class="card gold"><h4>Requirements</h4><p>CSV required; JSON rejected.</p></div>
+						<div class="card blue"><h4>Implementation</h4><p>Origin Passports export as JSON.</p></div>
+						<div class="card purple"><h4>Remaining work</h4><p>CSV-support issue is open.</p></div>
+					</div>
+					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part3.md">Open Part 3 instructions</a></p>
+				</section>
+
+				<section>
+					<h3>A complete answer distinguishes facts from sources</h3>
+					<table>
+						<thead><tr><th>Claim</th><th>Best supporting source</th><th>Status</th></tr></thead>
+						<tbody>
+							<tr><td>Mapayça requires CSV</td><td>Pilot requirements document</td><td><span class="status yes">Established</span></td></tr>
+							<tr><td>Cocoarynth exports JSON</td><td>Code or merged PR</td><td><span class="status yes">Established</span></td></tr>
+							<tr><td>CSV support remains unfinished</td><td>Open GitHub issue</td><td><span class="status open">Open work</span></td></tr>
+							<tr><td>The pilot is ready today</td><td>All evidence together</td><td><span class="status no">No</span></td></tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section class="heading-only">
+					<p class="eyebrow">Part 5 · 20 minutes</p>
+					<h2>Use the combined knowledge base</h2>
+					<p class="subtitle">Move source coordination behind one reusable MCP endpoint.</p>
+				</section>
+
+				<section>
+					<h3>The combined KB has two knowledge sources</h3>
+					<div class="flow">
+						<div class="node green">GitHub Copilot</div>
+						<div class="arrow">⇄</div>
+						<div class="node purple">Combined KB<br><small>Foundry IQ plans retrieval</small></div>
+						<div class="arrow">↙</div>
+						<div class="node gold">Search index source<br><small>documents</small></div>
+						<div class="arrow">+</div>
+						<div class="node blue">MCP server source<br><small>GitHub tools</small></div>
+					</div>
+					<p class="callout"><code>cocoarynth-kb-all</code> packages the retrieval configuration behind one native MCP endpoint.</p>
+				</section>
+
+				<section>
+					<h3>Isolate the comparison</h3>
+					<div class="step"><div class="step-number">1</div><div>Connect <code>cocoarynth-combined</code>.</div></div>
+					<div class="step"><div class="step-number">2</div><div>Disable the separate GitHub and documents-only integrations.</div></div>
+					<div class="step"><div class="step-number">3</div><div>Start a fresh chat with no previous answer context.</div></div>
+					<div class="step"><div class="step-number">4</div><div>Repeat the same pilot-readiness prompt.</div></div>
+					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part4.md">Open Part 4 instructions</a></p>
+				</section>
+
+				<section>
+					<h3>Compare where retrieval decisions happen</h3>
+					<table>
+						<thead><tr><th>Separate integrations</th><th>Combined knowledge base</th></tr></thead>
+						<tbody>
+							<tr><td>Copilot plans calls to GitHub MCP and the documents KB</td><td>Copilot calls one combined KB tool</td></tr>
+							<tr><td>Client-specific orchestration</td><td>Reusable retrieval configuration</td></tr>
+							<tr><td>Attendee GitHub identity</td><td>Instructor-managed read-only lab identity</td></tr>
+							<tr><td>Two visible integration boundaries</td><td>One endpoint with nested source activity</td></tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h3>Judge the evidence—not the number of tool calls</h3>
+					<div class="three-column">
+						<div class="card green"><h4>Coverage</h4><p>Did it retrieve the CSV requirement and JSON implementation?</p></div>
+						<div class="card purple"><h4>Attribution</h4><p>Can you tell which claim came from which source?</p></div>
+						<div class="card gold"><h4>Uncertainty</h4><p>Does it admit when a source was not selected or evidence is missing?</p></div>
+					</div>
+					<p class="callout">A combined KB does not guarantee a better answer—or that every source is selected for every question.</p>
+				</section>
+
+				<section class="heading-only">
+					<p class="eyebrow">Closing · 10 minutes</p>
+					<h2>Take the pattern back to your team</h2>
+				</section>
+
+				<section>
+					<h3>Start with the question, then map the evidence</h3>
+					<div class="flow">
+						<div class="node gold">Engineering question</div>
+						<div class="arrow">→</div>
+						<div class="node blue">Implementation facts</div>
+						<div class="arrow">+</div>
+						<div class="node purple">Decision history</div>
+						<div class="arrow">+</div>
+						<div class="node green">Business context</div>
+					</div>
+					<div class="two-column" style="margin-top: 28px;">
+						<div class="card purple"><h4>Connect separate MCP servers</h4><p>Choose this when the client should coordinate distinct tools and identities.</p></div>
+						<div class="card gold"><h4>Build a combined knowledge base</h4><p>Choose this when you want reusable, centrally configured retrieval across sources.</p></div>
+					</div>
+				</section>
+
+				<section>
+					<h3>The one thing to remember</h3>
+					<p class="big-quote">Coding agents need context beyond code.</p>
+					<div class="three-column" style="margin-top: 34px;">
+						<div class="card blue"><h4>Code</h4><p>What exists</p></div>
+						<div class="card purple"><h4>GitHub</h4><p>What changed</p></div>
+						<div class="card gold"><h4>Documents</h4><p>What the organization needs</p></div>
+					</div>
+					<p class="callout" style="margin-top: 26px;">Connect existing MCP servers for live systems. Build a knowledge base when documents need to become searchable, citable evidence.</p>
+				</section>
+
+				<section>
+					<h3>Continue after the workshop</h3>
+					<div class="two-column">
+						<div class="card green">
+							<h4>Take-home repository</h4>
+							<p><a href="https://github.com/pamelafox/developer-kb-for-github-copilot">github.com/pamelafox/developer-kb-for-github-copilot</a></p>
+							<p>Exercises, portal, ingestion code, client configuration, tests, and Azure infrastructure.</p>
+						</div>
+						<div class="card purple">
+							<h4>Optional extensions</h4>
+							<ul class="tight">
+								<li>Compare retrieval configurations</li>
+								<li>Draft a cited readiness brief</li>
+								<li>Replace the corpus and rerun ingestion</li>
+							</ul>
+						</div>
+					</div>
+					<p class="callout">The event environment is temporary. Use the repository to deploy the pattern into your own Azure environment.</p>
+				</section>
+
+				<section class="heading-only">
+					<h2>Questions?</h2>
+					<p class="subtitle"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot">github.com/pamelafox/developer-kb-for-github-copilot</a></p>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.js"></script>
+		<script>
+			Reveal.initialize({
+				width: 1280,
+				height: 720,
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.04,
+				preloadIframes: true,
+				autoPlayMedia: true,
+				plugins: [RevealHighlight, RevealMenu],
+				pdfSeparateFragments: true
+			});
+		</script>
+	</body>
+</html>
