@@ -129,12 +129,36 @@
 		}
 
 		.reveal section.agenda-slide table {
-			font-size: 0.68em;
+			font-size: 0.61em;
 		}
 
 		.reveal section.agenda-slide th,
 		.reveal section.agenda-slide td {
-			padding: 0.25em 0.48em;
+			padding: 0.2em 0.46em;
+		}
+
+		.agenda-format {
+			display: inline-block;
+			min-width: 7.2em;
+			padding: 0.18em 0.5em;
+			border-radius: 999px;
+			font-weight: 700;
+			text-align: center;
+		}
+
+		.agenda-format.welcome {
+			background: #f1f3f5;
+			color: #424a53;
+		}
+
+		.agenda-format.presentation {
+			background: #ddf4ff;
+			color: #0550ae;
+		}
+
+		.agenda-format.exercise {
+			background: #dafbe1;
+			color: #116329;
 		}
 
 		.reveal section.heading-only {
@@ -352,6 +376,53 @@
 			align-items: start;
 		}
 
+		.product-screenshot {
+			display: block;
+			box-sizing: border-box;
+			width: 100%;
+			border: 1px solid #d0d7de;
+			border-radius: 5px;
+			box-shadow: 0 8px 24px var(--shadow);
+		}
+
+		.portal-layout {
+			display: grid;
+			grid-template-columns: 0.72fr 1.28fr;
+			gap: 24px;
+			align-items: start;
+			margin-top: 18px;
+		}
+
+		.portal-actions {
+			display: grid;
+			gap: 8px;
+		}
+
+		.portal-actions .card {
+			padding: 10px 13px;
+		}
+
+		.portal-actions .card h4 {
+			font-size: 0.68em;
+		}
+
+		.portal-actions .card p {
+			margin: 0;
+			font-size: 0.53em;
+		}
+
+		.portal-screenshot {
+			display: block;
+			box-sizing: border-box;
+			width: 100%;
+			height: 315px;
+			border: 1px solid #d0d7de;
+			border-radius: 5px;
+			object-fit: cover;
+			object-position: left top;
+			box-shadow: 0 8px 24px var(--shadow);
+		}
+
 		.three-column {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
@@ -474,6 +545,11 @@
 			box-shadow: 0 12px 28px rgba(54, 31, 22, 0.16);
 		}
 
+		.logo-row img.company-logo {
+			width: 420px;
+			height: 420px;
+		}
+
 		.flow {
 			display: flex;
 			gap: 12px;
@@ -496,32 +572,118 @@
 		.flow .node.purple { border-color: var(--purple); background: rgba(110, 64, 201, 0.08); }
 		.flow .node.gold { border-color: var(--gold); background: rgba(213, 162, 63, 0.13); }
 		.flow .node.green { border-color: var(--green); background: rgba(35, 122, 69, 0.08); }
+		.flow .node.blue { border-color: var(--blue); background: rgba(9, 105, 218, 0.08); }
 		.flow .arrow {
 			color: var(--purple);
 			font-size: 1.25em;
 			font-weight: 700;
 		}
 
-		.stack {
+		.process-grid {
 			display: grid;
-			gap: 11px;
-			margin-top: 18px;
+			grid-template-columns: repeat(5, 1fr);
+			gap: 14px;
+			margin-top: 24px;
 		}
 
-		.stack .layer {
-			padding: 11px 16px;
-			border-radius: 11px;
-			color: #fff;
-			font-size: 0.67em;
+		.process-stage {
+			position: relative;
+			box-sizing: border-box;
+			min-height: 245px;
+			padding: 18px 16px;
+			border-top: 7px solid var(--blue);
+			border-radius: 5px;
+			background: #f6f8fa;
+		}
+
+		.process-stage:not(:last-child)::after {
+			content: "→";
+			position: absolute;
+			top: 108px;
+			right: -20px;
+			z-index: 2;
+			color: var(--blue);
+			font-size: 1.2em;
 			font-weight: 700;
+		}
+
+		.process-icon {
+			height: 42px;
+			margin-bottom: 14px;
+			font-size: 1.15em;
+			line-height: 42px;
+		}
+
+		.process-stage h4 {
+			height: 2.25em;
+			margin-bottom: 0.5em;
+			font-size: 0.72em;
+			line-height: 1.08;
+		}
+		.process-stage p { font-size: 0.56em; }
+
+		.hybrid-grid {
+			display: grid;
+			grid-template-columns: 0.9fr 40px 1.15fr 40px 0.95fr 40px 1.05fr;
+			gap: 12px;
+			align-items: center;
+			margin-top: 28px;
+		}
+
+		.hybrid-grid .diagram-arrow {
+			font-size: 0.9em;
+		}
+
+		.kb-grid {
+			display: grid;
+			grid-template-columns: 1.05fr 44px 1fr 44px 1.15fr;
+			gap: 10px;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		.diagram-stack {
+			display: grid;
+			gap: 12px;
+		}
+
+		.diagram-box {
+			box-sizing: border-box;
+			padding: 16px;
+			border: 2px solid #d0d7de;
+			border-radius: 5px;
+			background: #f6f8fa;
+			font-size: 0.62em;
+			font-weight: 700;
+			line-height: 1.25;
 			text-align: center;
 		}
 
-		.layer.document { background: var(--cocoa); }
-		.layer.chunk { background: #8b5f43; }
-		.layer.index { background: var(--gold); color: var(--ink); }
-		.layer.kb { background: var(--purple); }
-		.layer.copilot { background: var(--green); }
+		.diagram-box small {
+			display: block;
+			margin-top: 7px;
+			font-size: 0.78em;
+			font-weight: 400;
+		}
+
+		.diagram-box.blue { border-color: var(--blue); background: rgba(9, 105, 218, 0.08); }
+		.diagram-box.purple { border-color: var(--purple); background: rgba(110, 64, 201, 0.08); }
+		.diagram-box.green { border-color: var(--green); background: rgba(35, 122, 69, 0.08); }
+		.diagram-box.gold { border-color: var(--gold); background: rgba(213, 162, 63, 0.13); }
+		.diagram-arrow { color: var(--blue); font-size: 1.35em; font-weight: 700; text-align: center; }
+
+		.mcp-diagram {
+			display: block;
+			width: 100%;
+			height: auto;
+			margin: 0 auto;
+		}
+
+		.mcp-diagram.architecture {
+			width: 76%;
+			margin-top: -55px;
+			margin-bottom: 0;
+		}
 
 		.step {
 			display: grid;
@@ -623,16 +785,26 @@
 					</aside>
 				</section>
 
+				<section>
+					<h3>About you</h3>
+					<p>Turn to your neighbor and introduce yourself:</p>
+					<ul>
+						<li>Name</li>
+						<li>Location</li>
+						<li>What coding agents do you usually use?</li>
+						<li>What's your favorite LLM to use with the agent? What's your <strong>LEAST</strong> favorite?</li>
+					</ul>
+				</section>
+
 				<section class="heading-only">
-					<p class="eyebrow">The context gap</p>
-					<p class="big-quote">Imagine joining a team with access to the codebase, but none of the planning documents. Could you explain why a feature was built the way it was?</p>
+					<p class="big-quote">Imagine joining a new team. How do you get your questions answered? How do you make sure you're building the right thing the right way?</p>
 					<aside class="notes">
 						Pause after the question. Ask for a quick show of hands. The expected answer is: not reliably.
 					</aside>
 				</section>
 
 				<section class="compact-title">
-					<h3>One engineering answer can span three worlds</h3>
+					<h3>The answers to your engineering questions <br>may require many sources</h3>
 					<div class="three-column">
 						<div class="card blue">
 							<h4>Code</h4>
@@ -645,143 +817,249 @@
 							<p><strong>Evidence:</strong> PRs, issues, discussions</p>
 						</div>
 						<div class="card gold">
-							<h4>Organization documents</h4>
+							<h4>Documents</h4>
 							<p>What does the business require or prohibit?</p>
 							<p><strong>Evidence:</strong> requirements, ADRs, policies</p>
 						</div>
 					</div>
-					<p class="callout"><strong>Today:</strong> give GitHub Copilot access to each kind of evidence, then compare two ways to coordinate retrieval.</p>
+					<p class="callout"><strong>Today:</strong> Give GitHub Copilot access to each of these sources progressively and see answer quality improve as you equip it with more sources.</p>
 				</section>
 
 				<section class="agenda-slide">
-					<h3>Our 90-minute path</h3>
+					<h3>Today's agenda</h3>
 					<table>
-						<thead><tr><th>Time</th><th>Activity</th><th>Context added</th></tr></thead>
+						<thead><tr><th>Time</th><th>Format</th><th>Activity</th></tr></thead>
 						<tbody>
-							<tr><td>0–15</td><td>Meet the project and your coding agent</td><td>Local code</td></tr>
-							<tr><td>15–30</td><td>Connect Copilot to GitHub</td><td>Issues, PRs, discussions</td></tr>
-							<tr><td>30–45</td><td>Explore a document knowledge base</td><td>Requirements, ADRs, policy</td></tr>
-							<tr><td>45–60</td><td>Connect Copilot to the documents KB</td><td>Separate MCP integrations</td></tr>
-							<tr><td>60–80</td><td>Use the combined knowledge base</td><td>One reusable retrieval endpoint</td></tr>
-							<tr><td>80–90</td><td>Take the pattern back to your team</td><td>Architecture choices</td></tr>
+							<tr><td>1:00–1:10</td><td><span class="agenda-format welcome">Welcome</span></td><td>Settle in and introductions</td></tr>
+							<tr><td>1:10–1:20</td><td><span class="agenda-format presentation">Presentation</span></td><td>Meet the project and your coding agent</td></tr>
+							<tr><td>1:20–1:30</td><td><span class="agenda-format exercise">Exercise</span></td><td>Investigate the local repository</td></tr>
+							<tr><td>1:30–1:40</td><td><span class="agenda-format presentation">Presentation</span></td><td>Connect Copilot to GitHub with MCP</td></tr>
+							<tr><td>1:40–1:50</td><td><span class="agenda-format exercise">Exercise</span></td><td>Investigate the feature history</td></tr>
+							<tr><td>1:50–2:05</td><td><span class="agenda-format presentation">Presentation</span></td><td>Explore and connect a document knowledge base</td></tr>
+							<tr><td>2:05–2:15</td><td><span class="agenda-format exercise">Exercise</span></td><td>Follow the evidence and assess pilot readiness</td></tr>
+							<tr><td>2:15–2:20</td><td><span class="agenda-format presentation">Presentation</span></td><td>Use the combined knowledge base</td></tr>
+							<tr><td>2:20–2:25</td><td><span class="agenda-format exercise">Exercise</span></td><td>Create a grounded PRD</td></tr>
+							<tr><td>2:25–2:30</td><td><span class="agenda-format presentation">Presentation</span></td><td>Take the pattern back to your team</td></tr>
 						</tbody>
 					</table>
 				</section>
 
-				<section>
-					<h3>Choose one Copilot client</h3>
-					<div class="three-column">
-						<div class="card green"><h4>Copilot CLI</h4><p>Work from a terminal in the local repository.</p></div>
-						<div class="card purple"><h4>Copilot App</h4><p>Work from a project session connected to the repository.</p></div>
-						<div class="card blue"><h4>VS Code</h4><p>Work in Agent mode with the repository open.</p></div>
-					</div>
-					<p class="callout">Use the same client for every exercise so the architectural comparison stays clear.</p>
-				</section>
-
-				<section class="heading-only">
-					<p class="eyebrow">Part 1 · 15 minutes</p>
-					<h2>Meet Cocoarynth Trace</h2>
-					<div class="logo-row">
-						<img src="images/cocoarynth_logo.png" alt="Cocoarynth logo">
-						<img src="cocoarynth-mark.png" alt="Cocoarynth cacao maze mark">
-					</div>
-				</section>
 
 				<section>
-					<h3>A traceability app for single-origin chocolate</h3>
+					<h3><strong style="font-weight:600;">The company</strong>: Cocoarynth</h3>
 					<div class="two-column">
 						<div>
+							<p class="subtitle">A fictional bean-to-bar chocolate company built around transparent sourcing.</p>
 							<ul class="tight">
-								<li>Tracks cacao origin, production, and shipment</li>
-								<li>Connects finished batches to wholesale deliveries</li>
-								<li>Generates an <strong>Origin Passport</strong></li>
-								<li>Exports approved traceability fields</li>
+								<li>Makes small-batch, single-origin chocolate</li>
+								<li>Works directly with cacao producers</li>
+								<li>Tracks every origin lot and production batch</li>
+								<li>Connects finished products to wholesale deliveries</li>
 							</ul>
 						</div>
-						<div class="flow" style="flex-direction: column; margin-top: 0;">
-							<div class="node gold">Cacao origin</div>
-							<div class="arrow">↓</div>
-							<div class="node purple">Production batch</div>
-							<div class="arrow">↓</div>
-							<div class="node green">Origin Passport</div>
+						<div class="logo-row" style="margin-top: 0;">
+							<img class="company-logo" src="images/cocoarynth-logo-cropped.png" alt="Cocoarynth logo">
 						</div>
 					</div>
+					<aside class="notes">
+					</aside>
 				</section>
 
 				<section>
-					<h3>Exercise: investigate the local repository</h3>
+					<h3><strong style="font-weight:600;">The project</strong>: Cocoarynth Trace</h3>
+					<div class="two-column">
+						<div>
+							<p class="subtitle">A web app that follows every batch from origin to shipment</p>
+							<ul class="tight">
+								<li>Lists production batches and their status</li>
+								<li>Shows cacao origin and production history</li>
+								<li>Associates batches with wholesale shipments</li>
+								<li>Generates an <strong>Origin Passport</strong></li>
+							</ul>
+						</div>
+						<img class="product-screenshot" src="images/cocoarynth-trace.png" alt="Cocoarynth Trace chocolate batch list showing products, origins, production dates, statuses, and shipment state">
+					</div>
+					<aside class="notes">
+						Open the live Cocoarynth Trace app. Show the batch list, then select shipped batch ESM-2026-042 and point out the Origin Passport download.
+					</aside>
+				</section>
+
+				<section>
+					<h3><strong style="font-weight:600;">The feature</strong>: Origin Passport</h3>
+					<p class="subtitle">A machine-readable document that lets a wholesale retailer connect a chocolate bar batch to its origin and production history.</p>
+					<div class="flow">
+						<div class="node gold">Cacao origin</div>
+						<div class="arrow">→</div>
+						<div class="node purple">Production batch</div>
+						<div class="arrow">→</div>
+						<div class="node green">Origin Passport</div>
+						<div class="arrow">→</div>
+						<div class="node blue">Wholesale delivery</div>
+					</div>
+					<div class="two-column" style="margin-top: 28px;">
+						<div class="card green">
+							<h4>Includes approved facts</h4>
+							<p>Product, batch, origin, producer, harvest, certification, production, and shipment details.</p>
+						</div>
+						<div class="card gold">
+							<h4>Leaves out confidential data</h4>
+							<p>Supplier pricing, personal contacts, internal quality notes, and employee comments.</p>
+						</div>
+					</div>
+					<aside class="notes">
+						Describe the Origin Passport as a feature, but do not introduce the retailer's CSV requirement yet. The exercises will establish the current format and uncover the missing context.
+					</aside>
+				</section>
+
+				<section>
+					<h3>GitHub Copilot: Choose your client</h3>
+					<div class="three-column">
+						<div class="card green"><h4>GitHub Copilot CLI</h4><p>Work from a terminal in the local repository.</p></div>
+						<div class="card purple"><h4>GitHub Copilot App</h4><p>Work from a project session connected to the repository.</p></div>
+						<div class="card blue"><h4>VS Code</h4><p>Work in Agent mode with the repository open.</p></div>
+					</div>
+					<p class="callout">Use the same client for every exercise so you can compare across stages.<br>
+						If you have time after using chosen client, you can experiment with the other two.</p>
+				</section>
+
+				<section>
+					<h3>Exercise #1: Investigate the local repository</h3>
 					<p class="prompt">Using the implementation files and tests, explain what this project does, identify its main components, and describe how it exports an Origin Passport. Cite the files that support your answer.</p>
 					<div class="three-column" style="margin-top: 22px;">
 						<div class="card gold"><h4>Watch</h4><p>Which files does Copilot inspect?</p></div>
 						<div class="card purple"><h4>Review</h4><p>What tool permissions does it request?</p></div>
 						<div class="card green"><h4>Verify</h4><p>Which claims have direct code evidence?</p></div>
 					</div>
-					<p style="font-size: 0.56em; margin-top: 18px;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part1.md">Open Part 1 instructions</a></p>
-				</section>
-
-				<section>
-					<h3>What local code can prove</h3>
-					<div class="two-column">
-						<div class="card green">
-							<h4>We can establish</h4>
-							<ul class="tight">
-								<li>The application exports JSON</li>
-								<li>Which fields are included</li>
-								<li>Which fields are excluded</li>
-								<li>How the endpoint and UI behave</li>
-							</ul>
-						</div>
-						<div class="card gold">
-							<h4>We still cannot establish</h4>
-							<ul class="tight">
-								<li>Why JSON was originally chosen</li>
-								<li>What work is planned</li>
-								<li>What a retailer requires</li>
-								<li>Whether the pilot is ready</li>
-							</ul>
-						</div>
-					</div>
+					<p style="font-size: 0.56em; margin-top: 18px;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part1.md" target="_blank" rel="noopener noreferrer">🔗 Open Part 1 instructions</a></p>
 				</section>
 
 				<section class="heading-only">
-					<p class="eyebrow">Part 2 · 15 minutes</p>
-					<h2>Connect Copilot to GitHub</h2>
-					<p class="subtitle">Add live engineering artifacts without copying them into the prompt.</p>
+					<h2>Connect GitHub Copilot<br>to GitHub MCP server</h2>
+					<p class="subtitle">Bring PRs, issues, and discussions into the context window.</p>
 				</section>
 
 				<section>
-					<h3>MCP gives agents a standard way to use external tools</h3>
-					<div class="flow">
-						<div class="node green">GitHub Copilot<br><small>MCP host</small></div>
-						<div class="arrow">⇄</div>
-						<div class="node purple">MCP client</div>
-						<div class="arrow">⇄</div>
-						<div class="node gold">GitHub MCP server</div>
-						<div class="arrow">⇄</div>
-						<div class="node blue">Repositories<br>Issues · PRs · Discussions</div>
-					</div>
-					<p class="callout"><strong>The model suggests calls; the client runtime executes them.</strong> Review permissions and tool calls before trusting the answer.</p>
+					<h3>MCP: Model Context Protocol</h3>
+					<p>MCP is the open standard that tells agent runtimes <strong>how to discover and connect to the tools they can call.</strong></p>
+					<svg class="mcp-diagram" viewBox="0 0 900 240" role="img" aria-label="An AI agent connecting through MCP to a database, Slack, and GitHub" xmlns="http://www.w3.org/2000/svg">
+						<defs>
+							<marker id="mcp-standard-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+								<polygon points="0 0, 10 3.5, 0 7" fill="#6e40c9"/>
+							</marker>
+						</defs>
+						<rect x="340" y="20" width="220" height="60" rx="8" fill="#dafbe1" stroke="#237a45" stroke-width="3"/>
+						<text x="450" y="58" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="18" font-weight="700" fill="#241814">AI agent</text>
+						<path d="M380 80 L380 120 L130 120 L130 190" fill="none" stroke="#6e40c9" stroke-width="2.5" marker-end="url(#mcp-standard-arrow)"/>
+						<line x1="450" y1="80" x2="450" y2="190" stroke="#6e40c9" stroke-width="2.5" marker-end="url(#mcp-standard-arrow)"/>
+						<path d="M520 80 L520 120 L770 120 L770 190" fill="none" stroke="#6e40c9" stroke-width="2.5" marker-end="url(#mcp-standard-arrow)"/>
+						<path d="M380 80 L380 120 L130 120 L130 172" fill="none" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 20" opacity="0.9"><animate attributeName="stroke-dashoffset" from="0" to="-140" dur="4s" repeatCount="indefinite"/></path>
+						<line x1="450" y1="80" x2="450" y2="172" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 20" opacity="0.9"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="3.2s" repeatCount="indefinite"/></line>
+						<path d="M520 80 L520 120 L770 120 L770 172" fill="none" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 20" opacity="0.9"><animate attributeName="stroke-dashoffset" from="0" to="-140" dur="3.6s" repeatCount="indefinite"/></path>
+						<text x="130" y="225" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="16" font-weight="600" fill="#241814">Database</text>
+						<text x="450" y="225" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="16" font-weight="600" fill="#241814">Slack</text>
+						<text x="770" y="225" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="16" font-weight="600" fill="#241814">GitHub</text>
+						<g transform="translate(255 120)"><rect x="-30" y="-13" width="60" height="26" rx="13" fill="#fff" stroke="#0969da" stroke-width="2.2"/><text x="0" y="5" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="14" fill="#0550ae" font-weight="700">MCP</text></g>
+						<g transform="translate(450 146)"><rect x="-30" y="-13" width="60" height="26" rx="13" fill="#fff" stroke="#0969da" stroke-width="2.2"/><text x="0" y="5" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="14" fill="#0550ae" font-weight="700">MCP</text></g>
+						<g transform="translate(645 120)"><rect x="-30" y="-13" width="60" height="26" rx="13" fill="#fff" stroke="#0969da" stroke-width="2.2"/><text x="0" y="5" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="14" fill="#0550ae" font-weight="700">MCP</text></g>
+					</svg>
+					<p style="font-size: 0.56em; margin-top: 8px;"><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">🔗 MCP specification: modelcontextprotocol.io</a></p>
 				</section>
 
 				<section>
-					<h3>Use the hosted read-only GitHub MCP endpoint</h3>
+					<h3>MCP architecture</h3>
+					<svg class="mcp-diagram architecture" viewBox="0 0 1100 560" role="img" aria-label="GitHub Copilot as an example MCP host, with clients connected to GitHub MCP server and another MCP server" xmlns="http://www.w3.org/2000/svg">
+						<defs>
+							<linearGradient id="mcp-server-gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff8ed"/><stop offset="100%" stop-color="#ffe4b8"/></linearGradient>
+							<marker id="mcp-architecture-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#6e40c9"/></marker>
+						</defs>
+						<rect x="28" y="66" width="320" height="490" rx="20" fill="#dafbe1" stroke="#237a45" stroke-width="3"/>
+						<text x="188" y="128" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="30" font-weight="700" fill="#241814">MCP host</text>
+						<text x="188" y="160" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" font-style="italic" fill="#241814">Example: GitHub Copilot</text>
+						<rect x="58" y="214" width="260" height="72" rx="8" fill="#237a45"/>
+						<text x="188" y="258" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="28" font-weight="700" fill="#fff">MCP client A</text>
+						<rect x="58" y="424" width="260" height="72" rx="8" fill="#237a45"/>
+						<text x="188" y="468" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="28" font-weight="700" fill="#fff">MCP client B</text>
+						<rect x="590" y="160" width="450" height="180" rx="12" fill="url(#mcp-server-gradient)" stroke="#d5a23f" stroke-width="2.5"/>
+						<text x="815" y="214" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="31" font-weight="700" fill="#361f16">GitHub MCP server</text>
+						<rect x="614" y="260" width="110" height="50" rx="6" fill="#d5a23f"/><rect x="744" y="260" width="130" height="50" rx="6" fill="#d5a23f"/><rect x="894" y="260" width="130" height="50" rx="6" fill="#d5a23f"/>
+						<rect x="590" y="380" width="450" height="180" rx="12" fill="url(#mcp-server-gradient)" stroke="#d5a23f" stroke-width="2.5"/>
+						<text x="815" y="434" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="31" font-weight="700" fill="#361f16">Another MCP server</text>
+						<rect x="614" y="480" width="110" height="50" rx="6" fill="#d5a23f"/><rect x="744" y="480" width="130" height="50" rx="6" fill="#d5a23f"/><rect x="894" y="480" width="130" height="50" rx="6" fill="#d5a23f"/>
+						<text x="669" y="293" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Tools</text><text x="809" y="293" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Prompts</text><text x="959" y="293" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Resources</text>
+						<text x="669" y="513" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Tools</text><text x="809" y="513" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Prompts</text><text x="959" y="513" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Resources</text>
+						<line x1="348" y1="250" x2="590" y2="250" stroke="#6e40c9" stroke-width="5" marker-end="url(#mcp-architecture-arrow)"/><line x1="348" y1="460" x2="590" y2="460" stroke="#6e40c9" stroke-width="5" marker-end="url(#mcp-architecture-arrow)"/>
+						<line x1="348" y1="250" x2="572" y2="250" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-dasharray="12 14" opacity="0.95"><animate attributeName="stroke-dashoffset" from="0" to="-64" dur="2.2s" repeatCount="indefinite"/></line>
+						<line x1="348" y1="460" x2="572" y2="460" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-dasharray="12 14" opacity="0.95"><animate attributeName="stroke-dashoffset" from="0" to="-64" dur="2.2s" begin="0.4s" repeatCount="indefinite"/></line>
+						<g transform="translate(470 250)"><rect x="-38" y="-15" width="76" height="30" rx="15" fill="#fff" stroke="#0969da" stroke-width="2.2"/><text x="0" y="5" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="15" fill="#0550ae" font-weight="700">MCP</text></g>
+						<g transform="translate(470 460)"><rect x="-38" y="-15" width="76" height="30" rx="15" fill="#fff" stroke="#0969da" stroke-width="2.2"/><text x="0" y="5" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="15" fill="#0550ae" font-weight="700">MCP</text></g>
+					</svg>
+					<p class="callout"><strong>Here, GitHub Copilot is the host; GitHub MCP is a connected server.</strong></p>
+				</section>
+
+				<section class="compact-title">
+					<h3>Configure GitHub MCP in VS Code</h3>
 					<div class="two-column">
 						<div>
-							<p><strong>Endpoint</strong></p>
-							<pre><code data-trim>https://api.githubcopilot.com/mcp/readonly</code></pre>
-							<p><strong>Toolsets</strong></p>
-							<pre><code data-trim>repos,issues,pull_requests,discussions</code></pre>
+							<h4>1. Add <code>.mcp.json</code></h4>
+							<pre><code class="language-json" data-trim>{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/readonly",
+      "headers": {
+        "X-MCP-Toolsets": "repos,issues,pull_requests,discussions"
+      }
+    }
+  }
+}</code></pre>
 						</div>
-						<div class="card purple">
-							<h4>Why read-only?</h4>
-							<ul class="tight">
-								<li>Shared synthetic repository</li>
-								<li>No accidental issue or PR changes</li>
-								<li>Focus on investigation and evidence</li>
-								<li>Same conceptual setup across clients</li>
-							</ul>
+						<div>
+							<h4>2. Start and verify</h4>
+							<div class="step"><div class="step-number">1</div><div>Select <strong>Start</strong> above the server definition.</div></div>
+							<div class="step"><div class="step-number">2</div><div>Authorize with the event-provided GitHub account.</div></div>
+							<div class="step"><div class="step-number">3</div><div>Confirm the <code>github</code> server is running.</div></div>
+							<div class="step"><div class="step-number">4</div><div>Open Copilot Chat tools and find the GitHub tools.</div></div>
 						</div>
 					</div>
+					<p class="callout"><strong>Do not commit <code>.mcp.json</code> or push lab checkout changes.</strong></p>
+				</section>
+
+				<section>
+					<h3>Configure GitHub MCP in Copilot CLI</h3>
+					<p class="subtitle">GitHub MCP is built in with read-only tools enabled by default.</p>
+					<div class="two-column">
+						<div class="card green">
+							<h4>1. Start a new session</h4>
+							<p>Add the Discussions toolset:</p>
+							<pre><code class="language-shell" data-trim>copilot --add-github-mcp-toolset discussions</code></pre>
+						</div>
+						<div class="card purple">
+							<h4>2. Verify the server</h4>
+							<p>From the active Copilot CLI session:</p>
+							<pre><code data-trim>/mcp show github-mcp-server</code></pre>
+						</div>
+					</div>
+					<p class="callout">Confirm tools are available for repositories, issues, pull requests, and discussions.</p>
+				</section>
+
+				<section class="compact-title">
+					<h3>Configure GitHub MCP in the Copilot App</h3>
+					<div class="two-column">
+						<div>
+							<h4>1. Add the server</h4>
+							<div class="step"><div class="step-number">1</div><div>Open <strong>Customize → MCP → Add → MCP Server</strong>.</div></div>
+							<div class="step"><div class="step-number">2</div><div>Name it <code>github</code> and select <strong>HTTP</strong>.</div></div>
+							<div class="step"><div class="step-number">3</div><div>Add the endpoint and toolset header.</div></div>
+						</div>
+						<div>
+							<h4>2. Enter the connection details</h4>
+							<p><strong>URL</strong></p>
+							<pre><code data-trim>https://api.githubcopilot.com/mcp/readonly</code></pre>
+							<p><strong>Header</strong></p>
+							<pre><code data-trim>X-MCP-Toolsets: repos,issues,pull_requests,discussions</code></pre>
+						</div>
+					</div>
+					<p class="callout">Add the server, authorize with the event account, then confirm the GitHub tools appear.</p>
 				</section>
 
 				<section>
@@ -794,32 +1072,31 @@
 						<div class="arrow">+</div>
 						<div class="node purple">Discussion<br><small>field policy</small></div>
 					</div>
-					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part2.md">Open Part 2 instructions</a></p>
-				</section>
-
-				<section>
-					<h3>GitHub closes one gap—and reveals another</h3>
-					<table>
-						<thead><tr><th>Question</th><th>GitHub evidence</th><th>Answer?</th></tr></thead>
-						<tbody>
-							<tr><td>Why JSON?</td><td>Merged implementation PR</td><td><span class="status yes">Yes</span></td></tr>
-							<tr><td>Is CSV planned?</td><td>Open CSV-support issue</td><td><span class="status yes">Yes</span></td></tr>
-							<tr><td>Which fields are partner-safe?</td><td>Engineering discussion</td><td><span class="status yes">Yes</span></td></tr>
-							<tr><td>Does Mapayça require CSV?</td><td>No authoritative requirement in GitHub</td><td><span class="status no">No</span></td></tr>
-						</tbody>
-					</table>
+					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part2.md" target="_blank" rel="noopener noreferrer">🔗 Open Part 2 instructions</a></p>
 				</section>
 
 				<section class="heading-only">
-					<p class="eyebrow">Part 3 · 30 minutes</p>
-					<h2>Explore a document knowledge base</h2>
-					<div class="logo-row">
-						<img src="images/mapayca_logo.png" alt="Mapayça Markets logo">
-					</div>
+					<h2>Connect GitHub Copilot to<br>a document knowledge base</h2>
 				</section>
 
 				<section>
-					<h3>The missing context lives in organizational documents</h3>
+					<h3><strong style="font-weight:600">The pilot:</strong> Mapayça Markets</h3>
+					<div class="two-column">
+						<div style="text-align: center;">
+							<img src="images/mapayca_logo.png" alt="Mapayça Markets logo" style="width: 3000px; border-radius: 20px;">
+							<p>Mapayça Markets is a grocery store that wants to sell Cocoarynth chocolate bars.</p>
+						</div>
+						<div class="card gold">
+							<h4>The pilot request</h4>
+							<p>Cocoarynth will supply its Ecuador Esmeraldas 72% chocolate bar.</p>
+							<p>Each shipment needs an Origin Passport that Mapayça's inventory system can import without manual conversion.</p>
+						</div>
+					</div>
+					<p class="callout"><strong>The question:</strong> Can Cocoarynth Trace support the pilot today?</p>
+				</section>
+
+				<section>
+					<h3>The missing context lives in documents</h3>
 					<div class="two-column">
 						<div class="card gold">
 							<h4>Mapayça pilot requirements</h4>
@@ -840,37 +1117,61 @@
 					</div>
 				</section>
 
-				<section>
-					<h3>The corpus was prepared before you arrived</h3>
-					<div class="flow">
-						<div class="node gold">PDF documents<br><small>Blob Storage</small></div>
-						<div class="arrow">→</div>
-						<div class="node purple">Content Understanding<br><small>extract + chunk</small></div>
-						<div class="arrow">→</div>
-						<div class="node blue">Azure AI Search<br><small>hybrid index</small></div>
-						<div class="arrow">→</div>
-						<div class="node green">Foundry IQ KB<br><small>retrieval planning</small></div>
+				<section class="compact-title">
+					<h3>Foundry IQ ingests documents into a search index</h3>
+					<p class="subtitle">A cloud pipeline turns source files into searchable, citable chunks.</p>
+					<div class="process-grid">
+						<div class="process-stage"><div class="process-icon" aria-hidden="true">🗄️</div><h4>Blob Storage</h4><p>Stores a retrievable copy of each source document.</p></div>
+						<div class="process-stage"><div class="process-icon" aria-hidden="true">⚙️</div><h4>Search indexer</h4><p>Detects additions and updates, then runs the ingestion pipeline.</p></div>
+						<div class="process-stage"><div class="process-icon" aria-hidden="true">🧠</div><h4>Content Understanding</h4><p>Extracts text, tables, images, structure, and metadata.</p></div>
+						<div class="process-stage"><div class="process-icon" aria-hidden="true">🧩</div><h4>Chunk + vectorize</h4><p>Creates semantic chunks and computes embeddings.</p></div>
+						<div class="process-stage"><div class="process-icon" aria-hidden="true">🔎</div><h4>Search index</h4><p>Stores text, vectors, metadata, and source references together.</p></div>
 					</div>
-					<p class="callout">No attendee Azure account, Python environment, document upload, or indexer run is required.</p>
+					<p class="callout">For this workshop, the ingestion pipeline has already run.</p>
+				</section>
+
+				<section data-visibility="hidden">
+					<h3>Content Understanding preserves more than plain text</h3>
+					<div class="three-column">
+						<div class="card blue"><h4>Rich extraction</h4><p>Reads text and OCR, preserves tables as structured HTML, and describes images and diagrams.</p></div>
+						<div class="card purple"><h4>Semantic chunking</h4><p>Splits on meaningful document boundaries instead of arbitrary character counts.</p></div>
+						<div class="card green"><h4>Grounding metadata</h4><p>Keeps document identity, page location, and source references with every chunk.</p></div>
+					</div>
+					<div class="flow" style="margin-top: 30px;">
+						<div class="node gold">Source document</div><div class="arrow">→</div>
+						<div class="node purple">Structured extraction</div><div class="arrow">→</div>
+						<div class="node blue">Semantic chunks</div>
+					</div>
 				</section>
 
 				<section>
-					<h3>Know which layer you are inspecting</h3>
-					<div class="stack">
-						<div class="layer document">Source document · complete organizational artifact</div>
-						<div class="layer chunk">Indexed chunk · semantically bounded passage with metadata</div>
-						<div class="layer index">Hybrid search · keyword + vector matching over chunks</div>
-						<div class="layer kb">Knowledge-base retrieval · query planning + source references</div>
-						<div class="layer copilot">Copilot answer · synthesis from retrieved evidence</div>
+					<h3>Hybrid search improves relevance</h3>
+					<p class="subtitle">Foundry IQ combines exact-term matching with semantic similarity, then reranks the fused results.</p>
+					<div class="hybrid-grid">
+						<div class="diagram-box green">Query<small>What are the CSV export requirements?</small></div>
+						<div class="diagram-arrow">→</div>
+						<div class="diagram-stack">
+							<div class="diagram-box blue">Keyword search<small>Finds exact terms such as <code>CSV</code>, field names, and identifiers.</small></div>
+							<div class="diagram-box purple">Vector search<small>Finds passages with similar meaning even when wording differs.</small></div>
+						</div>
+						<div class="diagram-arrow">→</div>
+						<div class="diagram-box gold">Reciprocal Rank Fusion<small>Combines both ranked result lists.</small></div>
+						<div class="diagram-arrow">→</div>
+						<div class="diagram-box green">Semantic reranking<small>Promotes the chunks most relevant to the full question.</small></div>
 					</div>
 				</section>
 
-				<section>
-					<h3>Exercise: follow evidence through the portal</h3>
-					<div class="step"><div class="step-number">1</div><div><strong>Documents:</strong> identify the purpose of each artifact.</div></div>
-					<div class="step"><div class="step-number">2</div><div><strong>Chunks:</strong> inspect semantic boundaries and page metadata.</div></div>
-					<div class="step"><div class="step-number">3</div><div><strong>Search:</strong> query <code>CSV export requirements</code>.</div></div>
-					<div class="step"><div class="step-number">4</div><div><strong>Documents KB:</strong> inspect extractive passages, references, and activity.</div></div>
+				<section class="compact-title">
+					<h3>Explore Foundry IQ in the workshop portal</h3>
+					<p class="subtitle">You do not need an Azure account. Use the portal URL supplied by your instructor.</p>
+					<div class="portal-layout">
+						<div class="portal-actions">
+							<div class="card gold"><h4>Browse documents</h4><p>Open the source files in the project requirements corpus.</p></div>
+							<div class="card purple"><h4>View document chunks</h4><p>Inspect extracted passages and page metadata.</p></div>
+							<div class="card blue"><h4>Search the index</h4><p>Compare passages, sources, pages, and relevance.</p></div>
+						</div>
+						<img class="portal-screenshot" src="images/workshop-portal.png" alt="Cocoarynth Trace workshop portal showing project requirements, engineering practices, and combined knowledge base navigation">
+					</div>
 				</section>
 
 				<section>
@@ -933,84 +1234,54 @@
 					<p class="callout">The client sees two integrations and decides when to call each one.</p>
 				</section>
 
-				<section>
-					<h3>Exercise: answer the pilot-readiness question</h3>
-					<p class="prompt">Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker, check relevant issues for related open work using GitHub MCP, and cite both the pilot requirements and current implementation evidence.</p>
-					<div class="three-column" style="margin-top: 22px;">
-						<div class="card gold"><h4>Requirements</h4><p>CSV required; JSON rejected.</p></div>
-						<div class="card blue"><h4>Implementation</h4><p>Origin Passports export as JSON.</p></div>
-						<div class="card purple"><h4>Remaining work</h4><p>CSV-support issue is open.</p></div>
+				<section class="compact-title">
+					<h3>Exercise #3: Assess pilot readiness</h3>
+					<p class="prompt">Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker and related open work, then cite the pilot requirements and current implementation evidence.</p>
+					<div class="three-column" style="margin-top: 16px;">
+						<div class="card gold"><h4>1. Explore</h4><p>Inspect documents, chunks, search, and retrieval in the portal.</p></div>
+						<div class="card blue"><h4>2. Connect</h4><p>Add the documents MCP server alongside GitHub MCP.</p></div>
+						<div class="card purple"><h4>3. Investigate</h4><p>Answer with requirements, implementation, and issue evidence.</p></div>
 					</div>
-					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part3.md">Open Part 3 instructions</a></p>
-				</section>
-
-				<section>
-					<h3>A complete answer distinguishes facts from sources</h3>
-					<table>
-						<thead><tr><th>Claim</th><th>Best supporting source</th><th>Status</th></tr></thead>
-						<tbody>
-							<tr><td>Mapayça requires CSV</td><td>Pilot requirements document</td><td><span class="status yes">Established</span></td></tr>
-							<tr><td>Cocoarynth exports JSON</td><td>Code or merged PR</td><td><span class="status yes">Established</span></td></tr>
-							<tr><td>CSV support remains unfinished</td><td>Open GitHub issue</td><td><span class="status open">Open work</span></td></tr>
-							<tr><td>The pilot is ready today</td><td>All evidence together</td><td><span class="status no">No</span></td></tr>
-						</tbody>
-					</table>
+					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part3.md" target="_blank" rel="noopener noreferrer">🔗 Open Part 3 instructions</a></p>
 				</section>
 
 				<section class="heading-only">
-					<p class="eyebrow">Part 4 · 20 minutes</p>
-					<h2>Use the combined knowledge base</h2>
-					<p class="subtitle">Add company engineering standards while keeping live GitHub evidence direct.</p>
+					<h2>Connect GitHub Copilot to<br>a multi-source knowledge base</h2>
 				</section>
 
 				<section>
-					<h3>The combined KB has two knowledge sources</h3>
-					<div class="flow">
-						<div class="node green">GitHub Copilot</div>
-						<div class="arrow">→</div>
-						<div class="node purple">Combined KB<br><small>low reasoning</small></div>
-						<div class="arrow">→</div>
-						<div class="node gold">Search index source<br><small>project requirements</small></div>
-						<div class="arrow">+</div>
-						<div class="node blue">Search index source<br><small>engineering practices</small></div>
+					<h3>A Foundry IQ knowledge base can query multiple sources</h3>
+					<div class="kb-grid">
+						<div class="diagram-box green">Conversation<small>The question plus steering instructions.</small></div>
+						<div class="diagram-arrow">→</div>
+						<div class="diagram-box purple">Retrieval planning<small>Generates and routes one or more search queries.</small></div>
+						<div class="diagram-arrow">→</div>
+						<div class="diagram-stack">
+							<div class="diagram-box gold">Project requirements index</div>
+							<div class="diagram-box blue">Engineering practices index</div>
+						</div>
 					</div>
-					<p class="callout"><code>cocoarynth-kb-all</code> lets Foundry IQ plan retrieval across both indexes behind one native MCP endpoint.</p>
-				</section>
-
-				<section>
-					<h3>Create a grounded PRD</h3>
-					<div class="step"><div class="step-number">1</div><div>Connect <code>cocoarynth-combined</code>.</div></div>
-					<div class="step"><div class="step-number">2</div><div>Disable <code>cocoarynth-documents</code>, but keep direct GitHub MCP enabled.</div></div>
-					<div class="step"><div class="step-number">3</div><div>Start a fresh chat with no previous answer context.</div></div>
-					<div class="step"><div class="step-number">4</div><div>Create <code>origin-passport-csv-prd.md</code> from GitHub evidence, project requirements, and engineering standards.</div></div>
-					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part4.md">Open Part 4 instructions</a></p>
-				</section>
-
-				<section>
-					<h3>Compare where retrieval decisions happen</h3>
-					<table>
-						<thead><tr><th>Layer</th><th>Responsibility</th></tr></thead>
-						<tbody>
-							<tr><td>Foundry IQ</td><td>Plans retrieval across the two Search indexes inside the combined KB</td></tr>
-							<tr><td>GitHub Copilot</td><td>Coordinates the combined KB, direct GitHub MCP, and the local workspace</td></tr>
-							<tr><td>Direct GitHub MCP</td><td>Retrieves live repository evidence with the attendee's GitHub authorization</td></tr>
-						</tbody>
-					</table>
-				</section>
-
-				<section>
-					<h3>Judge the evidence—not the number of tool calls</h3>
-					<div class="three-column">
-						<div class="card green"><h4>Coverage</h4><p>Did it retrieve the CSV requirement and JSON implementation?</p></div>
-						<div class="card purple"><h4>Attribution</h4><p>Can you tell which claim came from which source?</p></div>
-						<div class="card gold"><h4>Uncertainty</h4><p>Does it admit when a source was not selected or evidence is missing?</p></div>
+					<div class="flow" style="margin-top: 22px;">
+						<div class="node gold">Merged results</div><div class="arrow">→</div>
+						<div class="node purple">Answer synthesis</div><div class="arrow">→</div>
+						<div class="node green">Native MCP endpoint</div>
 					</div>
-					<p class="callout">A combined KB does not guarantee a better answer—or that every source is selected for every question.</p>
+					<p class="callout"><code>cocoarynth-kb-all</code> plans retrieval across both indexes and exposes the combined KB through one endpoint.</p>
+				</section>
+
+				<section class="compact-title">
+					<h3>Exercise #4: Create a grounded PRD</h3>
+					<p class="prompt">Create a grounded PRD using evidence from direct GitHub MCP and <code>cocoarynth-combined</code>. Distinguish required behavior, current implementation, and recommendations, then cite the sources.</p>
+					<div class="three-column" style="margin-top: 16px;">
+						<div class="card gold"><h4>1. Prepare</h4><p>Connect the combined KB, keep GitHub MCP, and start a fresh chat.</p></div>
+						<div class="card blue"><h4>2. Create</h4><p>Ask Copilot to create <code>origin-passport-csv-prd.md</code>.</p></div>
+						<div class="card purple"><h4>3. Review</h4><p>Check requirements, implementation facts, standards, and citations.</p></div>
+					</div>
+					<p style="font-size: 0.56em;"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/part4.md" target="_blank" rel="noopener noreferrer">🔗 Open Part 4 instructions</a></p>
 				</section>
 
 				<section class="heading-only">
-					<p class="eyebrow">Closing · 10 minutes</p>
-					<h2>Take the pattern back to your team</h2>
+					<h2>Next steps</h2>
 				</section>
 
 				<section>
@@ -1046,7 +1317,7 @@
 					<div class="two-column">
 						<div class="card green">
 							<h4>Take-home repository</h4>
-							<p><a href="https://github.com/pamelafox/developer-kb-for-github-copilot">github.com/pamelafox/developer-kb-for-github-copilot</a></p>
+							<p><a href="https://github.com/pamelafox/developer-kb-for-github-copilot">🔗 github.com/pamelafox/developer-kb-for-github-copilot</a></p>
 							<p>Exercises, portal, ingestion code, client configuration, tests, and Azure infrastructure.</p>
 						</div>
 						<div class="card purple">
@@ -1063,7 +1334,7 @@
 
 				<section class="heading-only">
 					<h2>Questions?</h2>
-					<p class="subtitle"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot">github.com/pamelafox/developer-kb-for-github-copilot</a></p>
+					<p class="subtitle"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot">🔗 github.com/pamelafox/developer-kb-for-github-copilot</a></p>
 				</section>
 
 			</div>
