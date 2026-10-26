@@ -150,4 +150,4 @@ Check that the timeline:
 - Explains how discussions influenced implementation.
 - Does not claim that planned CSV support is complete.
 
-[Return to the lab overview](README.md) | [Continue to Exercise 3](exercise3.md)
+[Return to the workshop overview](README.md) | [Continue to Exercise 3](exercise3.md)

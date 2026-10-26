@@ -21,7 +21,7 @@ You will use a GitHub account specifically set up for GitHub Universe.
 
 ## 2. Set up GitHub Copilot
 
-Set up one of the GitHub Copilot options below. You will use the same option throughout the lab.
+Set up one of the GitHub Copilot options below. You will use the same option throughout the workshop.
 
 ### Option A: Set up GitHub Copilot CLI
 
@@ -134,4 +134,4 @@ If Copilot cannot start the application, use this fallback:
 
 Stop here until the instructor introduces Exercise 2.
 
-[Return to the lab overview](README.md) | [Continue to Exercise 2](exercise2.md)
+[Return to the workshop overview](README.md) | [Continue to Exercise 2](exercise2.md)

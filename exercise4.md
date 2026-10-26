@@ -197,4 +197,4 @@ Before finishing, make sure you can answer:
 </details>
 <!-- markdownlint-enable MD033 -->
 
-[Return to the lab overview](README.md) | [Review Exercise 3](exercise3.md)
+[Return to the workshop overview](README.md) | [Review Exercise 3](exercise3.md)

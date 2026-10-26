@@ -38,7 +38,7 @@ Before the session:
 - Confirm the private Search query-key distribution method and the portal access mechanism.
 - Tell attendees when the hosted environment will expire.
 
-The shared Search query key grants query access across the lab Search service; it is not an attendee-specific authorization boundary. Use only synthetic content, keep the key out of chat, repositories, logs, and screenshots, and rotate it after the advertised access window. Direct GitHub MCP uses each attendee's GitHub authorization and must remain read-only for the workshop.
+The shared Search query key grants query access across the workshop Search service; it is not an attendee-specific authorization boundary. Use only synthetic content, keep the key out of chat, repositories, logs, and screenshots, and rotate it after the advertised access window. Direct GitHub MCP uses each attendee's GitHub authorization and must remain read-only for the workshop.
 
 After the access window, rotate the distributed Search query key and remove the dedicated workshop resources when they are no longer needed.
 

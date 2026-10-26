@@ -6,7 +6,7 @@ You will begin with the project code, then connect GitHub Copilot to live GitHub
 
 Instructors can use the [instructor guide](README.instructor.md) for deployment, local development, and testing instructions.
 
-## Lab exercises
+## Workshop exercises
 
 1. [Exercise 1: Meet the project](exercise1.md)
 2. [Exercise 2: Connect Copilot to the GitHub MCP server](exercise2.md)

@@ -60,7 +60,7 @@ Before continuing, make sure you can explain the difference between a source doc
 
 1. Under **Corpus 1: Project requirements**, select **Call over MCP**.
 2. Next to **MCP endpoint**, select **Copy**.
-3. Get the shared Foundry IQ query key through the private method specified by your instructor. The query key is a shared lab credential. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the lab.
+3. Get the shared Foundry IQ query key through the private method specified by your instructor. The query key is a shared workshop credential. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the workshop.
 
 ## 3. Connect GitHub Copilot
 
@@ -69,7 +69,7 @@ Follow the instructions for the Copilot client you selected in Exercise 1. Name 
 ### Option A: Configure the MCP server in Copilot CLI
 
 1. Exit the active interactive Copilot session if one is running.
-2. Run the following command, replacing both placeholders with the values supplied for the lab:
+2. Run the following command, replacing both placeholders with the values supplied for the workshop:
 
    ```shell
    copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-documents "<DOCUMENTS_KB_MCP_ENDPOINT>"
@@ -115,7 +115,7 @@ Follow the instructions for the Copilot client you selected in Exercise 1. Name 
        {
          "id": "cocoarynth-search-key",
          "type": "promptString",
-         "description": "Cocoarynth lab Search query key",
+         "description": "Cocoarynth workshop Search query key",
          "password": true
        }
      ],
@@ -205,4 +205,4 @@ Before continuing, make sure you can answer:
 </details>
 <!-- markdownlint-enable MD033 -->
 
-[Continue to Exercise 4](exercise4.md) | [Return to the lab overview](README.md) | [Review Exercise 2](exercise2.md)
+[Continue to Exercise 4](exercise4.md) | [Return to the workshop overview](README.md) | [Review Exercise 2](exercise2.md)

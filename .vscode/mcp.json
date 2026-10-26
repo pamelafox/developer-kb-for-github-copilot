@@ -3,7 +3,7 @@
     {
       "id": "cocoarynth-search-key",
       "type": "promptString",
-      "description": "Cocoarynth lab Search query key",
+      "description": "Cocoarynth workshop Search query key",
       "password": true
     }
   ],
