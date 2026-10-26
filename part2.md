@@ -13,7 +13,7 @@ In this part, you will explore the project's live GitHub artifacts in your brows
 
 ### Confirm your GitHub account
 
-1. Return to [pamelafox/cocoarynth-trace](https://github.com/pamelafox/cocoarynth-trace) in your browser.
+1. Return to [ghuni-ldr-1716-w-01/cocoarynth-trace](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace) in your browser.
 2. Select your profile picture in the upper-right corner and confirm that you are still signed in with the event-provided account from Part 1.
 3. If GitHub shows a not-found or access error, ask your instructor to verify your account before continuing.
 
@@ -39,7 +39,7 @@ Follow the instructions for the Copilot client you selected in Part 1.
 
 ### Option A: Configure GitHub MCP in VS Code
 
-1. Create or open `.mcp.json` at the root of the local checkout.
+1. Create or open `.vscode/mcp.json` in the local checkout.
 2. Add this configuration:
 
    ```json
@@ -60,9 +60,9 @@ Follow the instructions for the Copilot client you selected in Part 1.
 4. Select **Start** above the `github` server definition, or run **MCP: List Servers** from the Command Palette and start `github`.
 5. Complete the GitHub authorization prompt with the event-provided account.
 6. Confirm that VS Code reports the server as running.
-7. In the Copilot Chat panel, select the tools icon and confirm that tools from the `github` server are listed.
+7. In the Copilot Chat panel, select the tools icon and confirm that tools from the `GitHub MCP server` are listed.
 
-Do not commit `.mcp.json` or push changes from the lab checkout.
+Do not commit `.vscode/mcp.json` or push changes from the lab checkout.
 
 ### Option B: Configure GitHub MCP in Copilot CLI
 

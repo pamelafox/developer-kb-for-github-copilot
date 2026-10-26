@@ -118,7 +118,7 @@ Do not use `--disable-builtin-mcps`; that would disable the direct GitHub integr
 
 ### Option C: VS Code
 
-1. Open `.mcp.json` at the root of the local checkout.
+1. Open `.vscode/mcp.json` in the local checkout.
 2. Keep the existing `github` server definition and add `cocoarynth-combined` under `servers`:
 
    ```json
@@ -136,7 +136,7 @@ Do not use `--disable-builtin-mcps`; that would disable the direct GitHub integr
 5. Enter the shared Foundry IQ query key if VS Code prompts for it.
 6. In Copilot Chat, select the tools icon and confirm that tools from GitHub and the combined KB are available.
 
-Do not commit `.mcp.json` or push changes from the lab checkout.
+Do not commit `.vscode/mcp.json` or push changes from the lab checkout.
 
 ## 4. Create the PRD
 

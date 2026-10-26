@@ -163,7 +163,7 @@
 
 		.reveal section.heading-only {
 			display: block !important;
-			height: 100%;
+			height: 720px;
 			min-height: 720px;
 			padding: 66px 48px 62px;
 			box-sizing: border-box;
@@ -178,6 +178,11 @@
 			padding: 0;
 			text-align: left;
 			background: #ffffff;
+		}
+
+		/* Reveal's PDF print CSS forces padding: 0 !important on slides */
+		html.print-pdf .reveal .slides section:not(.title-slide) {
+			padding: 66px 48px 62px !important;
 		}
 
 		.reveal section.title-slide h1 {
@@ -219,8 +224,8 @@
 		.reveal section.title-slide::before {
 			content: "";
 			position: absolute;
-			right: 0;
-			bottom: 0;
+			right: 4px;
+			bottom: 4px;
 			z-index: 10;
 			width: 81px;
 			height: 44px;
@@ -447,7 +452,8 @@
 		.card.green { border-top: 8px solid var(--green); }
 		.card.blue { border-top: 8px solid var(--blue); }
 
-		.speaker-slide {
+		.speaker-slide,
+		html.print-pdf .reveal .slides section.speaker-slide {
 			padding: 32px 40px 62px !important;
 		}
 
@@ -632,14 +638,6 @@
 
 		.hybrid-grid .diagram-arrow {
 			font-size: 0.9em;
-		}
-
-		.kb-grid {
-			display: grid;
-			grid-template-columns: 1.05fr 44px 1fr 44px 1.15fr;
-			gap: 10px;
-			align-items: center;
-			margin-top: 20px;
 		}
 
 		.diagram-stack {
@@ -979,14 +977,14 @@
 						<text x="188" y="258" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="28" font-weight="700" fill="#fff">MCP client A</text>
 						<rect x="58" y="424" width="260" height="72" rx="8" fill="#237a45"/>
 						<text x="188" y="468" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="28" font-weight="700" fill="#fff">MCP client B</text>
-						<rect x="590" y="160" width="450" height="180" rx="12" fill="url(#mcp-server-gradient)" stroke="#d5a23f" stroke-width="2.5"/>
-						<text x="815" y="214" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="31" font-weight="700" fill="#361f16">GitHub MCP server</text>
-						<rect x="614" y="260" width="110" height="50" rx="6" fill="#d5a23f"/><rect x="744" y="260" width="130" height="50" rx="6" fill="#d5a23f"/><rect x="894" y="260" width="130" height="50" rx="6" fill="#d5a23f"/>
-						<rect x="590" y="380" width="450" height="180" rx="12" fill="url(#mcp-server-gradient)" stroke="#d5a23f" stroke-width="2.5"/>
-						<text x="815" y="434" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="31" font-weight="700" fill="#361f16">Another MCP server</text>
-						<rect x="614" y="480" width="110" height="50" rx="6" fill="#d5a23f"/><rect x="744" y="480" width="130" height="50" rx="6" fill="#d5a23f"/><rect x="894" y="480" width="130" height="50" rx="6" fill="#d5a23f"/>
-						<text x="669" y="293" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Tools</text><text x="809" y="293" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Prompts</text><text x="959" y="293" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Resources</text>
-						<text x="669" y="513" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Tools</text><text x="809" y="513" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Prompts</text><text x="959" y="513" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="22" fill="#241814">Resources</text>
+						<rect x="590" y="160" width="496" height="180" rx="12" fill="url(#mcp-server-gradient)" stroke="#d5a23f" stroke-width="2.5"/>
+						<text x="838" y="214" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="31" font-weight="700" fill="#361f16">GitHub MCP server</text>
+						<rect x="614" y="260" width="92" height="50" rx="6" fill="#d5a23f"/><rect x="718" y="260" width="110" height="50" rx="6" fill="#d5a23f"/><rect x="840" y="260" width="120" height="50" rx="6" fill="#d5a23f"/><rect x="972" y="260" width="92" height="50" rx="6" fill="#d5a23f"/>
+						<rect x="590" y="380" width="496" height="180" rx="12" fill="url(#mcp-server-gradient)" stroke="#d5a23f" stroke-width="2.5"/>
+						<text x="838" y="434" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="31" font-weight="700" fill="#361f16">Another MCP server</text>
+						<rect x="614" y="480" width="92" height="50" rx="6" fill="#d5a23f"/><rect x="718" y="480" width="110" height="50" rx="6" fill="#d5a23f"/><rect x="840" y="480" width="120" height="50" rx="6" fill="#d5a23f"/><rect x="972" y="480" width="92" height="50" rx="6" fill="#d5a23f"/>
+						<text x="660" y="292" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Tools</text><text x="773" y="292" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Prompts</text><text x="900" y="292" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Resources</text><text x="1018" y="292" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Skills</text>
+						<text x="660" y="512" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Tools</text><text x="773" y="512" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Prompts</text><text x="900" y="512" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Resources</text><text x="1018" y="512" text-anchor="middle" font-family="Mona Sans, sans-serif" font-size="20" fill="#241814">Skills</text>
 						<line x1="348" y1="250" x2="590" y2="250" stroke="#6e40c9" stroke-width="5" marker-end="url(#mcp-architecture-arrow)"/><line x1="348" y1="460" x2="590" y2="460" stroke="#6e40c9" stroke-width="5" marker-end="url(#mcp-architecture-arrow)"/>
 						<line x1="348" y1="250" x2="572" y2="250" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-dasharray="12 14" opacity="0.95"><animate attributeName="stroke-dashoffset" from="0" to="-64" dur="2.2s" repeatCount="indefinite"/></line>
 						<line x1="348" y1="460" x2="572" y2="460" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-dasharray="12 14" opacity="0.95"><animate attributeName="stroke-dashoffset" from="0" to="-64" dur="2.2s" begin="0.4s" repeatCount="indefinite"/></line>
@@ -1000,7 +998,7 @@
 					<h3>Configure GitHub MCP in VS Code</h3>
 					<div class="two-column">
 						<div>
-							<h4>1. Add <code>.mcp.json</code></h4>
+							<h4>1. Add <code>.vscode/mcp.json</code></h4>
 							<pre><code class="language-json" data-trim>{
   "servers": {
     "github": {
@@ -1021,7 +1019,7 @@
 							<div class="step"><div class="step-number">4</div><div>Open Copilot Chat tools and find the GitHub tools.</div></div>
 						</div>
 					</div>
-					<p class="callout"><strong>Do not commit <code>.mcp.json</code> or push lab checkout changes.</strong></p>
+					<p class="callout"><strong>Do not commit <code>.vscode/mcp.json</code> or push lab checkout changes.</strong></p>
 				</section>
 
 				<section>
@@ -1249,23 +1247,64 @@
 					<h2>Connect GitHub Copilot to<br>a multi-source knowledge base</h2>
 				</section>
 
-				<section>
-					<h3>A Foundry IQ knowledge base can query multiple sources</h3>
-					<div class="kb-grid">
-						<div class="diagram-box green">Conversation<small>The question plus steering instructions.</small></div>
-						<div class="diagram-arrow">→</div>
-						<div class="diagram-box purple">Retrieval planning<small>Generates and routes one or more search queries.</small></div>
-						<div class="diagram-arrow">→</div>
-						<div class="diagram-stack">
-							<div class="diagram-box gold">Project requirements index</div>
-							<div class="diagram-box blue">Engineering practices index</div>
-						</div>
-					</div>
-					<div class="flow" style="margin-top: 22px;">
-						<div class="node gold">Merged results</div><div class="arrow">→</div>
-						<div class="node purple">Answer synthesis</div><div class="arrow">→</div>
-						<div class="node green">Native MCP endpoint</div>
-					</div>
+				<section class="compact-title">
+					<h3>Foundry IQ knowledge base</h3>
+					<p class="subtitle">An agentic retrieval engine that can query across multiple sources.</p>
+					<svg class="mcp-diagram" viewBox="0 72 1200 232" role="img" aria-label="Conversation and steering instructions feed retrieval planning, which generates search queries that fan out to two search index knowledge sources (project requirements and engineering practices) and produces merged results and an activity log" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 16px;">
+						<defs>
+							<marker id="kb-arrow-ink" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="#241814"/></marker>
+							<marker id="kb-arrow-blue" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="#0969da"/></marker>
+							<marker id="kb-arrow-purple" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="#6e40c9"/></marker>
+						</defs>
+						<g font-family="Mona Sans, sans-serif" text-anchor="middle">
+							<text x="95" y="100" font-size="22" font-weight="700" fill="#241814">Input</text>
+							<rect x="10" y="118" width="170" height="60" rx="4" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+							<text x="95" y="155" font-size="20" fill="#241814">Conversation</text>
+							<rect x="10" y="220" width="170" height="76" rx="4" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+							<text x="95" y="253" font-size="20" fill="#241814">Steering</text>
+							<text x="95" y="279" font-size="20" fill="#241814">instructions</text>
+							<path d="M180 148 H202 V258 H180" fill="none" stroke="#241814" stroke-width="2"/>
+							<line x1="202" y1="203" x2="233" y2="203" stroke="#241814" stroke-width="2" marker-end="url(#kb-arrow-ink)"/>
+
+							<rect x="235" y="138" width="150" height="130" rx="4" fill="#237a45"/>
+							<text x="310" y="198" font-size="22" font-weight="600" fill="#fff">Retrieval</text>
+							<text x="310" y="226" font-size="22" font-weight="600" fill="#fff">planning</text>
+							<line x1="385" y1="165" x2="418" y2="165" stroke="#241814" stroke-width="2" marker-end="url(#kb-arrow-ink)"/>
+							<line x1="385" y1="240" x2="418" y2="240" stroke="#241814" stroke-width="2" marker-end="url(#kb-arrow-ink)"/>
+							<rect x="420" y="140" width="200" height="50" rx="4" fill="#237a45"/>
+							<text x="520" y="172" font-size="20" fill="#fff">Search query 1</text>
+							<rect x="420" y="215" width="200" height="50" rx="4" fill="#237a45"/>
+							<text x="520" y="247" font-size="20" fill="#fff">Search query 2</text>
+
+							<text x="665" y="118" font-size="20" font-weight="700" font-style="italic" fill="#0969da" transform="rotate(-22 665 118)">Search</text>
+							<g stroke="#0969da" stroke-width="2" marker-end="url(#kb-arrow-blue)">
+								<line x1="620" y1="165" x2="721" y2="148"/>
+								<line x1="620" y1="165" x2="721" y2="258"/>
+								<line x1="620" y1="240" x2="721" y2="148"/>
+								<line x1="620" y1="240" x2="721" y2="258"/>
+							</g>
+
+							<text x="840" y="96" font-size="22" font-weight="700" fill="#0969da">Knowledge sources</text>
+							<rect x="723" y="110" width="234" height="76" rx="4" fill="#0969da"/>
+							<text x="840" y="143" font-size="19" font-weight="600" fill="#fff">Project requirements</text>
+							<text x="840" y="168" font-size="17" fill="#fff">Search Index</text>
+							<rect x="723" y="220" width="234" height="76" rx="4" fill="#0969da"/>
+							<text x="840" y="253" font-size="19" font-weight="600" fill="#fff">Engineering practices</text>
+							<text x="840" y="278" font-size="17" fill="#fff">Search Index</text>
+
+							<g stroke="#6e40c9" stroke-width="2" marker-end="url(#kb-arrow-purple)">
+								<line x1="957" y1="148" x2="996" y2="203"/>
+								<line x1="957" y1="258" x2="996" y2="203"/>
+							</g>
+							<text x="1095" y="96" font-size="22" font-weight="700" fill="#6e40c9">Output</text>
+							<rect x="998" y="110" width="194" height="186" rx="4" fill="none" stroke="#6e40c9" stroke-width="1.5" stroke-dasharray="5 4"/>
+							<rect x="1012" y="124" width="166" height="76" rx="4" fill="#6e40c9"/>
+							<text x="1095" y="156" font-size="21" fill="#fff">Merged</text>
+							<text x="1095" y="182" font-size="21" fill="#fff">results</text>
+							<rect x="1012" y="214" width="166" height="68" rx="4" fill="#6e40c9"/>
+							<text x="1095" y="255" font-size="21" fill="#fff">Activity log</text>
+						</g>
+					</svg>
 					<p class="callout"><code>cocoarynth-kb-all</code> plans retrieval across both indexes and exposes the combined KB through one endpoint.</p>
 				</section>
 
@@ -1342,7 +1381,6 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.js"></script>
 		<script>
 			Reveal.initialize({
 				width: 1280,
@@ -1352,9 +1390,10 @@
 				slideNumber: true,
 				showNotes: false,
 				margin: 0.04,
+				pdfMaxPagesPerSlide: 1,
 				preloadIframes: true,
 				autoPlayMedia: true,
-				plugins: [RevealHighlight, RevealMenu],
+				plugins: [RevealHighlight],
 				pdfSeparateFragments: true
 			});
 		</script>

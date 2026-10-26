@@ -105,7 +105,7 @@ Follow the instructions for the Copilot client you selected in Part 1. Name this
 
 ### Option C: Configure the MCP server in VS Code
 
-1. Open `.mcp.json` at the root of the local checkout.
+1. Open `.vscode/mcp.json` in the local checkout.
 2. Keep the existing `github` server and add the `cocoarynth-documents` server and secure input shown below.
 3. Replace `<DOCUMENTS_KB_MCP_ENDPOINT>` with the endpoint copied from the workshop portal.
 
@@ -144,7 +144,7 @@ Follow the instructions for the Copilot client you selected in Part 1. Name this
 7. Confirm that both `github` and `cocoarynth-documents` are running.
 8. In Copilot Chat, select the tools icon and confirm that tools from both servers are available.
 
-Do not commit `.mcp.json` or push changes from the lab checkout.
+Do not commit `.vscode/mcp.json` or push changes from the lab checkout.
 
 ## 4. Start a fresh chat
 

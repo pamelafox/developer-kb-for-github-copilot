@@ -27,7 +27,7 @@ from copilot.tools import Tool, ToolInvocation, ToolResult
 from app.backend.config import load_local_environment
 
 
-REPOSITORY_URL = "https://github.com/pamelafox/cocoarynth-trace.git"
+REPOSITORY_URL = "https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace.git"
 PRD_FILE = "origin-passport-csv-prd.md"
 DOCUMENTS_SERVER = "acceptance-cocoarynth-documents"
 COMBINED_SERVER = "acceptance-cocoarynth-combined"
