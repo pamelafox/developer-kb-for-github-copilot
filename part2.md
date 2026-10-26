@@ -62,8 +62,6 @@ Follow the instructions for the Copilot client you selected in Part 1.
 6. Confirm that VS Code reports the server as running.
 7. In the Copilot Chat panel, select the tools icon and confirm that tools from the `GitHub MCP server` are listed.
 
-Do not commit `.vscode/mcp.json` or push changes from the lab checkout.
-
 ### Option B: Configure GitHub MCP in Copilot CLI
 
 The GitHub MCP server comes pre-installed in Copilot CLI with read-only tools enabled by default. Start a new session and add the Discussions toolset:

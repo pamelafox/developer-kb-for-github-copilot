@@ -144,8 +144,6 @@ Follow the instructions for the Copilot client you selected in Part 1. Name this
 7. Confirm that both `github` and `cocoarynth-documents` are running.
 8. In Copilot Chat, select the tools icon and confirm that tools from both servers are available.
 
-Do not commit `.vscode/mcp.json` or push changes from the lab checkout.
-
 ## 4. Start a fresh chat
 
 Start a new session so you can clearly observe which integrations Copilot uses. In VS Code, make sure the chat is in Agent mode. In the Copilot App, start the session from the Cocoarynth Trace project.

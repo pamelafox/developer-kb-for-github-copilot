@@ -136,8 +136,6 @@ Do not use `--disable-builtin-mcps`; that would disable the direct GitHub integr
 5. Enter the shared Foundry IQ query key if VS Code prompts for it.
 6. In Copilot Chat, select the tools icon and confirm that tools from GitHub and the combined KB are available.
 
-Do not commit `.vscode/mcp.json` or push changes from the lab checkout.
-
 ## 4. Create the PRD
 
 Start a fresh chat so earlier answers do not supply hidden context. In VS Code, use Agent mode. In the Copilot App, start from the Cocoarynth Trace project.

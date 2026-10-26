@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    {
+      "id": "cocoarynth-search-key",
+      "type": "promptString",
+      "description": "Cocoarynth lab Search query key",
+      "password": true
+    }
+  ],
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/readonly",
+      "headers": {
+        "X-MCP-Toolsets": "repos,issues,pull_requests,discussions"
+      }
+    },
+    "cocoarynth": {
+      "type": "http",
+      "url": "https://srch-k6qyttvzj64ea.search.windows.net/knowledgebases/cocoarynth-kb-docs/mcp?api-version=2026-08-01-preview",
+      "headers": {
+        "api-key": "${input:cocoarynth-search-key}"
+      }
+    }
+  }
+}
