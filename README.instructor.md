@@ -90,12 +90,12 @@ To smoke-test a deployed revision directly:
 .venv/bin/python -m pytest tests/live_smoke.py --smoke-base-url "https://<app-hostname>" -v
 ```
 
-The live smoke suite runs the Part 3 and Part 4 portal workflows against the deployed app, then uses the configured Azure OpenAI chat deployment to judge the retrieved answers against acceptance rubrics.
+The live smoke suite runs the Exercise 3 and Exercise 4 portal workflows against the deployed app, then uses the configured Azure OpenAI chat deployment to judge the retrieved answers against acceptance rubrics.
 
-To verify the Part 3 and Part 4 Copilot instructions with the GitHub Copilot SDK:
+To verify the Exercise 3 and Exercise 4 Copilot instructions with the GitHub Copilot SDK:
 
 ```shell
 .venv/bin/python -m pytest tests/copilot_smoke.py --copilot-smoke --smoke-base-url "https://<app-hostname>" -v
 ```
 
-This opt-in suite consumes Copilot quota and requires `GITHUB_TOKEN` or an authenticated GitHub CLI, plus `AZURE_SEARCH_QUERY_KEY`. It runs the SDK in isolated `empty` mode with a temporary Copilot home, so it does not read global Copilot configuration or credentials from Keychain. It clones `ghuni-ldr-1716-w-01/cocoarynth-trace` into a temporary directory, allows read-only MCP calls, denies shell and GitHub writes, and permits Part 4 to create only `origin-passport-csv-prd.md` through a scoped SDK tool.
+This opt-in suite consumes Copilot quota and requires `GITHUB_TOKEN` or an authenticated GitHub CLI, plus `AZURE_SEARCH_QUERY_KEY`. It runs the SDK in isolated `empty` mode with a temporary Copilot home, so it does not read global Copilot configuration or credentials from Keychain. It clones `ghuni-ldr-1716-w-01/cocoarynth-trace` into a temporary directory, allows read-only MCP calls, denies shell and GitHub writes, and permits Exercise 4 to create only `origin-passport-csv-prd.md` through a scoped SDK tool.

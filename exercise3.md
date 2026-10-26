@@ -1,6 +1,6 @@
-# Part 3: Connect Copilot to a document retrieval MCP server
+# Exercise 3: Connect Copilot to a document retrieval MCP server
 
-In this part, you will explore Cocoarynth's pre-ingested document collection, test retrieval over MCP in the workshop portal, and connect GitHub Copilot to the document retrieval server.
+In this exercise, you will explore Cocoarynth's pre-ingested document collection, test retrieval over MCP in the workshop portal, and connect GitHub Copilot to the document retrieval server.
 
 ## Contents
 
@@ -64,7 +64,7 @@ Before continuing, make sure you can explain the difference between a source doc
 
 ## 3. Connect GitHub Copilot
 
-Follow the instructions for the Copilot client you selected in Part 1. Name this connection `cocoarynth-documents` so it is easy to distinguish from GitHub MCP and the combined retrieval server used later.
+Follow the instructions for the Copilot client you selected in Exercise 1. Name this connection `cocoarynth-documents` so it is easy to distinguish from GitHub MCP and the combined retrieval server used later.
 
 ### Option A: Configure the MCP server in Copilot CLI
 
@@ -205,4 +205,4 @@ Before continuing, make sure you can answer:
 </details>
 <!-- markdownlint-enable MD033 -->
 
-[Continue to Part 4](part4.md) | [Return to the lab overview](README.md) | [Review Part 2](part2.md)
+[Continue to Exercise 4](exercise4.md) | [Return to the lab overview](README.md) | [Review Exercise 2](exercise2.md)

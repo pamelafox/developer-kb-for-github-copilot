@@ -1,6 +1,6 @@
-# Part 1: Meet the project
+# Exercise 1: Meet the project
 
-In this part, Copilot has access to the project code but not the project's live issues, pull requests, or discussions.
+In this exercise, Copilot has access to the project code but not the project's live issues, pull requests, or discussions.
 
 ## Contents
 
@@ -132,6 +132,6 @@ If Copilot cannot start the application, use this fallback:
 4. Open `origin-passport-ESM-2026-042.json` and compare its fields with the internal information shown in the application.
 5. Stop the application. Ask Copilot to stop it if Copilot started it, or return to the terminal and press **Control+C** if you started it manually.
 
-Stop here until the instructor introduces Part 2.
+Stop here until the instructor introduces Exercise 2.
 
-[Return to the lab overview](README.md) | [Continue to Part 2](part2.md)
+[Return to the lab overview](README.md) | [Continue to Exercise 2](exercise2.md)

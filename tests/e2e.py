@@ -496,7 +496,7 @@ def test_explores_engineering_practice_index(page: Page, live_server_url: str, l
     expect(page.locator("#engineering-practices-search-results")).to_contain_text("Engineering Culture")
 
 
-def test_part3_portal_workflow(page: Page, live_server_url: str, live_smoke: bool) -> None:
+def test_exercise3_portal_workflow(page: Page, live_server_url: str, live_smoke: bool) -> None:
     if live_smoke:
         pytest.skip("Model-judged workshop acceptance is covered by tests/live_smoke.py.")
     mock_app_apis(page, live_smoke)
@@ -550,7 +550,7 @@ def test_part3_portal_workflow(page: Page, live_server_url: str, live_smoke: boo
     assert mcp_payloads == [{"question": question, "target": "documents"}]
 
 
-def test_part4_portal_workflow(page: Page, live_server_url: str, live_smoke: bool) -> None:
+def test_exercise4_portal_workflow(page: Page, live_server_url: str, live_smoke: bool) -> None:
     if live_smoke:
         pytest.skip("Model-judged workshop acceptance is covered by tests/live_smoke.py.")
     mock_app_apis(page, live_smoke)

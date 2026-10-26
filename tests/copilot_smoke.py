@@ -31,17 +31,17 @@ REPOSITORY_URL = "https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace.git"
 PRD_FILE = "origin-passport-csv-prd.md"
 DOCUMENTS_SERVER = "acceptance-cocoarynth-documents"
 COMBINED_SERVER = "acceptance-cocoarynth-combined"
-PART3_PROMPT = (
+EXERCISE3_PROMPT = (
     "Before answering, make a new call to `cocoarynth-documents` and a new call to GitHub MCP; do not rely only "
     "on evidence from the previous answer. Can Cocoarynth support Mapayça Markets' traceability import today? "
     "Identify the blocker, check relevant issues for related open work, and cite both the pilot requirements and "
     "current implementation evidence."
 )
-PART3_DOCUMENT_PROMPT = (
+EXERCISE3_DOCUMENT_PROMPT = (
     "Use `cocoarynth-documents` to answer: What file format does Mapayça Markets require for the Cocoarynth "
     "traceability pilot, and does its importer accept JSON? Cite the supporting document."
 )
-PART4_PROMPT = (
+EXERCISE4_PROMPT = (
     f"Create a local Markdown file named `{PRD_FILE}` containing a product requirements document for adding CSV "
     "Origin Passport export support to Cocoarynth Trace. Before drafting, retrieve evidence from both direct GitHub "
     "MCP and `cocoarynth-combined`. Use GitHub for current code, issues, pull requests, and discussions. Use the "
@@ -53,7 +53,7 @@ PART4_PROMPT = (
     "observability, open questions, and source links. Do not modify application code or any GitHub artifact. Do not "
     "finish until the Markdown file has been created."
 )
-PART4_SECTIONS = (
+EXERCISE4_SECTIONS = (
     "context",
     "goals",
     "non-goals",
@@ -344,7 +344,7 @@ def _assert_servers_called(
     assert any("github" in server for server in servers), calls
 
 
-def test_part3_copilot_coordinates_documents_and_github(
+def test_exercise3_copilot_coordinates_documents_and_github(
     copilot_smoke_config: CopilotSmokeConfig,
     knowledge_base_urls: dict[str, str],
     cocoarynth_checkout: Path,
@@ -357,8 +357,8 @@ def test_part3_copilot_coordinates_documents_and_github(
             knowledge_base_urls["cocoarynth-kb-docs"],
             copilot_smoke_config.search_key,
             copilot_smoke_config.github_token,
-            PART3_PROMPT,
-            preliminary_prompt=PART3_DOCUMENT_PROMPT,
+            EXERCISE3_PROMPT,
+            preliminary_prompt=EXERCISE3_DOCUMENT_PROMPT,
         )
     )
 
@@ -370,7 +370,7 @@ def test_part3_copilot_coordinates_documents_and_github(
     assert _workspace_snapshot(cocoarynth_checkout) == before
 
 
-def test_part4_copilot_creates_grounded_prd_only(
+def test_exercise4_copilot_creates_grounded_prd_only(
     copilot_smoke_config: CopilotSmokeConfig,
     knowledge_base_urls: dict[str, str],
     cocoarynth_checkout: Path,
@@ -383,7 +383,7 @@ def test_part4_copilot_creates_grounded_prd_only(
             knowledge_base_urls["cocoarynth-kb-all"],
             copilot_smoke_config.search_key,
             copilot_smoke_config.github_token,
-            PART4_PROMPT,
+            EXERCISE4_PROMPT,
             writable_file=PRD_FILE,
         )
     )
@@ -394,7 +394,7 @@ def test_part4_copilot_creates_grounded_prd_only(
     assert {name: digest for name, digest in after.items() if name != PRD_FILE} == before
 
     prd = (cocoarynth_checkout / PRD_FILE).read_text().lower()
-    for section in PART4_SECTIONS:
+    for section in EXERCISE4_SECTIONS:
         assert section in prd
     for requirement in ("utf-8", "text/csv", "immutable", "mapay", "csv", "json"):
         assert requirement in prd

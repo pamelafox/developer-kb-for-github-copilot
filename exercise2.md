@@ -1,6 +1,6 @@
-# Part 2: Connect Copilot to the GitHub MCP server
+# Exercise 2: Connect Copilot to the GitHub MCP server
 
-In this part, you will explore the project's live GitHub artifacts in your browser, then enable GitHub MCP. MCP gives Copilot tools for retrieving repository content, issues, pull requests, and discussions.
+In this exercise, you will explore the project's live GitHub artifacts in your browser, then enable GitHub MCP. MCP gives Copilot tools for retrieving repository content, issues, pull requests, and discussions.
 
 ## Contents
 
@@ -14,10 +14,10 @@ In this part, you will explore the project's live GitHub artifacts in your brows
 ### Confirm your GitHub account
 
 1. Return to [ghuni-ldr-1716-w-01/cocoarynth-trace](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace) in your browser.
-2. Select your profile picture in the upper-right corner and confirm that you are still signed in with the event-provided account from Part 1.
+2. Select your profile picture in the upper-right corner and confirm that you are still signed in with the event-provided account from Exercise 1.
 3. If GitHub shows a not-found or access error, ask your instructor to verify your account before continuing.
 
-Use the same GitHub account when a Copilot client asks you to authorize GitHub MCP later in this part.
+Use the same GitHub account when a Copilot client asks you to authorize GitHub MCP later in this exercise.
 
 ### Browse the project activity
 
@@ -35,7 +35,7 @@ Do not create, edit, close, or comment on any GitHub artifact. You will ask Copi
 
 If the instructor has already configured a server named `github`, skip to the next section.
 
-Follow the instructions for the Copilot client you selected in Part 1.
+Follow the instructions for the Copilot client you selected in Exercise 1.
 
 ### Option A: Configure GitHub MCP in VS Code
 
@@ -135,7 +135,7 @@ Before continuing, make sure you can identify:
 </details>
 <!-- markdownlint-enable MD033 -->
 
-Do not decide whether the application meets any particular retailer's requirements yet. That question requires organizational documents introduced in a later part of the lab.
+Do not decide whether the application meets any particular retailer's requirements yet. That question requires organizational documents introduced in a later exercise.
 
 ## Bonus: Trace the feature's history
 
@@ -150,4 +150,4 @@ Check that the timeline:
 - Explains how discussions influenced implementation.
 - Does not claim that planned CSV support is complete.
 
-[Return to the lab overview](README.md) | [Continue to Part 3](part3.md)
+[Return to the lab overview](README.md) | [Continue to Exercise 3](exercise3.md)

@@ -1,6 +1,6 @@
-# Part 4: Connect Copilot to a combined knowledge base MCP server
+# Exercise 4: Connect Copilot to a combined knowledge base MCP server
 
-In this part, you will connect GitHub Copilot to a knowledge base that combines project requirements with Cocoarynth engineering practices. You will keep direct GitHub MCP enabled, then use both integrations to create a local product requirements document (PRD) for CSV Origin Passport support.
+In this exercise, you will connect GitHub Copilot to a knowledge base that combines project requirements with Cocoarynth engineering practices. You will keep direct GitHub MCP enabled, then use both integrations to create a local product requirements document (PRD) for CSV Origin Passport support.
 
 ## Contents
 
@@ -70,13 +70,13 @@ The first two power the corpus-specific MCP calls you already tried. The third i
 
 1. Under **Combined knowledge base**, select **Call over MCP**.
 2. Next to **MCP endpoint**, select **Copy**.
-3. Use the same shared Foundry IQ query key supplied for Part 3.
+3. Use the same shared Foundry IQ query key supplied for Exercise 3.
 
 ## 3. Connect GitHub Copilot
 
 For this exercise, enable these integrations:
 
-- Direct GitHub MCP server, from Part 2.
+- Direct GitHub MCP server, from Exercise 2.
 - `cocoarynth-combined`, the combined project-requirements and engineering-practices KB.
 
 Disable `cocoarynth-documents` to avoid exposing the project-document index through two tools.
@@ -197,4 +197,4 @@ Before finishing, make sure you can answer:
 </details>
 <!-- markdownlint-enable MD033 -->
 
-[Return to the lab overview](README.md) | [Review Part 3](part3.md)
+[Return to the lab overview](README.md) | [Review Exercise 3](exercise3.md)

@@ -11,8 +11,8 @@ from app.backend.config import Settings
 
 expect.set_options(timeout=180_000)
 
-PART3_QUESTION = "What must change in the Origin Passport export for the Mapayça Markets pilot?"
-PART4_QUESTION = (
+EXERCISE3_QUESTION = "What must change in the Origin Passport export for the Mapayça Markets pilot?"
+EXERCISE4_QUESTION = (
     "What product requirements and company engineering standards should guide CSV Origin Passport support? "
     "Cite evidence from both corpora."
 )
@@ -74,7 +74,7 @@ def azure_openai_judge() -> Generator[Judge, None, None]:
     credential.close()
 
 
-def test_part3_live_workflow(page: Page, live_portal_url: str, azure_openai_judge: Judge) -> None:
+def test_exercise3_live_workflow(page: Page, live_portal_url: str, azure_openai_judge: Judge) -> None:
     page.goto(live_portal_url)
     corpus = page.locator(".nav-group").filter(has_text="Corpus 1: Project requirements")
 
@@ -100,7 +100,7 @@ def test_part3_live_workflow(page: Page, live_portal_url: str, azure_openai_judg
     corpus.get_by_role("button", name="Call over MCP", exact=True).click()
     mcp_panel = page.locator("#documents-mcp")
     expect(mcp_panel.locator(".mcp-strip code")).to_contain_text("cocoarynth-kb-docs")
-    mcp_panel.locator("textarea").fill(PART3_QUESTION)
+    mcp_panel.locator("textarea").fill(EXERCISE3_QUESTION)
     mcp_panel.get_by_role("button", name="Call over MCP").click()
 
     output = mcp_panel.locator(".mcp-output")
@@ -108,7 +108,7 @@ def test_part3_live_workflow(page: Page, live_portal_url: str, azure_openai_judg
     expect(output).to_contain_text("MCP content")
 
     verdict = azure_openai_judge(
-        PART3_QUESTION,
+        EXERCISE3_QUESTION,
         output.inner_text(),
         output.inner_text(),
         (
@@ -119,7 +119,7 @@ def test_part3_live_workflow(page: Page, live_portal_url: str, azure_openai_judg
     assert verdict.upper().startswith("PASS"), verdict
 
 
-def test_part4_live_workflow(page: Page, live_portal_url: str, azure_openai_judge: Judge) -> None:
+def test_exercise4_live_workflow(page: Page, live_portal_url: str, azure_openai_judge: Judge) -> None:
     page.goto(live_portal_url)
     combined = page.locator(".nav-group").filter(has_text="Combined knowledge base")
     combined.get_by_role("button", name="Configuration", exact=True).click()
@@ -135,7 +135,7 @@ def test_part4_live_workflow(page: Page, live_portal_url: str, azure_openai_judg
         expect(source.locator(".source-facts")).to_contain_text(index_name)
 
     combined.get_by_role("button", name="Query knowledge base", exact=True).click()
-    page.locator("#combined-kb textarea").fill(PART4_QUESTION)
+    page.locator("#combined-kb textarea").fill(EXERCISE4_QUESTION)
     page.locator("#combined-kb").get_by_role("button", name="Search combined KB").click()
 
     output = page.locator("#combined-kb .kb-output")
@@ -146,7 +146,7 @@ def test_part4_live_workflow(page: Page, live_portal_url: str, azure_openai_judg
     expect(activity).to_contain_text("Index search")
 
     verdict = azure_openai_judge(
-        PART4_QUESTION,
+        EXERCISE4_QUESTION,
         output.inner_text(),
         references.inner_text(),
         (

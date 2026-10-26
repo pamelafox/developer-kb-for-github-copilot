@@ -52,7 +52,7 @@ Run deterministic portal E2E tests:
 These tests start an isolated Uvicorn server and mock Azure-dependent browser APIs. They do not require provisioned Azure resources. During iteration, use `-k` to target a workflow:
 
 ```shell
-.venv/bin/python -m pytest tests/e2e.py -q -k 'part3_portal_workflow or part4_portal_workflow'
+.venv/bin/python -m pytest tests/e2e.py -q -k 'exercise3_portal_workflow or exercise4_portal_workflow'
 ```
 
 Run the same browser suite against real services from the selected provisioned `azd` environment:
