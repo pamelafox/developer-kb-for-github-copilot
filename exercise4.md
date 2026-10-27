@@ -5,11 +5,10 @@ In this exercise, you will connect GitHub Copilot to a knowledge base that combi
 ## Contents
 
 - [1. Explore the combined knowledge base](#1-explore-the-combined-knowledge-base)
-- [2. Get the connection details](#2-get-the-connection-details)
-- [3. Connect GitHub Copilot](#3-connect-github-copilot)
-- [4. Create the PRD](#4-create-the-prd)
-- [5. Review the result](#5-review-the-result)
-- [6. Check your understanding](#6-check-your-understanding)
+- [2. Connect GitHub Copilot](#2-connect-github-copilot)
+- [3. Create the PRD](#3-create-the-prd)
+- [4. Review the result](#4-review-the-result)
+- [5. Check your understanding](#5-check-your-understanding)
 
 ## 1. Explore the combined knowledge base
 
@@ -66,13 +65,7 @@ The first two power the corpus-specific MCP calls you already tried. The third i
 11. Confirm that the first MCP content block contains the evidence array and each remaining block contains one reference, linked by `ref_id`.
 12. Compare the MCP content-only result with the richer query response.
 
-## 2. Get the connection details
-
-1. Under **Combined knowledge base**, select **Call over MCP**.
-2. Next to **MCP endpoint**, select **Copy**.
-3. Use the same shared Foundry IQ query key from Exercise 3: [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key)
-
-## 3. Connect GitHub Copilot
+## 2. Connect GitHub Copilot
 
 For this exercise, enable these integrations:
 
@@ -87,34 +80,38 @@ Disable `cocoarynth-kb-docs` to avoid exposing the project-document index throug
 2. Select **Customize** in the sidebar.
 3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
 4. Enter `cocoarynth-kb-all` for the server name and select **HTTP**.
-5. Paste the copied combined KB MCP URL into the URL field.
-6. Under **Headers**, add `api-key` with the shared Foundry IQ query key as its value.
+5. Paste the `cocoarynth-kb-all` MCP endpoint into the URL field. Copy it from the portal or [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key).
+6. Under **Headers**, add `api-key` with the Search query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) as its value.
 7. Leave other fields at their defaults, then select **Add server**.
-8. Keep `github` and `cocoarynth-kb-all` enabled. Disable only `cocoarynth-kb-docs`.
+8. In the **Installed** tab, disable `cocoarynth-kb-docs`.
+9. Ensure that only `github` and `cocoarynth-kb-all` are enabled.
 
 ### Option B: Copilot CLI
 
 1. Exit the active interactive Copilot session if one is running.
-2. Add the combined KB, replacing both placeholders:
+2. In a terminal prompt, configure Copilot CLI with the combined KB MCP server, replacing both placeholders with the `cocoarynth-kb-all` MCP endpoint and Search query key:
 
    ```shell
    copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-kb-all "<COMBINED_KB_MCP_ENDPOINT>"
    ```
 
-3. Start a fresh session with only the documents-only KB disabled:
+   The full command, with both values filled in, is in [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) so you can also paste it directly.
+
+   If prompted to remove a previous `cocoarynth-kb-docs` MCP server, run the provided command.
+
+3. In a terminal prompt, start a fresh session with only the documents-only KB disabled:
 
    ```shell
    copilot --disable-mcp-server cocoarynth-kb-docs --add-github-mcp-toolset discussions
    ```
 
-4. Verify both required servers:
+4. Inside the session, display the installed MCP servers with this slash command:
 
    ```text
-   /mcp show github-mcp-server
-   /mcp show cocoarynth-kb-all
+   /mcp show
    ```
 
-Do not use `--disable-builtin-mcps`; that would disable the direct GitHub integration needed for this exercise.
+5. In the server listing, confirm that the `cocarynth-kb-all` server is installed and running, `github` is installed and running, and `cocoarynth-kb-docs` is disabled.
 
 ### Option C: VS Code
 
@@ -131,12 +128,12 @@ Do not use `--disable-builtin-mcps`; that would disable the direct GitHub integr
    }
    ```
 
-3. Replace `<COMBINED_KB_MCP_ENDPOINT>` with the endpoint copied from the workshop portal, then save the file.
+3. Replace `<COMBINED_KB_MCP_ENDPOINT>` with the `cocoarynth-kb-all` MCP endpoint from the portal or [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key), then save the file.
 4. Start `github` and `cocoarynth-kb-all`. Stop only `cocoarynth-kb-docs`.
-5. Enter the shared Foundry IQ query key if VS Code prompts for it.
+5. Enter the Search query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) if VS Code prompts for it.
 6. In Copilot Chat, select the tools icon and confirm that tools from GitHub and the combined KB are available.
 
-## 4. Create the PRD
+## 3. Create the PRD
 
 Start a fresh chat so earlier answers do not supply hidden context. In the Copilot App, start from the Cocoarynth Trace project. In VS Code, use Agent mode.
 
@@ -148,7 +145,7 @@ Approve read-only tool calls and the creation of the one local Markdown file. Re
 
 After Copilot finishes, open `origin-passport-csv-prd.md` in the local checkout.
 
-## 5. Review the result
+## 4. Review the result
 
 Check the PRD against the evidence. It should:
 
@@ -172,7 +169,7 @@ Inspect the chat's tool activity as well as the finished file:
 
 If the PRD lacks evidence from one source, ask Copilot to retrieve that source explicitly and revise the file. Do not accept a polished document as grounded merely because it sounds plausible.
 
-## 6. Check your understanding
+## 5. Check your understanding
 
 Before finishing, make sure you can answer:
 

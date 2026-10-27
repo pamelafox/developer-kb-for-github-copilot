@@ -15,8 +15,8 @@ You will use a GitHub account specifically set up for GitHub Universe.
 
 1. Open Microsoft Edge from the taskbar or desktop.
 2. Navigate to [https://github.com/ghuni-ldr-1716-w-01](https://github.com/ghuni-ldr-1716-w-01).
-3. Select **Sign in** and use the event-provided GitHub account (email/password).
-4. Select your profile picture in the upper-right corner and confirm that the displayed username belongs to the event-provided account.
+3. Select **Continue** on the single-sign-on screen.
+4. In the Microsoft login screen, use the event-provided email and password information.
 5. Open [ghuni-ldr-1716-w-01/cocoarynth-trace](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace) and confirm that you can access the repository.
 
 ## 2. Set up GitHub Copilot
@@ -27,38 +27,40 @@ Set up one of the GitHub Copilot options below. You will use the same option thr
 
 1. Open the GitHub Copilot App.
 2. If prompted, select **Sign in with GitHub** and authenticate with the event-provided GitHub account.
-3. From **Projects** in the sidebar, select **+**, then select **Add GitHub repository**.
-4. Enter this repository URL: `https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace`.
-5. Start a session for the project and send `Hello` to confirm the agent is working.
+3. On the **Connect your repositories** screen, select **ghuni-ldr-1716-w-01/cocoarynth-trace** and select **Continue**.
+4. In the app dashboard, you should now see a **Projects** sidebar with **cocoarynth-trace** listed.
+5. Hover over **cocoarynth-trace** and select the **+** button to create a **New session**.
+6. Send `Hello` to confirm the agent is working.
 
 ### Option B: Set up GitHub Copilot CLI
 
-1. Open a terminal.
-2. Run `gh auth login` and follow the prompts to sign in.
+1. In the taskbar at the bottom, search for "cmd" and select **Command Prompt**.
+2. Run `gh auth login` and follow the prompts to sign in. Select the defaults (GitHub.com, HTTPS, Login with a web browser).
 3. Run `gh repo clone ghuni-ldr-1716-w-01/cocoarynth-trace` to clone the repository.
 4. Run `cd cocoarynth-trace` to enter its directory.
 5. Run `copilot` to start GitHub Copilot CLI.
-6. If prompted, use `/login` and authenticate with the event-provided GitHub account.
-7. When asked to "Confirm folder trust", say "Yes, and remember this folder for future sessions".
-8. Send `Hello` to confirm the agent is working.
+6. When the dialog pops up to **Confirm folder trust**, select **Yes, and remember this folder for future sessions**.
+7. If prompted, run `/login` to authenticate with the event-provided GitHub account.
+8. To allow running all tool calls without manual review, run `/yolo on`.
+9. Send `Hello` to confirm the agent is working.
 
 ### Option C: Set up GitHub Copilot in VS Code
 
 1. Open VS Code from the desktop.
 2. On the Welcome page, select **Clone Git Repository**.
 3. Paste in the URL `https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace` and press Enter.
-4. Choose a local folder for the checkout.
-5. When the "Connect to GitHub" dialog pops up, select **Sign in with your browser**.
-6. In the consent screen that pops up, authorize **git-ecosystem** to grant access to your GitHub data.
-7. When cloning finishes, select **Open** to open the repository in the current window.
-8. In the upper right, select the blue **Sign In** button to sign in to GitHub Copilot.
-9. A **Restricted Mode** banner appears at the top of the window. Select **Manage** in that banner, and then select **Trust** to trust the folder.
-10. In the "Sign in to use GitHub Copilot" dialog, select **Continue with GitHub**.
-11. In the browser screen to **Authorize Visual Studio Code**, select **Continue** and then **Authorize Visual-Studio-Code**.
-12. Check whether the Chat side panel is open. If it is not, select the **Toggle Chat** icon at the top of VS Code.
-13. Make sure the chat is in **Agent** mode. You may see a loop icon that displays **Agent** when selected.
-14. Send `Hello` to confirm the agent is working.
-15. Below the text box, confirm that **Allow all** is selected so the agent can make tool calls without asking for approval. If it is not, select it.
+4. Choose a local folder for the checkout, like **Desktop** or **Admin**.
+5. When cloning finishes, select **Open** to open the repository in the current window.
+6. A **Restricted Mode** banner appears at the top of the window. Select **Manage** in that banner, select **Trust** to trust the folder, and exit the dialog.
+7. From the left sidebar, open the user profile menu and select **Sign in to use GitHub Copilot**.
+8. When the "Sign in to use GitHub Copilot" dialog pops up, select **Continue with GitHub**.
+9. In the browser screen to **Authorize Visual Studio Code**, select **Continue** and then **Authorize Visual-Studio-Code**.
+10. Allow the consent flow to open Visual Studio Code.
+11. Check whether the Chat side panel is open. If it is not, select the **Toggle Chat** icon at the top of VS Code.
+12. Make sure the chat is in **Agent** mode. You may see a loop icon that displays **Agent** when selected.
+13. Below the text box, confirm that **Local** is selected. That is an older version of the VS Code agent harness that works with this workshop's MCP instructions.
+14. Additionally confirm that **Allow all** is selected so the agent can make tool calls without asking for approval. If it is not, select it.
+15. Send `Hello` to confirm the agent is working.
 
 ## 3. Ask about the local repository
 
@@ -129,8 +131,7 @@ If Copilot cannot start the application, use this fallback:
 1. Open `http://localhost:5173` in a browser.
 2. Select the shipped batch **ESM-2026-042**.
 3. Select **Download JSON** in the Origin Passport section.
-4. Open `origin-passport-ESM-2026-042.json` and compare its fields with the internal information shown in the application.
-5. Stop the application. Ask Copilot to stop it if Copilot started it, or return to the terminal and press **Control+C** if you started it manually.
+4. Open `origin-passport-ESM-2026-042.json` and compare its fields with the information shown in the web app.
 
 Stop here until the instructor introduces Exercise 2.
 

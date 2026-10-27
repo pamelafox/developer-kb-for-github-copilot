@@ -15,9 +15,6 @@ In this exercise, you will explore the project's live GitHub artifacts in your b
 
 1. Return to [ghuni-ldr-1716-w-01/cocoarynth-trace](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace) in your browser.
 2. Select your profile picture in the upper-right corner and confirm that you are still signed in with the event-provided account from Exercise 1.
-3. If GitHub shows a not-found or access error, ask your instructor to verify your account before continuing.
-
-Use the same GitHub account when a Copilot client asks you to authorize GitHub MCP later in this exercise.
 
 ### Browse the project activity
 
@@ -25,29 +22,28 @@ Explore the repository before asking Copilot to investigate it:
 
 1. On the **Code** tab, scan the repository files and README.
 2. Open the **Issues** tab. Look at both open and closed issues, noting their titles, labels, and status.
-3. Open the **Pull requests** tab. Look at open, closed, and merged pull requests, and open one to inspect its description and changed files.
-4. Open the **Discussions** tab. Browse the categories and open a discussion to see how decisions and context are recorded.
-5. Notice which artifacts describe current code, completed work, proposed work, and team decisions.
+3. Open the **Pull requests** tab. All PRs are closed, so you must select **Closed** to see previous pull requests.
+4. Open the **Discussions** tab. Open the first discussion to see how a product decision was made.
 
 Do not create, edit, close, or comment on any GitHub artifact. You will ask Copilot to find the relevant evidence after GitHub MCP is connected.
 
 ## 2. Set up GitHub MCP
-
-If the instructor has already configured a server named `github`, skip to the next section.
 
 Follow the instructions for the Copilot client you selected in Exercise 1.
 
 ### Option A: Configure GitHub MCP in Copilot App
 
 1. Open the GitHub Copilot App.
-2. Select **Customize** in the sidebar and search for **GitHub**.
-3. On the GitHub MCP server entry, select **Add server**.
-4. Change the URL to `https://api.githubcopilot.com/mcp/readonly`.
-5. Under **Headers**, select **Add header**.
-6. Enter `X-MCP-Toolsets` for the header name and `repos,issues,pull_requests,discussions` for its value.
-7. Leave the other fields at their defaults, then select **Add server**.
-8. Complete GitHub authorization with the event-provided account when prompted.
-9. Confirm that the server exposes tools for repositories, issues, pull requests, and discussions.
+2. Select **Customize** in the sidebar.
+3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
+4. Enter `github` for the server name.
+5. Select **HTTP**.
+6. Enter `https://api.githubcopilot.com/mcp/readonly` for the URL.
+7. Under **Headers**, select **Add header**.
+8. Enter `X-MCP-Toolsets` for the header name and `repos,issues,pull_requests,discussions` for its value.
+9. Leave the OAuth Client ID and timeout fields at their defaults, then select **Add server**.
+10. You should now see the GitHub MCP server under the **Installed** tab.
+11. If prompted, complete GitHub authorization with the event-provided account.
 
 ### Option B: Configure GitHub MCP in Copilot CLI
 
@@ -102,7 +98,7 @@ Send this prompt:
 
 > Use GitHub MCP to investigate this repository. Why was the Origin Passport export built this way, and what related work remains open? Cite the relevant pull request, issue, and discussion.
 
-Review each requested tool call before allowing it. Pay attention to:
+Pay attention to:
 
 - Which GitHub tools Copilot selects.
 - How it finds relevant artifacts among many issues.

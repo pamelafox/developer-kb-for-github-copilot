@@ -5,12 +5,11 @@ In this exercise, you will explore Cocoarynth's pre-ingested document collection
 ## Contents
 
 - [1. Explore the document corpus](#1-explore-the-document-corpus)
-- [2. Get the connection details](#2-get-the-connection-details)
-- [3. Connect GitHub Copilot](#3-connect-github-copilot)
-- [4. Start a fresh chat](#4-start-a-fresh-chat)
-- [5. Test document retrieval](#5-test-document-retrieval)
-- [6. Combine document and GitHub evidence](#6-combine-document-and-github-evidence)
-- [7. Check your understanding](#7-check-your-understanding)
+- [2. Connect GitHub Copilot](#2-connect-github-copilot)
+- [3. Start a fresh chat](#3-start-a-fresh-chat)
+- [4. Test document retrieval](#4-test-document-retrieval)
+- [5. Combine document and GitHub evidence](#5-combine-document-and-github-evidence)
+- [6. Check your understanding](#6-check-your-understanding)
 
 ## 1. Explore the document corpus
 
@@ -56,15 +55,11 @@ MCP is a standard way for an AI application to discover and call tools. The work
 
 Before continuing, make sure you can explain the difference between a source document, an indexed chunk, direct hybrid search, and an MCP tool call.
 
-## 2. Get the connection details
+## 2. Connect GitHub Copilot
 
-1. Under **Corpus 1: Project requirements**, select **Call over MCP**.
-2. Next to **MCP endpoint**, select **Copy**.
-3. Get the shared Foundry IQ query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key). The query key is a shared workshop credential. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the workshop.
+Follow the instructions for the Copilot client you selected in Exercise 1.
 
-## 3. Connect GitHub Copilot
-
-Follow the instructions for the Copilot client you selected in Exercise 1. Name this connection `cocoarynth-kb-docs`, the same name as the knowledge base, so it is easy to distinguish from GitHub MCP and the combined knowledge base used later.
+The Foundry IQ MCP endpoint and API key are both listed at [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key). The query key is a shared workshop credential that gives read-only access to the knowledge base. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the workshop.
 
 ### Option A: Configure the MCP server in Copilot App
 
@@ -73,40 +68,44 @@ Follow the instructions for the Copilot client you selected in Exercise 1. Name 
 3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
 4. Enter `cocoarynth-kb-docs` for the server name.
 5. Select **HTTP**.
-6. Paste the copied MCP URL into the URL field.
+6. Paste the `cocoarynth-kb-docs` MCP endpoint into the URL field. Copy it from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key).
 7. Under **Headers**, select **Add header**.
-8. Enter `api-key` for the header name and the Search query key for its value.
+8. Enter `api-key` for the header name and paste the key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) for its value.
 9. Leave other fields at their defaults, then select **Add server**.
-10. Confirm that `github` and `cocoarynth-kb-docs` are both available.
+10. Confirm that `github` and `cocoarynth-kb-docs` are both listed in the **Installed** tab.
 
 ### Option B: Configure the MCP server in Copilot CLI
 
 1. Exit the active interactive Copilot session if one is running.
-2. Run the following command, replacing both placeholders with the values supplied for the workshop:
+2. In a terminal prompt, configure Copilot CLI with the Foundry IQ MCP server, replacing both placeholders with the `cocoarynth-kb-docs` MCP endpoint and Search query key:
 
    ```shell
    copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-kb-docs "<DOCUMENTS_KB_MCP_ENDPOINT>"
    ```
 
-3. Start a new Copilot CLI session:
+   The full command, with both values filled in, is in [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) so you can also paste it directly.
+
+   If prompted to remove a previous `cocoarynth-kb-docs` MCP server, run the provided command.
+
+3. From a terminal prompt, start a new Copilot CLI session:
 
    ```shell
    copilot
    ```
 
-4. Verify the new server:
+4. Inside the session, display the installed MCP servers with this slash command:
 
    ```text
-   /mcp show cocoarynth-kb-docs
+   /mcp show
    ```
 
-5. Confirm that `cocoarynth-kb-docs` and the built-in GitHub MCP server are both running.
+5. In the server listing, confirm that the `cocarynth-kb-all` server and `github` servers are both installed and enabled.
 
 ### Option C: Configure the MCP server in VS Code
 
 1. Open `.vscode/mcp.json` in the local checkout.
 2. Keep the existing `github` server and add the `cocoarynth-kb-docs` server and secure input shown below.
-3. Replace `<DOCUMENTS_KB_MCP_ENDPOINT>` with the endpoint copied from the workshop portal.
+3. Replace `<DOCUMENTS_KB_MCP_ENDPOINT>` with the `cocoarynth-kb-docs` MCP endpoint from the portal or [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key).
 
    ```json
    {
@@ -139,11 +138,11 @@ Follow the instructions for the Copilot client you selected in Exercise 1. Name 
 
 4. Save the file.
 5. Select **Start** above `cocoarynth-kb-docs`, or run **MCP: List Servers** from the Command Palette and start it.
-6. Enter the Search query key when VS Code prompts for it.
+6. Enter the Search query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) when VS Code prompts for it.
 7. Confirm that both `github` and `cocoarynth-kb-docs` are running.
 8. In Copilot Chat, select the tools icon and confirm that tools from both servers are available.
 
-## 4. Start a fresh chat
+## 3. Start a fresh chat
 
 Start a new session so you can clearly observe which integrations Copilot uses. In the Copilot App, start the session from the Cocoarynth Trace project. In VS Code, make sure the chat is in Agent mode.
 
@@ -152,9 +151,7 @@ Both separate integrations should remain enabled:
 - `github` supplies live code, issues, pull requests, and discussions.
 - `cocoarynth-kb-docs` supplies the uploaded requirements, policy, architecture decision, and support runbook.
 
-Review each requested tool call before allowing it. The tool or server name tells you which source Copilot is consulting.
-
-## 5. Test document retrieval
+## 4. Test document retrieval
 
 First ask a question that can be answered from the uploaded documents:
 
@@ -166,7 +163,7 @@ Check that Copilot:
 - Responds that CSV is the required format, not JSON.
 - Cites the Mapayça Markets pilot requirements PDF rather than local code or a GitHub issue.
 
-## 6. Combine document and GitHub evidence
+## 5. Combine document and GitHub evidence
 
 Now ask a question that requires both integrations:
 
@@ -181,7 +178,7 @@ A complete answer should establish that:
 - The open CSV-support issue tracks the missing work.
 - The existing export fields largely align with the pilot and data-sharing policy.
 
-## 7. Check your understanding
+## 6. Check your understanding
 
 Before continuing, make sure you can answer:
 
