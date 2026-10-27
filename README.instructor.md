@@ -31,7 +31,7 @@ The GitHub Universe session is scheduled for Wednesday, October 28, 2026, from 1
 
 Before the session:
 
-- Test Copilot CLI, the Copilot app, and VS Code on the event laptop image with an event-style GitHub account.
+- Test the Copilot app, Copilot CLI, and VS Code on the event laptop image with an event-style GitHub account.
 - Confirm that the hosted read-only GitHub MCP tools and all three native knowledge-base MCP endpoints work from the event network.
 - Verify both corpora, both indexes, and all three knowledge bases in the deployed portal.
 - Exercise expected classroom concurrency against the portal, Search service, and model deployments.

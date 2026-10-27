@@ -37,7 +37,37 @@ If the instructor has already configured a server named `github`, skip to the ne
 
 Follow the instructions for the Copilot client you selected in Exercise 1.
 
-### Option A: Configure GitHub MCP in VS Code
+### Option A: Configure GitHub MCP in Copilot App
+
+1. Open the GitHub Copilot App.
+2. Select **Customize** in the sidebar.
+3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
+4. Enter `github` for the server name.
+5. Select **HTTP**.
+6. Enter `https://api.githubcopilot.com/mcp/readonly` for the URL.
+7. Under **Headers**, select **Add header**.
+8. Enter `X-MCP-Toolsets` for the header name and `repos,issues,pull_requests,discussions` for its value.
+9. Leave the OAuth Client ID and timeout fields at their defaults, then select **Add server**.
+10. Complete GitHub authorization with the event-provided account when prompted.
+11. Confirm that the server exposes tools for repositories, issues, pull requests, and discussions.
+
+### Option B: Configure GitHub MCP in Copilot CLI
+
+The GitHub MCP server comes pre-installed in Copilot CLI with read-only tools enabled by default. Start a new session and add the Discussions toolset:
+
+```shell
+copilot --add-github-mcp-toolset discussions
+```
+
+From the active Copilot CLI session, verify the server:
+
+```text
+/mcp show github-mcp-server
+```
+
+Confirm that the built-in server is running and includes tools for repositories, issues, pull requests, and discussions.
+
+### Option C: Configure GitHub MCP in VS Code
 
 1. Create or open `.vscode/mcp.json` in the local checkout.
 2. Add this configuration:
@@ -62,44 +92,13 @@ Follow the instructions for the Copilot client you selected in Exercise 1.
 6. Confirm that VS Code reports the server as running.
 7. In the Copilot Chat panel, select the tools icon and confirm that tools from the `GitHub MCP server` are listed.
 
-### Option B: Configure GitHub MCP in Copilot CLI
-
-The GitHub MCP server comes pre-installed in Copilot CLI with read-only tools enabled by default. Start a new session and add the Discussions toolset:
-
-```shell
-copilot --add-github-mcp-toolset discussions
-```
-
-From the active Copilot CLI session, verify the server:
-
-```text
-/mcp show github-mcp-server
-```
-
-Confirm that the built-in server is running and includes tools for repositories, issues, pull requests, and discussions.
-
-### Option C: Configure GitHub MCP in Copilot App
-
-1. Open the GitHub Copilot App.
-2. Select **Customize** in the sidebar.
-3. Select the **MCP** tab.
-4. Open the **Add** menu in the top-right corner, then select **MCP Server**.
-5. Enter `github` for the server name.
-6. Select **HTTP**.
-7. Enter `https://api.githubcopilot.com/mcp/readonly` for the URL.
-8. Under **Headers**, select **Add header**.
-9. Enter `X-MCP-Toolsets` for the header name and `repos,issues,pull_requests,discussions` for its value.
-10. Leave the OAuth Client ID and timeout fields at their defaults, then select **Add server**.
-11. Complete GitHub authorization with the event-provided account when prompted.
-12. Confirm that the server exposes tools for repositories, issues, pull requests, and discussions.
-
 The hosted `/readonly` endpoint and the CLI's built-in defaults prevent GitHub write tools from being exposed.
 
 ## 3. Investigate with GitHub MCP
 
 ### Start a fresh chat
 
-Start a new session in your selected client so it is clear which context comes from GitHub MCP. In VS Code, make sure the new chat is in Agent mode. In the Copilot App, start the session from the Cocoarynth Trace project.
+Start a new session in your selected client so it is clear which context comes from GitHub MCP. In the Copilot App, start the session from the Cocoarynth Trace project. In VS Code, make sure the new chat is in Agent mode.
 
 Send this prompt:
 

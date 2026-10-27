@@ -64,15 +64,28 @@ Before continuing, make sure you can explain the difference between a source doc
 
 ## 3. Connect GitHub Copilot
 
-Follow the instructions for the Copilot client you selected in Exercise 1. Name this connection `cocoarynth-documents` so it is easy to distinguish from GitHub MCP and the combined retrieval server used later.
+Follow the instructions for the Copilot client you selected in Exercise 1. Name this connection `cocoarynth-kb-docs`, the same name as the knowledge base, so it is easy to distinguish from GitHub MCP and the combined knowledge base used later.
 
-### Option A: Configure the MCP server in Copilot CLI
+### Option A: Configure the MCP server in Copilot App
+
+1. Open the GitHub Copilot App.
+2. Select **Customize** in the sidebar.
+3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
+4. Enter `cocoarynth-kb-docs` for the server name.
+5. Select **HTTP**.
+6. Paste the copied MCP URL into the URL field.
+7. Under **Headers**, select **Add header**.
+8. Enter `api-key` for the header name and the Search query key for its value.
+9. Leave other fields at their defaults, then select **Add server**.
+10. Confirm that `github` and `cocoarynth-kb-docs` are both available.
+
+### Option B: Configure the MCP server in Copilot CLI
 
 1. Exit the active interactive Copilot session if one is running.
 2. Run the following command, replacing both placeholders with the values supplied for the workshop:
 
    ```shell
-   copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-documents "<DOCUMENTS_KB_MCP_ENDPOINT>"
+   copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-kb-docs "<DOCUMENTS_KB_MCP_ENDPOINT>"
    ```
 
 3. Start a new Copilot CLI session:
@@ -84,29 +97,15 @@ Follow the instructions for the Copilot client you selected in Exercise 1. Name 
 4. Verify the new server:
 
    ```text
-   /mcp show cocoarynth-documents
+   /mcp show cocoarynth-kb-docs
    ```
 
-5. Confirm that `cocoarynth-documents` and the built-in GitHub MCP server are both running.
-
-### Option B: Configure the MCP server in Copilot App
-
-1. Open the GitHub Copilot App.
-2. Select **Customize** in the sidebar.
-3. Select the **MCP** tab.
-4. Open the **Add** menu, then select **MCP Server**.
-5. Enter `cocoarynth-documents` for the server name.
-6. Select **HTTP**.
-7. Paste the copied MCP URL into the URL field.
-8. Under **Headers**, select **Add header**.
-9. Enter `api-key` for the header name and the Search query key for its value.
-10. Leave other fields at their defaults, then select **Add server**.
-11. Confirm that `github` and `cocoarynth-documents` are both available.
+5. Confirm that `cocoarynth-kb-docs` and the built-in GitHub MCP server are both running.
 
 ### Option C: Configure the MCP server in VS Code
 
 1. Open `.vscode/mcp.json` in the local checkout.
-2. Keep the existing `github` server and add the `cocoarynth-documents` server and secure input shown below.
+2. Keep the existing `github` server and add the `cocoarynth-kb-docs` server and secure input shown below.
 3. Replace `<DOCUMENTS_KB_MCP_ENDPOINT>` with the endpoint copied from the workshop portal.
 
    ```json
@@ -127,7 +126,7 @@ Follow the instructions for the Copilot client you selected in Exercise 1. Name 
            "X-MCP-Toolsets": "repos,issues,pull_requests,discussions"
          }
        },
-       "cocoarynth-documents": {
+       "cocoarynth-kb-docs": {
          "type": "http",
          "url": "<DOCUMENTS_KB_MCP_ENDPOINT>",
          "headers": {
@@ -139,19 +138,19 @@ Follow the instructions for the Copilot client you selected in Exercise 1. Name 
    ```
 
 4. Save the file.
-5. Select **Start** above `cocoarynth-documents`, or run **MCP: List Servers** from the Command Palette and start it.
+5. Select **Start** above `cocoarynth-kb-docs`, or run **MCP: List Servers** from the Command Palette and start it.
 6. Enter the Search query key when VS Code prompts for it.
-7. Confirm that both `github` and `cocoarynth-documents` are running.
+7. Confirm that both `github` and `cocoarynth-kb-docs` are running.
 8. In Copilot Chat, select the tools icon and confirm that tools from both servers are available.
 
 ## 4. Start a fresh chat
 
-Start a new session so you can clearly observe which integrations Copilot uses. In VS Code, make sure the chat is in Agent mode. In the Copilot App, start the session from the Cocoarynth Trace project.
+Start a new session so you can clearly observe which integrations Copilot uses. In the Copilot App, start the session from the Cocoarynth Trace project. In VS Code, make sure the chat is in Agent mode.
 
 Both separate integrations should remain enabled:
 
 - `github` supplies live code, issues, pull requests, and discussions.
-- `cocoarynth-documents` supplies the uploaded requirements, policy, architecture decision, and support runbook.
+- `cocoarynth-kb-docs` supplies the uploaded requirements, policy, architecture decision, and support runbook.
 
 Review each requested tool call before allowing it. The tool or server name tells you which source Copilot is consulting.
 
@@ -163,7 +162,7 @@ First ask a question that can be answered from the uploaded documents:
 
 Check that Copilot:
 
-- Calls a tool from `cocoarynth-documents`. Expand the tool call to see the arguments passed to the `knowledge_base_retrieve` tool.
+- Calls a tool from `cocoarynth-kb-docs`. Expand the tool call to see the arguments passed to the `knowledge_base_retrieve` tool.
 - Responds that CSV is the required format, not JSON.
 - Cites the Mapayça Markets pilot requirements PDF rather than local code or a GitHub issue.
 

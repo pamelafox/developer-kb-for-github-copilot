@@ -23,7 +23,15 @@ You will use a GitHub account specifically set up for GitHub Universe.
 
 Set up one of the GitHub Copilot options below. You will use the same option throughout the workshop.
 
-### Option A: Set up GitHub Copilot CLI
+### Option A: Set up GitHub Copilot App
+
+1. Open the GitHub Copilot App.
+2. If prompted, select **Sign in with GitHub** and authenticate with the event-provided GitHub account.
+3. From **Projects** in the sidebar, select **+**, then select **Add GitHub repository**.
+4. Enter this repository URL: `https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace`.
+5. Start a session for the project and send `Hello` to confirm the agent is working.
+
+### Option B: Set up GitHub Copilot CLI
 
 1. Open a terminal.
 2. Run `gh auth login` and follow the prompts to sign in.
@@ -33,14 +41,6 @@ Set up one of the GitHub Copilot options below. You will use the same option thr
 6. If prompted, use `/login` and authenticate with the event-provided GitHub account.
 7. When asked to "Confirm folder trust", say "Yes, and remember this folder for future sessions".
 8. Send `Hello` to confirm the agent is working.
-
-### Option B: Set up GitHub Copilot App
-
-1. Open the GitHub Copilot App.
-2. If prompted, select **Sign in with GitHub** and authenticate with the event-provided GitHub account.
-3. From **Projects** in the sidebar, select **+**, then select **Add GitHub repository**.
-4. Enter this repository URL: `https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace`.
-5. Start a session for the project and send `Hello` to confirm the agent is working.
 
 ### Option C: Set up GitHub Copilot in VS Code
 

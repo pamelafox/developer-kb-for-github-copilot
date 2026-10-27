@@ -77,52 +77,52 @@ The first two power the corpus-specific MCP calls you already tried. The third i
 For this exercise, enable these integrations:
 
 - Direct GitHub MCP server, from Exercise 2.
-- `cocoarynth-combined`, the combined project-requirements and engineering-practices KB.
+- `cocoarynth-kb-all`, the combined project-requirements and engineering-practices KB.
 
-Disable `cocoarynth-documents` to avoid exposing the project-document index through two tools.
+Disable `cocoarynth-kb-docs` to avoid exposing the project-document index through two tools.
 
-### Option A: Copilot CLI
+### Option A: Copilot App
+
+1. Open the GitHub Copilot App.
+2. Select **Customize** in the sidebar.
+3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
+4. Enter `cocoarynth-kb-all` for the server name and select **HTTP**.
+5. Paste the copied combined KB MCP URL into the URL field.
+6. Under **Headers**, add `api-key` with the shared Foundry IQ query key as its value.
+7. Leave other fields at their defaults, then select **Add server**.
+8. Keep `github` and `cocoarynth-kb-all` enabled. Disable only `cocoarynth-kb-docs`.
+
+### Option B: Copilot CLI
 
 1. Exit the active interactive Copilot session if one is running.
 2. Add the combined KB, replacing both placeholders:
 
    ```shell
-   copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-combined "<COMBINED_KB_MCP_ENDPOINT>"
+   copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-kb-all "<COMBINED_KB_MCP_ENDPOINT>"
    ```
 
 3. Start a fresh session with only the documents-only KB disabled:
 
    ```shell
-   copilot --disable-mcp-server cocoarynth-documents --add-github-mcp-toolset discussions
+   copilot --disable-mcp-server cocoarynth-kb-docs --add-github-mcp-toolset discussions
    ```
 
 4. Verify both required servers:
 
    ```text
    /mcp show github-mcp-server
-   /mcp show cocoarynth-combined
+   /mcp show cocoarynth-kb-all
    ```
 
 Do not use `--disable-builtin-mcps`; that would disable the direct GitHub integration needed for this exercise.
 
-### Option B: Copilot App
-
-1. Open the GitHub Copilot App.
-2. Select **Customize**, then select the **MCP** tab.
-3. Open **Add**, then select **MCP Server**.
-4. Enter `cocoarynth-combined` for the server name and select **HTTP**.
-5. Paste the copied combined KB MCP URL into the URL field.
-6. Under **Headers**, add `api-key` with the shared Foundry IQ query key as its value.
-7. Leave other fields at their defaults, then select **Add server**.
-8. Keep `github` and `cocoarynth-combined` enabled. Disable only `cocoarynth-documents`.
-
 ### Option C: VS Code
 
 1. Open `.vscode/mcp.json` in the local checkout.
-2. Keep the existing `github` server definition and add `cocoarynth-combined` under `servers`:
+2. Keep the existing `github` server definition and add `cocoarynth-kb-all` under `servers`:
 
    ```json
-   "cocoarynth-combined": {
+   "cocoarynth-kb-all": {
      "type": "http",
      "url": "<COMBINED_KB_MCP_ENDPOINT>",
      "headers": {
@@ -132,17 +132,17 @@ Do not use `--disable-builtin-mcps`; that would disable the direct GitHub integr
    ```
 
 3. Replace `<COMBINED_KB_MCP_ENDPOINT>` with the endpoint copied from the workshop portal, then save the file.
-4. Start `github` and `cocoarynth-combined`. Stop only `cocoarynth-documents`.
+4. Start `github` and `cocoarynth-kb-all`. Stop only `cocoarynth-kb-docs`.
 5. Enter the shared Foundry IQ query key if VS Code prompts for it.
 6. In Copilot Chat, select the tools icon and confirm that tools from GitHub and the combined KB are available.
 
 ## 4. Create the PRD
 
-Start a fresh chat so earlier answers do not supply hidden context. In VS Code, use Agent mode. In the Copilot App, start from the Cocoarynth Trace project.
+Start a fresh chat so earlier answers do not supply hidden context. In the Copilot App, start from the Cocoarynth Trace project. In VS Code, use Agent mode.
 
 Send this prompt:
 
-> Create a local Markdown file named `origin-passport-csv-prd.md` containing a product requirements document for adding CSV Origin Passport export support to Cocoarynth Trace. Before drafting, retrieve evidence from both direct GitHub MCP and `cocoarynth-combined`. Use GitHub for current code, issues, pull requests, and discussions. Use the combined knowledge base for project requirements, architecture, policy, support constraints, and company engineering standards. Address Mapayça Markets' CSV requirement and rejection of JSON, and whether CSV export must preserve the immutable Origin Passport snapshot. Distinguish required behavior, current implementation, and recommendations. Include context, goals, non-goals, user stories, API and export contract, UI and accessibility requirements, implementation considerations, acceptance criteria, testing, rollout and observability, open questions, and source links. Do not modify application code or any GitHub artifact. Do not finish until the Markdown file has been created.
+> Create a local Markdown file named `origin-passport-csv-prd.md` containing a product requirements document for adding CSV Origin Passport export support to Cocoarynth Trace. Before drafting, retrieve evidence from both direct GitHub MCP and `cocoarynth-kb-all`. Use GitHub for current code, issues, pull requests, and discussions. Use the combined knowledge base for project requirements, architecture, policy, support constraints, and company engineering standards. Address Mapayça Markets' CSV requirement and rejection of JSON, and whether CSV export must preserve the immutable Origin Passport snapshot. Distinguish required behavior, current implementation, and recommendations. Include context, goals, non-goals, user stories, API and export contract, UI and accessibility requirements, implementation considerations, acceptance criteria, testing, rollout and observability, open questions, and source links. Do not modify application code or any GitHub artifact. Do not finish until the Markdown file has been created.
 
 Approve read-only tool calls and the creation of the one local Markdown file. Reject any request to change application code or write to GitHub.
 
@@ -166,7 +166,7 @@ Inspect the chat's tool activity as well as the finished file:
 
 | Coordination layer | Responsibility |
 | --- | --- |
-| Foundry IQ | Plans retrieval across the project-requirements and engineering-practices indexes inside `cocoarynth-combined`. |
+| Foundry IQ | Plans retrieval across the project-requirements and engineering-practices indexes inside `cocoarynth-kb-all`. |
 | GitHub Copilot | Coordinates the combined KB with direct GitHub MCP and the local workspace. |
 | Direct GitHub MCP | Retrieves live repository evidence using the attendee's GitHub authorization. |
 
@@ -177,7 +177,7 @@ If the PRD lacks evidence from one source, ask Copilot to retrieve that source e
 Before finishing, make sure you can answer:
 
 1. Which two indexes are children of `cocoarynth-kb-all`?
-2. Why did you disable `cocoarynth-documents` but keep direct GitHub MCP enabled?
+2. Why did you disable `cocoarynth-kb-docs` but keep direct GitHub MCP enabled?
 3. What retrieval does Foundry IQ coordinate, and what retrieval does Copilot coordinate?
 4. Why might the combined KB use only one index for a particular question?
 5. Which identity is used for direct GitHub retrieval?

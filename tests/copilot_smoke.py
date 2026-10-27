@@ -29,22 +29,22 @@ from app.backend.config import load_local_environment
 
 REPOSITORY_URL = "https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace.git"
 PRD_FILE = "origin-passport-csv-prd.md"
-DOCUMENTS_SERVER = "acceptance-cocoarynth-documents"
-COMBINED_SERVER = "acceptance-cocoarynth-combined"
+DOCUMENTS_SERVER = "acceptance-cocoarynth-kb-docs"
+COMBINED_SERVER = "acceptance-cocoarynth-kb-all"
 EXERCISE3_PROMPT = (
-    "Before answering, make a new call to `cocoarynth-documents` and a new call to GitHub MCP; do not rely only "
+    "Before answering, make a new call to `cocoarynth-kb-docs` and a new call to GitHub MCP; do not rely only "
     "on evidence from the previous answer. Can Cocoarynth support Mapayça Markets' traceability import today? "
     "Identify the blocker, check relevant issues for related open work, and cite both the pilot requirements and "
     "current implementation evidence."
 )
 EXERCISE3_DOCUMENT_PROMPT = (
-    "Use `cocoarynth-documents` to answer: What file format does Mapayça Markets require for the Cocoarynth "
+    "Use `cocoarynth-kb-docs` to answer: What file format does Mapayça Markets require for the Cocoarynth "
     "traceability pilot, and does its importer accept JSON? Cite the supporting document."
 )
 EXERCISE4_PROMPT = (
     f"Create a local Markdown file named `{PRD_FILE}` containing a product requirements document for adding CSV "
     "Origin Passport export support to Cocoarynth Trace. Before drafting, retrieve evidence from both direct GitHub "
-    "MCP and `cocoarynth-combined`. Use GitHub for current code, issues, pull requests, and discussions. Use the "
+    "MCP and `cocoarynth-kb-all`. Use GitHub for current code, issues, pull requests, and discussions. Use the "
     "combined knowledge base for project requirements, architecture, policy, support constraints, and company "
     "engineering standards. Address Mapayça Markets' CSV requirement and rejection of JSON, and whether CSV export "
     "must preserve the immutable Origin Passport snapshot. Distinguish required behavior, current implementation, "
@@ -311,14 +311,14 @@ async def _run_session(
         ) as session:
             if preliminary_prompt:
                 preliminary_response = await session.send_and_wait(
-                    preliminary_prompt.replace("`cocoarynth-documents`", f"`{server_name}`"),
+                    preliminary_prompt.replace("`cocoarynth-kb-docs`", f"`{server_name}`"),
                     timeout=300,
                 )
                 if preliminary_response is None:
                     raise AssertionError("Copilot returned no response to the preliminary workshop prompt.")
             resolved_prompt = prompt.replace(
-                "`cocoarynth-documents`", f"`{server_name}`"
-            ).replace("`cocoarynth-combined`", f"`{server_name}`")
+                "`cocoarynth-kb-docs`", f"`{server_name}`"
+            ).replace("`cocoarynth-kb-all`", f"`{server_name}`")
             if writable_file:
                 await session.send(resolved_prompt)
                 await asyncio.wait_for(output_created.wait(), timeout=300)
