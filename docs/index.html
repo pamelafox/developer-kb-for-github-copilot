@@ -185,6 +185,10 @@
 			padding: 66px 48px 62px !important;
 		}
 
+		html.print-pdf .slide-menu-button {
+			display: none !important;
+		}
+
 		.reveal section.title-slide h1 {
 			position: absolute;
 			top: 24px;
@@ -739,7 +743,7 @@
 						</div>
 						<div class="sidebar-octocat"><img src="octocat.png" alt=""></div>
 					</div>
-					<h1>Building a developer knowledge base<br>for GitHub Copilot</h1>
+					<h1>Building a developer knowledge base <br>for GitHub Copilot</h1>
 					<div class="title-meta">
 						<div class="title-meta-cell">
 							<img class="speaker-photo" src="pamelafox-headshot.jpg" alt="Pamela Fox">
@@ -932,7 +936,7 @@
 				</section>
 
 				<section class="heading-only">
-					<h2>Connect GitHub Copilot to<br>the GitHub MCP server</h2>
+					<h2>Connect GitHub Copilot to <br>the GitHub MCP server</h2>
 					<p class="subtitle">Bring PRs, issues, and discussions into the context window.</p>
 				</section>
 
@@ -1073,7 +1077,7 @@
 				</section>
 
 				<section class="heading-only">
-					<h2>Connect GitHub Copilot to<br>a document knowledge base</h2>
+					<h2>Connect GitHub Copilot to <br>a document knowledge base</h2>
 				</section>
 
 				<section>
@@ -1191,12 +1195,12 @@
 
 				<section class="heading-only">
 					<p class="eyebrow">Exercise 3 · continued</p>
-					<h2>Connect GitHub Copilot to<br>the document knowledge base</h2>
+					<h2>Connect GitHub Copilot to <br>the document knowledge base</h2>
 					<p class="subtitle">Keep GitHub MCP enabled. Add the documents-only KB as a second integration.</p>
 				</section>
 
 				<section>
-					<h3>One native MCP endpoint exposes the document knowledge base</h3>
+					<h3>One MCP endpoint for the document KB</h3>
 					<div class="two-column">
 						<div class="card purple">
 							<h4>Connection</h4>
@@ -1219,7 +1223,7 @@
 				</section>
 
 				<section>
-					<h3>Separate integrations: Copilot coordinates the calls</h3>
+					<h3>Copilot coordinates separate integrations</h3>
 					<div class="flow">
 						<div class="node green">GitHub Copilot<br><small>plans across tools</small></div>
 						<div class="arrow">↙</div>
@@ -1242,7 +1246,7 @@
 				</section>
 
 				<section class="heading-only">
-					<h2>Connect GitHub Copilot to<br>a multi-source knowledge base</h2>
+					<h2>Connect GitHub Copilot to <br>a multi-source knowledge base</h2>
 				</section>
 
 				<section class="compact-title">
@@ -1322,7 +1326,7 @@
 				</section>
 
 				<section>
-					<h3>Start with the question, then map the evidence</h3>
+					<h3>Start with the question, map the evidence</h3>
 					<div class="flow">
 						<div class="node gold">Engineering question</div>
 						<div class="arrow">→</div>
@@ -1379,6 +1383,7 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.js"></script>
 		<script>
 			Reveal.initialize({
 				width: 1280,
@@ -1391,7 +1396,7 @@
 				pdfMaxPagesPerSlide: 1,
 				preloadIframes: true,
 				autoPlayMedia: true,
-				plugins: [RevealHighlight],
+				plugins: [RevealHighlight, RevealMenu],
 				pdfSeparateFragments: true
 			});
 		</script>
