@@ -58,7 +58,7 @@ Set up one of the GitHub Copilot options below. You will use the same option thr
 12. Check whether the Chat side panel is open. If it is not, select the **Toggle Chat** icon at the top of VS Code.
 13. Make sure the chat is in **Agent** mode. You may see a loop icon that displays **Agent** when selected.
 14. Send `Hello` to confirm the agent is working.
-15. Below the text box, select "Allow all" if you are comfortable with the agent making all tool calls without your approval.
+15. Below the text box, confirm that **Allow all** is selected so the agent can make tool calls without asking for approval. If it is not, select it.
 
 ## 3. Ask about the local repository
 
