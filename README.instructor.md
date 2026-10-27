@@ -40,7 +40,13 @@ Before the session:
 
 The shared Search query key grants query access across the workshop Search service; it is not an attendee-specific authorization boundary. Use only synthetic content, keep the key out of chat, repositories, logs, and screenshots, and rotate it after the advertised access window. Direct GitHub MCP uses each attendee's GitHub authorization and must remain read-only for the workshop.
 
-After the access window, rotate the distributed Search query key and remove the dedicated workshop resources when they are no longer needed.
+After the session:
+
+- Remove the `https://tinyurl.com/ghu-cocoa-key` links from the Exercise 3 and 4 slides in [docs/index.html](docs/index.html), and from step 3 of "Get the connection details" in [exercise3.md](exercise3.md) and [exercise4.md](exercise4.md).
+- Clear the Google Doc that `ghu-cocoa-key` points to.
+- Regenerate the Search query key.
+- Switch the `ghuni-ldr-1716-w-01/cocoarynth-trace` references back to the public `pamelafox/cocoarynth-trace` repository. Search for `ghuni-ldr-1716-w-01` in [exercise1.md](exercise1.md) (including the step 2 organization link), [exercise2.md](exercise2.md), [README.scenario.md](README.scenario.md), this file, and [tests/copilot_smoke.py](tests/copilot_smoke.py).
+- Update or retire the `ghu-kb-portal` short link, and remove the dedicated workshop resources when they are no longer needed.
 
 ## Local development
 

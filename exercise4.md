@@ -15,7 +15,7 @@ In this exercise, you will connect GitHub Copilot to a knowledge base that combi
 
 ### Inspect the documents
 
-1. Open the workshop portal URL supplied by your instructor.
+1. Open the workshop portal URL: [https://tinyurl.com/ghu-kb-portal](https://tinyurl.com/ghu-kb-portal)
 2. Under **Corpus 2: Engineering practices**, select **Browse documents**.
 3. Preview a few of the documents to get a feel for the contents.
 
@@ -70,7 +70,7 @@ The first two power the corpus-specific MCP calls you already tried. The third i
 
 1. Under **Combined knowledge base**, select **Call over MCP**.
 2. Next to **MCP endpoint**, select **Copy**.
-3. Use the same shared Foundry IQ query key supplied for Exercise 3.
+3. Use the same shared Foundry IQ query key from Exercise 3: [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key)
 
 ## 3. Connect GitHub Copilot
 

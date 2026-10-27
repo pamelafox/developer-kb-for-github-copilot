@@ -464,36 +464,126 @@
 			height: auto;
 		}
 
-		.query-plan {
+		.plan-flow {
 			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 12px;
+			grid-template-columns: 0.65fr auto 1.2fr auto 1.55fr;
+			gap: 16px;
+			align-items: stretch;
+			margin-top: 24px;
 		}
 
-		.query-plan .query {
-			padding: 8px 16px;
-			border: 2px solid;
-			border-radius: 12px;
-			font-size: 0.6em;
-			font-weight: 700;
+		.plan-flow > div:not(.plan-arrow) {
+			display: flex;
+			flex-direction: column;
 		}
 
-		.query-plan .query .source {
+		.plan-flow > div > .section-label + * { margin: auto 0; }
+
+		.plan-arrow {
+			align-self: center;
+			margin-top: 36px;
+		}
+
+		.plan-input,
+		.plan-output {
+			padding: 18px 20px;
+			border-radius: 6px;
+			font-size: 0.62em;
+			line-height: 1.35;
+		}
+
+		.plan-input {
+			border: 2px solid #d0d7de;
+			background: #f6f8fa;
+			font-size: 0.56em;
+		}
+
+		.plan-output {
+			background: #6e40c9;
+			color: #ffffff;
+		}
+
+		.reveal .plan-output strong {
+			display: block;
+			margin-bottom: 6px;
+			color: #ffffff;
+			font-size: 1.15em;
+		}
+
+		.plan-queries {
+			display: grid;
+			gap: 10px;
+		}
+
+		.plan-query {
+			padding: 8px 14px;
+			border-radius: 6px;
+			background: #237a45;
+			color: #ffffff;
+			font-size: 0.58em;
+			font-weight: 600;
+		}
+
+		.plan-query .source {
 			display: block;
 			width: fit-content;
-			margin-bottom: 6px;
+			margin-bottom: 4px;
 			padding: 2px 10px;
 			border-radius: 999px;
-			color: #ffffff;
-			font-size: 0.75em;
+			background: var(--blue);
+			font-size: 0.72em;
 			letter-spacing: 0.04em;
 			text-transform: uppercase;
 		}
 
-		.query-plan .query.blue { border-color: var(--blue); background: rgba(9, 105, 218, 0.08); }
-		.query-plan .query.blue .source { background: var(--blue); }
-		.query-plan .query.purple { border-color: var(--purple); background: rgba(110, 64, 201, 0.08); }
-		.query-plan .query.purple .source { background: var(--purple); }
+		.reveal .plan-query ul {
+			margin: 0;
+			padding-left: 1.1em;
+		}
+
+		.reveal .plan-query li {
+			font-size: 0.82em;
+			font-weight: 500;
+			line-height: 1.3;
+		}
+
+		.reveal .plan-output strong { font-size: 1em; }
+
+		.reveal ol.plan-results {
+			display: grid;
+			gap: 6px;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.reveal ol.plan-results li {
+			display: grid;
+			grid-template-columns: auto 1fr;
+			gap: 10px;
+			padding: 6px 10px;
+			border-radius: 4px;
+			background: rgba(255, 255, 255, 0.14);
+			font-size: 0.72em;
+			line-height: 1.3;
+		}
+
+		.reveal ol.plan-results li.practices { box-shadow: inset 4px 0 0 #7ee2a8; }
+
+		.plan-results .score {
+			font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+			font-weight: 700;
+		}
+
+		.reveal .plan-results b {
+			color: #ffffff;
+		}
+
+		.plan-arrow {
+			color: #241814;
+			font-size: 1.1em;
+			font-weight: 700;
+		}
 
 		.reveal table.compare-table { table-layout: fixed; }
 
@@ -657,6 +747,14 @@
 			align-items: center;
 		}
 
+		.reveal code.copy-value {
+			display: inline-block;
+			margin-top: 10px;
+			font-size: 0.88em;
+			white-space: nowrap;
+			user-select: all;
+		}
+
 		.reveal section img.dialog-screenshot {
 			display: block;
 			box-sizing: border-box;
@@ -777,6 +875,11 @@
 			bottom: 72px;
 			margin: 0;
 			font-size: 0.68em;
+		}
+
+		.reveal p.slide-link.split {
+			display: flex;
+			justify-content: space-between;
 		}
 
 		.reveal .slides p.big-quote {
@@ -975,6 +1078,11 @@
 			align-items: center;
 			margin: 10px 0;
 		}
+
+		.step.multiline { align-items: start; }
+		.spaced-steps .step { margin: 0 0 28px; }
+		.step.multiline div:last-child { line-height: 1.5; }
+		.step.multiline .step-number { margin-top: -6px; }
 
 		.step-number {
 			display: grid;
@@ -1215,7 +1323,7 @@
 						<div class="arrow">+</div>
 						<div class="node green"><span class="source">Local code</span>Tests<br><small>expected behavior</small></div>
 					</div>
-					<p class="slide-link"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise1.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>Exercise 1 instructions: exercise1.md</a></p>
+					<p class="slide-link"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise1.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>https://tinyurl.com/ghu-kb-workshop : exercise1.md</a></p>
 					<aside class="notes">
 						While Copilot works, ask attendees to watch which files it inspects, review what tool permissions it requests, and verify which claims have direct code evidence.
 					</aside>
@@ -1286,9 +1394,10 @@
 				<section class="compact-title">
 					<h3>Configure GitHub MCP in Copilot App</h3>
 					<div class="dialog-layout">
-						<div>
-							<div class="step"><div class="step-number">1</div><div>Open <strong>Customize → Add → MCP Server</strong>.</div></div>
-							<div class="step"><div class="step-number">2</div><div>Fill out the GitHub MCP server details.</div></div>
+						<div class="spaced-steps">
+							<div class="step"><div class="step-number">1</div><div>Open <strong>Customize</strong> and search for <strong>GitHub</strong>.</div></div>
+							<div class="step multiline"><div class="step-number">2</div><div>Select <strong>Add server</strong>, then change the URL to:<br><code class="copy-value">https://api.githubcopilot.com/mcp/readonly</code></div></div>
+							<div class="step multiline"><div class="step-number">3</div><div>To enable more tools, add this header:<br><code class="copy-value">X-MCP-Toolsets</code><br><code class="copy-value">repos,issues,pull_requests,discussions</code></div></div>
 						</div>
 						<img class="dialog-screenshot" src="screenshot_copilotapp_ghmcp.png" alt="Copilot App Add MCP Server dialog with server name github, HTTP server type, URL https://api.githubcopilot.com/mcp/readonly, and header X-MCP-Toolsets set to repos,issues,pull_requests,discussions">
 					</div>
@@ -1351,7 +1460,7 @@
 						<div class="arrow">+</div>
 						<div class="node purple"><span class="source">GitHub MCP</span>Discussion<br><small>field policy</small></div>
 					</div>
-					<p class="slide-link"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise2.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>Exercise 2 instructions: exercise2.md</a></p>
+					<p class="slide-link"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise2.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>https://tinyurl.com/ghu-kb-workshop : exercise2.md</a></p>
 				</section>
 
 				<section class="heading-only">
@@ -1509,6 +1618,7 @@
 						</div>
 						<img class="portal-screenshot" src="images/workshop-portal.png" alt="Cocoarynth Trace workshop portal showing project requirements, engineering practices, and combined knowledge base navigation">
 					</div>
+					<p class="slide-link"><a href="https://tinyurl.com/ghu-kb-portal" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>https://tinyurl.com/ghu-kb-portal</a></p>
 				</section>
 
 				<section>
@@ -1523,7 +1633,7 @@
 						<div class="arrow">+</div>
 						<div class="node purple"><span class="source">GitHub MCP</span>Open issue<br><small>related work</small></div>
 					</div>
-					<p class="slide-link"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise3.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>Exercise 3 instructions: exercise3.md</a></p>
+					<p class="slide-link split"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise3.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>https://tinyurl.com/ghu-kb-workshop : exercise3.md</a><a href="https://tinyurl.com/ghu-cocoa-key" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F511;</span>https://tinyurl.com/ghu-cocoa-key</a></p>
 				</section>
 
 				<section class="heading-only">
@@ -1626,18 +1736,36 @@
 
 				<section class="compact-title">
 					<h3>Retrieval planning in action</h3>
-					<p class="section-label">The question</p>
-					<p class="prompt">What product requirements and company engineering standards should guide CSV Origin Passport support?</p>
-					<p class="section-label">The query plan</p>
-					<div class="query-plan">
-						<div class="query blue"><span class="source">Project requirements</span>Mapayça CSV import requirements</div>
-						<div class="query purple"><span class="source">Engineering practices</span>CSV export contract standards</div>
-						<div class="query blue"><span class="source">Project requirements</span>Origin Passport field allowlist</div>
-						<div class="query purple"><span class="source">Engineering practices</span>Testing and rollout standards</div>
+					<div class="plan-flow">
+						<div>
+							<p class="section-label">Input</p>
+							<div class="plan-input">What product requirements and company engineering standards should guide CSV Origin Passport support?</div>
+						</div>
+						<div class="plan-arrow">→</div>
+						<div>
+							<p class="section-label">Planned queries</p>
+							<div class="plan-queries">
+								<div class="plan-query"><span class="source">Project requirements</span><ul><li>CSV Origin Passport product requirements support</li><li>Origin Passport CSV requirements</li><li>CSV support passport requirements</li></ul></div>
+								<div class="plan-query"><span class="source">Engineering practices</span><ul><li>CSV support standards accessibility API frontend</li><li>React frontend engineering standards forms file upload CSV</li><li>engineering standards data import CSV accessibility</li></ul></div>
+							</div>
+						</div>
+						<div class="plan-arrow">→</div>
+						<div>
+							<p class="section-label">Output</p>
+							<div class="plan-output">
+								<strong>8 references, merged and reranked</strong>
+								<ol class="plan-results">
+									<li><span class="score">3.94</span><span><b>Pilot requirements</b> &middot; &ldquo;Traceability Pilot Requirements&hellip;&rdquo;</span></li>
+									<li><span class="score">3.38</span><span><b>Pilot requirements</b> &middot; &ldquo;Example CSV: origin_passport_id&hellip;&rdquo;</span></li>
+									<li><span class="score">2.48</span><span><b>Architecture decision</b> &middot; &ldquo;An Origin Passport is an externally shareable statement&hellip;&rdquo;</span></li>
+									<li><span class="score">2.46</span><span><b>Data-sharing policy</b> &middot; &ldquo;Origin Passport baseline&hellip;&rdquo;</span></li>
+									<li class="practices"><span class="score">2.42</span><span><b>API design guide</b> &middot; &ldquo;Generate CSV with a standards-based library&hellip;&rdquo;</span></li>
+								</ol>
+							</div>
+						</div>
 					</div>
-					<p class="callout">Foundry IQ merges and reranks the results into one set of evidence.</p>
 					<aside class="notes">
-						These queries are illustrative. Replace them with a real activity log from the portal's Query knowledge base page.
+						Real output from cocoarynth-kb-all for this question: 6 planned queries (3 per index) merged into 8 reranked references. The API design guide at #5 is the engineering-practices result; the rest come from project requirements.
 					</aside>
 				</section>
 
@@ -1671,7 +1799,7 @@
 						<div class="arrow">+</div>
 						<div class="node purple"><span class="source">GitHub MCP</span>Issues + PRs<br><small>planned work</small></div>
 					</div>
-					<p class="slide-link"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise4.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>Exercise 4 instructions: exercise4.md</a></p>
+					<p class="slide-link split"><a href="https://github.com/pamelafox/developer-kb-for-github-copilot/blob/main/exercise4.md" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F517;</span>https://tinyurl.com/ghu-kb-workshop : exercise4.md</a><a href="https://tinyurl.com/ghu-cocoa-key" target="_blank" rel="noopener noreferrer"><span class="link-icon">&#x1F511;</span>https://tinyurl.com/ghu-cocoa-key</a></p>
 				</section>
 
 				<section class="heading-only">

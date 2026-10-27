@@ -40,16 +40,14 @@ Follow the instructions for the Copilot client you selected in Exercise 1.
 ### Option A: Configure GitHub MCP in Copilot App
 
 1. Open the GitHub Copilot App.
-2. Select **Customize** in the sidebar.
-3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
-4. Enter `github` for the server name.
-5. Select **HTTP**.
-6. Enter `https://api.githubcopilot.com/mcp/readonly` for the URL.
-7. Under **Headers**, select **Add header**.
-8. Enter `X-MCP-Toolsets` for the header name and `repos,issues,pull_requests,discussions` for its value.
-9. Leave the OAuth Client ID and timeout fields at their defaults, then select **Add server**.
-10. Complete GitHub authorization with the event-provided account when prompted.
-11. Confirm that the server exposes tools for repositories, issues, pull requests, and discussions.
+2. Select **Customize** in the sidebar and search for **GitHub**.
+3. On the GitHub MCP server entry, select **Add server**.
+4. Change the URL to `https://api.githubcopilot.com/mcp/readonly`.
+5. Under **Headers**, select **Add header**.
+6. Enter `X-MCP-Toolsets` for the header name and `repos,issues,pull_requests,discussions` for its value.
+7. Leave the other fields at their defaults, then select **Add server**.
+8. Complete GitHub authorization with the event-provided account when prompted.
+9. Confirm that the server exposes tools for repositories, issues, pull requests, and discussions.
 
 ### Option B: Configure GitHub MCP in Copilot CLI
 

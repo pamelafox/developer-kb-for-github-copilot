@@ -20,7 +20,7 @@ Your instructor has already indexed Cocoarynth documents into a Foundry IQ servi
 
 The Cocoarynth documents are stored in Azure Blob Storage. These documents contain organizational context that is not available from application code or the GitHub repository.
 
-1. Open the workshop portal URL supplied by your instructor.
+1. Open the workshop portal URL: [https://tinyurl.com/ghu-kb-portal](https://tinyurl.com/ghu-kb-portal)
 2. Under **Corpus 1: Project requirements**, select **Browse documents**.
 3. Review the pre-ingested document inventory.
 4. Open each document and identify its purpose: pilot requirements, architecture decision, data-sharing policy, or support runbook.
@@ -60,7 +60,7 @@ Before continuing, make sure you can explain the difference between a source doc
 
 1. Under **Corpus 1: Project requirements**, select **Call over MCP**.
 2. Next to **MCP endpoint**, select **Copy**.
-3. Get the shared Foundry IQ query key through the private method specified by your instructor. The query key is a shared workshop credential. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the workshop.
+3. Get the shared Foundry IQ query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key). The query key is a shared workshop credential. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the workshop.
 
 ## 3. Connect GitHub Copilot
 
