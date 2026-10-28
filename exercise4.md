@@ -14,7 +14,7 @@ In this exercise, you will connect GitHub Copilot to a knowledge base that combi
 
 ### Inspect the documents
 
-1. Open the workshop portal URL: [https://tinyurl.com/ghu-kb-portal](https://tinyurl.com/ghu-kb-portal)
+1. Open the provided portal URL.
 2. Under **Corpus 2: Engineering practices**, select **Browse documents**.
 3. Preview a few of the documents to get a feel for the contents.
 
@@ -80,8 +80,8 @@ Disable `cocoarynth-kb-docs` to avoid exposing the project-document index throug
 2. Select **Customize** in the sidebar.
 3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
 4. Enter `cocoarynth-kb-all` for the server name and select **HTTP**.
-5. Paste the `cocoarynth-kb-all` MCP endpoint into the URL field. Copy it from the portal or [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key).
-6. Under **Headers**, add `api-key` with the Search query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) as its value.
+5. Paste the `cocoarynth-kb-all` MCP endpoint into the URL field. Copy it from the portal or the provided secrets URL.
+6. Under **Headers**, add `api-key` with the Search query key from the provided secrets URL as its value.
 7. Leave other fields at their defaults, then select **Add server**.
 8. In the **Installed** tab, disable `cocoarynth-kb-docs`.
 9. Ensure that only `github` and `cocoarynth-kb-all` are enabled.
@@ -95,7 +95,7 @@ Disable `cocoarynth-kb-docs` to avoid exposing the project-document index throug
    copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-kb-all "<COMBINED_KB_MCP_ENDPOINT>"
    ```
 
-   The full command, with both values filled in, is in [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) so you can also paste it directly.
+   The full command, with both values filled in, is at the provided secrets URL so you can also paste it directly.
 
    If prompted to remove a previous `cocoarynth-kb-docs` MCP server, run the provided command.
 
@@ -128,9 +128,9 @@ Disable `cocoarynth-kb-docs` to avoid exposing the project-document index throug
    }
    ```
 
-3. Replace `<COMBINED_KB_MCP_ENDPOINT>` with the `cocoarynth-kb-all` MCP endpoint from the portal or [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key), then save the file.
+3. Replace `<COMBINED_KB_MCP_ENDPOINT>` with the `cocoarynth-kb-all` MCP endpoint from the portal or the provided secrets URL, then save the file.
 4. Start `github` and `cocoarynth-kb-all`. Stop only `cocoarynth-kb-docs`.
-5. Enter the Search query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) if VS Code prompts for it.
+5. Enter the Search query key from the provided secrets URL if VS Code prompts for it.
 6. In Copilot Chat, select the tools icon and confirm that tools from GitHub and the combined KB are available.
 
 ## 3. Create the PRD

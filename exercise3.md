@@ -19,7 +19,7 @@ Your instructor has already indexed Cocoarynth documents into a Foundry IQ servi
 
 The Cocoarynth documents are stored in Azure Blob Storage. These documents contain organizational context that is not available from application code or the GitHub repository.
 
-1. Open the workshop portal URL: [https://tinyurl.com/ghu-kb-portal](https://tinyurl.com/ghu-kb-portal)
+1. Open the provided portal URL.
 2. Under **Corpus 1: Project requirements**, select **Browse documents**.
 3. Review the pre-ingested document inventory.
 4. Open each document and identify its purpose: pilot requirements, architecture decision, data-sharing policy, or support runbook.
@@ -59,7 +59,7 @@ Before continuing, make sure you can explain the difference between a source doc
 
 Follow the instructions for the Copilot client you selected in Exercise 1.
 
-The Foundry IQ MCP endpoint and API key are both listed at [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key). The query key is a shared workshop credential that gives read-only access to the knowledge base. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the workshop.
+The Foundry IQ MCP endpoint and API key are both listed at the provided secrets URL. The query key is a shared workshop credential that gives read-only access to the knowledge base. Do not paste the key into chat, commit it to the repository, include it in screenshots, or share it with anyone outside the workshop.
 
 ### Option A: Configure the MCP server in Copilot App
 
@@ -68,9 +68,9 @@ The Foundry IQ MCP endpoint and API key are both listed at [https://tinyurl.com/
 3. Open the **Add** menu in the top-right corner, then select **MCP Server**.
 4. Enter `cocoarynth-kb-docs` for the server name.
 5. Select **HTTP**.
-6. Paste the `cocoarynth-kb-docs` MCP endpoint into the URL field. Copy it from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key).
+6. Paste the `cocoarynth-kb-docs` MCP endpoint into the URL field. Copy it from the provided secrets URL.
 7. Under **Headers**, select **Add header**.
-8. Enter `api-key` for the header name and paste the key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) for its value.
+8. Enter `api-key` for the header name and paste the key from the provided secrets URL for its value.
 9. Leave other fields at their defaults, then select **Add server**.
 10. Confirm that `github` and `cocoarynth-kb-docs` are both listed in the **Installed** tab.
 
@@ -83,7 +83,7 @@ The Foundry IQ MCP endpoint and API key are both listed at [https://tinyurl.com/
    copilot mcp add --transport http --header "api-key: <SEARCH_QUERY_KEY>" cocoarynth-kb-docs "<DOCUMENTS_KB_MCP_ENDPOINT>"
    ```
 
-   The full command, with both values filled in, is in [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) so you can also paste it directly.
+   The full command, with both values filled in, is at the provided secrets URL so you can also paste it directly.
 
    If prompted to remove a previous `cocoarynth-kb-docs` MCP server, run the provided command.
 
@@ -105,7 +105,7 @@ The Foundry IQ MCP endpoint and API key are both listed at [https://tinyurl.com/
 
 1. Open `.vscode/mcp.json` in the local checkout.
 2. Keep the existing `github` server and add the `cocoarynth-kb-docs` server and secure input shown below.
-3. Replace `<DOCUMENTS_KB_MCP_ENDPOINT>` with the `cocoarynth-kb-docs` MCP endpoint from the portal or [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key).
+3. Replace `<DOCUMENTS_KB_MCP_ENDPOINT>` with the `cocoarynth-kb-docs` MCP endpoint from the portal or the provided secrets URL.
 
    ```json
    {
@@ -138,7 +138,7 @@ The Foundry IQ MCP endpoint and API key are both listed at [https://tinyurl.com/
 
 4. Save the file.
 5. Select **Start** above `cocoarynth-kb-docs`, or run **MCP: List Servers** from the Command Palette and start it.
-6. Enter the Search query key from [https://tinyurl.com/ghu-cocoa-key](https://tinyurl.com/ghu-cocoa-key) when VS Code prompts for it.
+6. Enter the Search query key from the provided secrets URL when VS Code prompts for it.
 7. Confirm that both `github` and `cocoarynth-kb-docs` are running.
 8. In Copilot Chat, select the tools icon and confirm that tools from both servers are available.
 

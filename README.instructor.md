@@ -42,11 +42,10 @@ The shared Search query key grants query access across the workshop Search servi
 
 After the session:
 
-- Remove the `https://tinyurl.com/ghu-cocoa-key` links from the Exercise 3 and 4 slides in [docs/index.html](docs/index.html), and from the "Connect GitHub Copilot" steps in [exercise3.md](exercise3.md) and [exercise4.md](exercise4.md). Search for `ghu-cocoa-key` to find them all.
-- Clear the Google Doc that `ghu-cocoa-key` points to.
+- Clear the Google Doc behind the provided secrets URL.
 - Regenerate the Search query key.
 - Switch the `ghuni-ldr-1716-w-01/cocoarynth-trace` references back to the public `pamelafox/cocoarynth-trace` repository. Search for `ghuni-ldr-1716-w-01` in [exercise1.md](exercise1.md) (including the step 2 organization link), [exercise2.md](exercise2.md), [README.scenario.md](README.scenario.md), this file, and [tests/copilot_smoke.py](tests/copilot_smoke.py).
-- Update or retire the `ghu-kb-portal` short link, and remove the dedicated workshop resources when they are no longer needed.
+- Retire the portal and secrets short links on the printed handout, and remove the dedicated workshop resources when they are no longer needed.
 
 ## Local development
 
