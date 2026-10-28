@@ -1,4 +1,4 @@
-# Exercise 3: Connect Copilot to a document retrieval MCP server
+# Exercise 3: Add document context
 
 In this exercise, you will explore Cocoarynth's pre-ingested document collection, test retrieval over MCP in the workshop portal, and connect GitHub Copilot to the document retrieval server.
 

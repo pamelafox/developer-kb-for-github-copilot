@@ -1,4 +1,4 @@
-# Exercise 4: Connect Copilot to a combined knowledge base MCP server
+# Exercise 4: Use a multi-source knowledge base
 
 In this exercise, you will connect GitHub Copilot to a knowledge base that combines project requirements with Cocoarynth engineering practices. You will keep direct GitHub MCP enabled, then use both integrations to create a local product requirements document (PRD) for CSV Origin Passport support.
 

@@ -800,6 +800,26 @@
 		.card.gold { border-top: 8px solid var(--gold); }
 		.card.green { border-top: 8px solid var(--green); }
 		.card.blue { border-top: 8px solid var(--blue); }
+		.card.this-week {
+			border: 3px dashed var(--gold);
+			background: #fdf6e7;
+		}
+		.card.after-week {
+			border: 3px solid var(--green);
+		}
+		.time-pill {
+			display: inline-block;
+			margin-bottom: 12px;
+			padding: 4px 14px;
+			border-radius: 999px;
+			color: #ffffff;
+			font-size: 0.56em;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+		}
+		.this-week .time-pill { background: #a87a1f; }
+		.after-week .time-pill { background: var(--green); }
 
 		.speaker-slide,
 		html.print-pdf .reveal .slides section.speaker-slide {
@@ -962,6 +982,24 @@
 		.flow .node.purple .source { background: var(--purple); }
 		.flow .node.green .source { background: var(--green); }
 		.flow .node.blue .source { background: var(--blue); }
+
+		.source-card .source {
+			display: block;
+			width: fit-content;
+			margin-bottom: 10px;
+			padding: 3px 12px;
+			border-radius: 999px;
+			color: #ffffff;
+			font-size: 0.56em;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+		}
+		.source-card.purple .source { background: var(--purple); }
+		.source-card.green .source { background: var(--green); }
+		.source-card.blue .source { background: var(--blue); }
+		.reveal .source-card h4 { min-height: 2.4em; margin-bottom: 8px; font-size: 0.95em; }
+		.reveal .source-card p { margin: 0; font-size: 0.76em; }
 		.flow .arrow {
 			color: var(--purple);
 			font-size: 1.25em;
@@ -1216,15 +1254,15 @@
 					<table>
 						<thead><tr><th>Time</th><th>Format</th><th>Activity</th></tr></thead>
 						<tbody>
-							<tr><td>1:00–1:10</td><td><span class="agenda-format welcome">Welcome</span></td><td>Settle in and introductions</td></tr>
-							<tr><td>1:10–1:20</td><td><span class="agenda-format presentation">Presentation</span></td><td>Meet the project and your coding agent</td></tr>
-							<tr><td>1:20–1:30</td><td><span class="agenda-format exercise">Exercise</span></td><td>Investigate the local repository</td></tr>
-							<tr><td>1:30–1:40</td><td><span class="agenda-format presentation">Presentation</span></td><td>Connect Copilot to GitHub with MCP</td></tr>
-							<tr><td>1:40–1:50</td><td><span class="agenda-format exercise">Exercise</span></td><td>Investigate the feature history</td></tr>
-							<tr><td>1:50–2:05</td><td><span class="agenda-format presentation">Presentation</span></td><td>Explore and connect a document knowledge base</td></tr>
-							<tr><td>2:05–2:15</td><td><span class="agenda-format exercise">Exercise</span></td><td>Assess pilot readiness</td></tr>
-							<tr><td>2:15–2:20</td><td><span class="agenda-format presentation">Presentation</span></td><td>Use the combined knowledge base</td></tr>
-							<tr><td>2:20–2:25</td><td><span class="agenda-format exercise">Exercise</span></td><td>Create a grounded PRD</td></tr>
+							<tr><td>1:00–1:05</td><td><span class="agenda-format welcome">Welcome</span></td><td>Settle in and introductions</td></tr>
+							<tr><td>1:05–1:12</td><td><span class="agenda-format presentation">Presentation</span></td><td>Meet the project and your coding agent</td></tr>
+							<tr><td>1:12–1:27</td><td><span class="agenda-format exercise">Exercise</span></td><td>Explore the local code</td></tr>
+							<tr><td>1:27–1:32</td><td><span class="agenda-format presentation">Presentation</span></td><td>Connect Copilot to GitHub with MCP</td></tr>
+							<tr><td>1:32–1:45</td><td><span class="agenda-format exercise">Exercise</span></td><td>Add GitHub context</td></tr>
+							<tr><td>1:45–1:55</td><td><span class="agenda-format presentation">Presentation</span></td><td>Explore and connect a document knowledge base</td></tr>
+							<tr><td>1:55–2:10</td><td><span class="agenda-format exercise">Exercise</span></td><td>Add document context</td></tr>
+							<tr><td>2:10–2:15</td><td><span class="agenda-format presentation">Presentation</span></td><td>Use the combined knowledge base</td></tr>
+							<tr><td>2:15–2:25</td><td><span class="agenda-format exercise">Exercise</span></td><td>Use a multi-source knowledge base</td></tr>
 							<tr><td>2:25–2:30</td><td><span class="agenda-format presentation">Presentation</span></td><td>Take the pattern back to your team</td></tr>
 						</tbody>
 					</table>
@@ -1309,7 +1347,7 @@
 				</section>
 
 				<section>
-					<h3>Exercise 1: Investigate the local repository</h3>
+					<h3>Exercise 1: Explore the local code</h3>
 					<p class="section-label">Your question</p>
 					<p class="prompt">Using the implementation files and tests, explain what this project does, identify its main components, and describe how it exports an Origin Passport. Cite the files that support your answer.</p>
 					<p class="section-label">The evidence</p>
@@ -1444,7 +1482,7 @@
 				</section>
 
 				<section>
-					<h3>Exercise 2: Investigate the feature history</h3>
+					<h3>Exercise 2: Add GitHub context</h3>
 					<p class="section-label">Your question</p>
 					<p class="prompt">Use GitHub MCP to investigate this repository. Why was the Origin Passport export built this way, and what related work remains open? Cite the relevant pull request, issue, and discussion.</p>
 					<p class="section-label">The evidence</p>
@@ -1616,7 +1654,7 @@
 				</section>
 
 				<section>
-					<h3>Exercise 3: Assess pilot readiness</h3>
+					<h3>Exercise 3: Add document context</h3>
 					<p class="section-label">Your question</p>
 					<p class="prompt">Can Cocoarynth support Mapayça Markets' traceability import today? Identify the blocker and related open work, then cite the pilot requirements and current implementation evidence.</p>
 					<p class="section-label">The evidence</p>
@@ -1780,7 +1818,7 @@
 				</section>
 
 				<section>
-					<h3>Exercise 4: Create a grounded PRD</h3>
+					<h3>Exercise 4: Use a multi-source knowledge base</h3>
 					<p class="section-label">Your question</p>
 					<p class="prompt">Create a grounded PRD using evidence from direct GitHub MCP and <code>cocoarynth-kb-all</code>. Distinguish required behavior, current implementation, and recommendations, then cite the sources.</p>
 					<p class="section-label">The evidence</p>
@@ -1801,51 +1839,41 @@
 				</section>
 
 				<section>
-					<h3>Start with the question, map the evidence</h3>
-					<div class="flow">
-						<div class="node gold">Engineering question</div>
-						<div class="arrow">→</div>
-						<div class="node blue">Implementation facts</div>
-						<div class="arrow">+</div>
-						<div class="node purple">Decision history</div>
-						<div class="arrow">+</div>
-						<div class="node green">Business context</div>
-					</div>
-					<div class="two-column" style="margin-top: 28px;">
-						<div class="card purple"><h4>Connect separate MCP servers</h4><p>Choose this when the client should coordinate distinct tools and identities.</p></div>
-						<div class="card gold"><h4>Build a combined knowledge base</h4><p>Choose this when you want reusable, centrally configured retrieval across sources.</p></div>
-					</div>
-				</section>
-
-				<section>
-					<h3>The one thing to remember</h3>
-					<p class="big-quote">Coding agents need context beyond code.</p>
-					<div class="three-column" style="margin-top: 34px;">
-						<div class="card blue"><h4>Code</h4><p>What exists</p></div>
-						<div class="card purple"><h4>GitHub</h4><p>What changed</p></div>
-						<div class="card gold"><h4>Documents</h4><p>What the organization needs</p></div>
-					</div>
-					<p class="callout" style="margin-top: 26px;">Connect existing MCP servers for live systems. Build a knowledge base when documents need to become searchable, citable evidence.</p>
-				</section>
-
-				<section>
 					<h3>Continue after the workshop</h3>
-					<div class="two-column">
-						<div class="card green">
-							<h4>Take-home repository</h4>
-							<p><a href="https://github.com/pamelafox/developer-kb-for-github-copilot"><span class="link-icon">&#x1F517;</span>github.com/pamelafox/developer-kb-for-github-copilot</a></p>
-							<p>Exercises, portal, ingestion code, client configuration, tests, and Azure infrastructure.</p>
-						</div>
-						<div class="card purple">
-							<h4>Optional extensions</h4>
+					<div class="card link-box" style="height: auto; margin-top: 24px;">
+						<h4>Repository</h4>
+						<p><a href="https://github.com/pamelafox/developer-kb-for-github-copilot"><span class="link-icon">&#x1F517;</span>github.com/pamelafox/developer-kb-for-github-copilot</a></p>
+					</div>
+					<div class="two-column" style="margin-top: 24px; align-items: stretch;">
+						<div class="card this-week">
+							<span class="time-pill">This week</span>
+							<h4>Use the workshop environment</h4>
 							<ul class="tight">
-								<li>Compare retrieval configurations</li>
-								<li>Draft a cited readiness brief</li>
-								<li>Replace the corpus and rerun ingestion</li>
+								<li>Workshop GitHub account: take your login credentials home</li>
+								<li>Workshop portal URL</li>
+								<li>Secrets doc with endpoints and key</li>
+							</ul>
+						</div>
+						<div class="card after-week">
+							<span class="time-pill">After this week</span>
+							<h4>Deploy your own</h4>
+							<ul class="tight">
+								<li>Provision the Azure infrastructure in your own subscription</li>
+								<li>Ingest documents and create the knowledge bases</li>
+								<li>Connect Copilot with your own GitHub account</li>
 							</ul>
 						</div>
 					</div>
-					<p class="callout">The event environment is temporary. Use the repository to deploy the pattern into your own Azure environment.</p>
+				</section>
+
+				<section>
+					<h3>Coding agents need context beyond code</h3>
+					<div class="three-column" style="margin-top: 40px;">
+						<div class="card green source-card"><span class="source">Local code</span><h4>What exists</h4><p>Available in the local file system</p></div>
+						<div class="card purple source-card"><span class="source">GitHub MCP</span><h4>What changed, and why</h4><p>Available over an authenticated MCP server</p></div>
+						<div class="card blue source-card"><span class="source">Foundry IQ</span><h4>What the organization needs</h4><p>Searchable only after indexing into a knowledge base</p></div>
+					</div>
+					<p class="callout" style="margin-top: 40px;">Connect existing MCP servers for live systems.<br>Build indexed knowledge bases for unstructured documents.</p>
 				</section>
 
 				<section>

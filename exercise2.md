@@ -1,4 +1,4 @@
-# Exercise 2: Connect Copilot to the GitHub MCP server
+# Exercise 2: Add GitHub context
 
 In this exercise, you will explore the project's live GitHub artifacts in your browser, then enable GitHub MCP. MCP gives Copilot tools for retrieving repository content, issues, pull requests, and discussions.
 

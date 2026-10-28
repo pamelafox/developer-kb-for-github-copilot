@@ -44,7 +44,7 @@ After the session:
 
 - Clear the Google Doc behind the provided secrets URL.
 - Regenerate the Search query key.
-- Switch the `ghuni-ldr-1716-w-01/cocoarynth-trace` references back to the public `pamelafox/cocoarynth-trace` repository. Search for `ghuni-ldr-1716-w-01` in [exercise1.md](exercise1.md) (including the step 2 organization link), [exercise2.md](exercise2.md), [README.scenario.md](README.scenario.md), this file, and [tests/copilot_smoke.py](tests/copilot_smoke.py).
+- Switch the `ghuni-ldr-1716-w-01/cocoarynth-trace` references back to the public `pamelafox/cocoarynth-trace` repository. Search for `ghuni-ldr-1716-w-01` in [exercise1.md](exercise1.md) (including the step 2 organization link), [exercise2.md](exercise2.md), [README.scenario.md](README.scenario.md), this file, and [tests/copilot_smoke.py](tests/copilot_smoke.py). Then remove the event-only repository note from the "Deploy it yourself" section of [README.md](README.md).
 - Retire the portal and secrets short links on the printed handout, and remove the dedicated workshop resources when they are no longer needed.
 
 ## Local development

@@ -4,19 +4,20 @@ param environmentName string
 param location string
 param tags object
 param searchSku string
+param searchReplicaCount int
+param chatDeploymentCapacity int
+param embeddingDeploymentCapacity int
 param principalId string
 
 param chatDeployment object = {
   name: 'gpt-5.4-mini'
   model: 'gpt-5.4-mini'
   version: '2026-03-17'
-  capacity: 100
 }
 param embeddingDeployment object = {
   name: 'text-embedding-3-large'
   model: 'text-embedding-3-large'
   version: '1'
-  capacity: 30
 }
 
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
@@ -103,7 +104,7 @@ resource aiAccount 'Microsoft.CognitiveServices/accounts@2025-06-01' = {
     name: chatDeployment.name
     sku: {
       name: 'GlobalStandard'
-      capacity: chatDeployment.capacity
+      capacity: chatDeploymentCapacity
     }
     properties: {
       model: {
@@ -121,7 +122,7 @@ resource aiAccount 'Microsoft.CognitiveServices/accounts@2025-06-01' = {
     ]
     sku: {
       name: 'GlobalStandard'
-      capacity: embeddingDeployment.capacity
+      capacity: embeddingDeploymentCapacity
     }
     properties: {
       model: {
@@ -153,7 +154,7 @@ resource search 'Microsoft.Search/searchServices@2025-05-01' = {
     hostingMode: 'Default'
     partitionCount: 1
     publicNetworkAccess: 'enabled'
-    replicaCount: 1
+    replicaCount: searchReplicaCount
     semanticSearch: 'standard'
   }
 }

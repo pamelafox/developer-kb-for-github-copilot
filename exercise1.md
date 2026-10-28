@@ -1,4 +1,4 @@
-# Exercise 1: Meet the project
+# Exercise 1: Explore the local code
 
 In this exercise, Copilot has access to the project code but not the project's live issues, pull requests, or discussions.
 

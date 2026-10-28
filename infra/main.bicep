@@ -17,6 +17,19 @@ param location string
 ])
 param searchSku string = 'standard'
 
+@description('Azure AI Search replica count. Each replica adds semantic ranker concurrency.')
+@minValue(1)
+@maxValue(12)
+param searchReplicaCount int = 1
+
+@description('Chat model deployment capacity, in thousands of tokens per minute.')
+@minValue(1)
+param chatDeploymentCapacity int = 100
+
+@description('Embedding model deployment capacity, in thousands of tokens per minute.')
+@minValue(1)
+param embeddingDeploymentCapacity int = 30
+
 var tags = {
   'azd-env-name': environmentName
 }
@@ -34,6 +47,9 @@ module resources './resources.bicep' = {
     location: location
     principalId: deployer().objectId
     searchSku: searchSku
+    searchReplicaCount: searchReplicaCount
+    chatDeploymentCapacity: chatDeploymentCapacity
+    embeddingDeploymentCapacity: embeddingDeploymentCapacity
     tags: tags
   }
 }
