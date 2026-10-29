@@ -1,6 +1,6 @@
 # Cocoarynth Trace scenario
 
-This instructor-facing guide records the workshop narrative, evidence boundaries, and corpus design. The live [`ghuni-ldr-1716-w-01/cocoarynth-trace`](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace) repository is the source of truth for application code and GitHub artifacts; the files under [documents](documents) are the source of truth for indexed organizational content.
+This instructor-facing guide records the workshop narrative, evidence boundaries, and corpus design. The live [`pamelafox/cocoarynth-trace`](https://github.com/pamelafox/cocoarynth-trace) repository is the source of truth for application code and GitHub artifacts; the files under [documents](documents) are the source of truth for indexed organizational content.
 
 ## Contents
 
@@ -50,7 +50,7 @@ The intended conclusion is:
 
 **Application name:** Cocoarynth Trace
 
-**Repository:** [`ghuni-ldr-1716-w-01/cocoarynth-trace`](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace)
+**Repository:** [`pamelafox/cocoarynth-trace`](https://github.com/pamelafox/cocoarynth-trace)
 
 Cocoarynth Trace is a small web application used by sourcing, production, quality, and wholesale operations staff. Its primary purpose is to connect each finished chocolate batch to its origin and production history.
 
@@ -147,7 +147,7 @@ The repository does not contain the pilot requirements or policy documents. This
 
 ### Merged pull request
 
-**PR #1:** [`Add downloadable Origin Passports for production batches`](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace/pull/1)
+**PR #1:** [`Add downloadable Origin Passports for production batches`](https://github.com/pamelafox/cocoarynth-trace/pull/1)
 
 The pull request introduces the current JSON export. Its description explains that JSON was chosen because Cocoarynth's first integration was an internal API prototype. It adds the passport schema, download endpoint, user interface action, and tests.
 
@@ -164,7 +164,7 @@ The indexed architecture decision, rather than the transport implementation alon
 
 ### Open issue
 
-**Issue #3:** [`Support CSV downloads for Origin Passports`](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace/issues/3)
+**Issue #3:** [`Support CSV downloads for Origin Passports`](https://github.com/pamelafox/cocoarynth-trace/issues/3)
 
 The issue requests a second export format using the existing Origin Passport data. Its acceptance criteria include:
 
@@ -179,7 +179,7 @@ The issue is open and unimplemented. It mentions interest from wholesale operati
 
 ### GitHub discussion
 
-**Discussion #2:** [`Which origin details should we share with wholesale partners?`](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace/discussions/2)
+**Discussion #2:** [`Which origin details should we share with wholesale partners?`](https://github.com/pamelafox/cocoarynth-trace/discussions/2)
 
 The discussion records a cross-functional decision about exportable fields. Participants agree to include traceability facts such as producer name, growing region, harvest year, certification status, and production dates. They agree to exclude negotiated prices, producer contact details, internal quality notes, and employee comments.
 
@@ -187,7 +187,7 @@ This gives attendees useful rationale that cannot be inferred confidently from c
 
 ### Additional issue
 
-**Issue #4:** [`Document the Origin Passport schema for integration partners`](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace/issues/4)
+**Issue #4:** [`Document the Origin Passport schema for integration partners`](https://github.com/pamelafox/cocoarynth-trace/issues/4)
 
 This documentation issue provides realistic background without becoming another pilot blocker. It states that a temporary field list can support early integrations while the reference is prepared.
 
@@ -263,7 +263,7 @@ The first two support corpus-specific MCP calls. The combined knowledge base let
 | --- | --- |
 | Company | Cocoarynth |
 | Application | Cocoarynth Trace |
-| Repository | `ghuni-ldr-1716-w-01/cocoarynth-trace` |
+| Repository | `pamelafox/cocoarynth-trace` |
 | Export | Origin Passport |
 | Pilot retailer | Mapayça Markets |
 | Pilot product | Ecuador Esmeraldas 72% |

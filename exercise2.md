@@ -13,7 +13,7 @@ In this exercise, you will explore the project's live GitHub artifacts in your b
 
 ### Confirm your GitHub account
 
-1. Return to [ghuni-ldr-1716-w-01/cocoarynth-trace](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace) in your browser.
+1. Return to [pamelafox/cocoarynth-trace](https://github.com/pamelafox/cocoarynth-trace) in your browser.
 2. Select your profile picture in the upper-right corner and confirm that you are still signed in with the event-provided account from Exercise 1.
 
 ### Browse the project activity

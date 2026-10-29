@@ -45,6 +45,4 @@ Wherever the exercises mention the provided portal URL or secrets URL, use your 
     --query "[0].key" --output tsv
   ```
 
-During the event, exercises 1 and 2 use an event-only copy of the Cocoarynth Trace repository. Afterward, use the public [pamelafox/cocoarynth-trace](https://github.com/pamelafox/cocoarynth-trace) repository instead.
-
 When you finish, delete the Azure resources with `azd down --purge`.

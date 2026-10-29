@@ -14,10 +14,10 @@ In this exercise, Copilot has access to the project code but not the project's l
 You will use a GitHub account specifically set up for GitHub Universe.
 
 1. Open Microsoft Edge from the taskbar or desktop.
-2. Navigate to [https://github.com/ghuni-ldr-1716-w-01](https://github.com/ghuni-ldr-1716-w-01).
+2. Navigate to [https://github.com/pamelafox](https://github.com/pamelafox).
 3. Select **Continue** on the single-sign-on screen.
 4. In the Microsoft login screen, use the event-provided email and password information.
-5. Open [ghuni-ldr-1716-w-01/cocoarynth-trace](https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace) and confirm that you can access the repository.
+5. Open [pamelafox/cocoarynth-trace](https://github.com/pamelafox/cocoarynth-trace) and confirm that you can access the repository.
 
 ## 2. Set up GitHub Copilot
 
@@ -27,7 +27,7 @@ Set up one of the GitHub Copilot options below. You will use the same option thr
 
 1. Open the GitHub Copilot App.
 2. If prompted, select **Sign in with GitHub** and authenticate with the event-provided GitHub account.
-3. On the **Connect your repositories** screen, select **ghuni-ldr-1716-w-01/cocoarynth-trace** and select **Continue**.
+3. On the **Connect your repositories** screen, select **pamelafox/cocoarynth-trace** and select **Continue**.
 4. In the app dashboard, you should now see a **Projects** sidebar with **cocoarynth-trace** listed.
 5. Hover over **cocoarynth-trace** and select the **+** button to create a **New session**.
 6. Send `Hello` to confirm the agent is working.
@@ -36,7 +36,7 @@ Set up one of the GitHub Copilot options below. You will use the same option thr
 
 1. In the taskbar at the bottom, search for "cmd" and select **Command Prompt**.
 2. Run `gh auth login` and follow the prompts to sign in. Select the defaults (GitHub.com, HTTPS, Login with a web browser).
-3. Run `gh repo clone ghuni-ldr-1716-w-01/cocoarynth-trace` to clone the repository.
+3. Run `gh repo clone pamelafox/cocoarynth-trace` to clone the repository.
 4. Run `cd cocoarynth-trace` to enter its directory.
 5. Run `copilot` to start GitHub Copilot CLI.
 6. When the dialog pops up to **Confirm folder trust**, select **Yes, and remember this folder for future sessions**.
@@ -48,7 +48,7 @@ Set up one of the GitHub Copilot options below. You will use the same option thr
 
 1. Open VS Code from the desktop.
 2. On the Welcome page, select **Clone Git Repository**.
-3. Paste in the URL `https://github.com/ghuni-ldr-1716-w-01/cocoarynth-trace` and press Enter.
+3. Paste in the URL `https://github.com/pamelafox/cocoarynth-trace` and press Enter.
 4. Choose a local folder for the checkout, like **Desktop** or **Admin**.
 5. When cloning finishes, select **Open** to open the repository in the current window.
 6. A **Restricted Mode** banner appears at the top of the window. Select **Manage** in that banner, select **Trust** to trust the folder, and exit the dialog.
